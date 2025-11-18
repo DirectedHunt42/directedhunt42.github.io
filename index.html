@@ -10,6 +10,22 @@
 
     <!-- CSS File -->
     <link rel="stylesheet" href="style.css" />
+    <style>
+        body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; }
+        .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
+        .left-panel { flex: 1; margin-right: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;}
+        .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
+        .readme { max-width: 100%; }
+        .right-panel { flex: 2; display: flex; flex-direction: column; gap: 15px; }
+        .project-card { margin-bottom: 20px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
+        .project-card h3 { margin: 0 0 10px; }
+        .repo-info { display: flex; gap: 20px; flex-wrap: wrap; }
+        .toggle-readme { padding: 5px 10px; border-radius: 5px; background-color: #444; color: #fff; border: none; cursor: pointer; }
+        .toggle-readme:hover { background-color: #666; }
+        .project-card a { color: #fff; text-decoration: none; margin-top: 10px; display: inline-block; }
+        .project-card a:hover { text-decoration: underline; }
+        canvas { position: fixed; top:0; left:0; z-index:0; }
+    </style>
 </head>
 <body>
     <canvas id="starCanvas"></canvas>
@@ -17,17 +33,18 @@
     <div class="container">
         <div class="left-panel">
             <img class="logo-small" src="Images/Nova_foundry_wide_transparent.png" alt="Nova Foundry Image" />
+            <div id="readmeContent" class="readme"></div>
         </div>
         <div class="right-panel" id="projectList"></div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
-        let stars = [];
-        let galaxies = [];
-        let shootingStars = [];
+        let stars = [], galaxies = [], shootingStars = [];
         let mouseX = 0, mouseY = 0;
+        const username = "directedhunt42";
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -40,7 +57,7 @@
             stars = [];
             const starCount = 400;
             const colors = ['#ffffff', '#ffd700', '#add8e6', '#ffcccb'];
-            for(let i=0;i<starCount;i++) {
+            for (let i = 0; i < starCount; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -48,7 +65,7 @@
                     color: colors[Math.floor(Math.random() * colors.length)],
                     driftX: Math.random() * 0.02 - 0.01,
                     driftY: Math.random() * 0.02 - 0.01,
-                    parallax: 0.01 + Math.random()*0.04
+                    parallax: 0.01 + Math.random() * 0.04
                 });
             }
         }
@@ -57,28 +74,27 @@
             galaxies = [];
             const galaxyCount = 6;
             const colors = ['#ffffff', '#ffd700', '#add8e6', '#ffcccb'];
-
-            for(let g=0; g<galaxyCount; g++) {
+            for (let g = 0; g < galaxyCount; g++) {
                 const centerX = Math.random() * canvas.width;
                 const centerY = Math.random() * canvas.height;
                 const radiusX = 30 + Math.random() * 70;
                 const radiusY = 20 + Math.random() * 50;
                 const rotationSpeed = 0.0001 + Math.random() * 0.001;
                 const tilt = (Math.random() * 40 - 20) * Math.PI / 180;
-                const angleOffset = Math.random() * 2*Math.PI;
-                const arms = 3 + Math.floor(Math.random()*2);
+                const angleOffset = Math.random() * 2 * Math.PI;
+                const arms = 3 + Math.floor(Math.random() * 2);
 
                 const starsInGalaxy = [];
-                for(let i=0; i<50; i++) {
+                for (let i = 0; i < 50; i++) {
                     const arm = i % arms;
                     const radiusFactor = Math.random();
-                    const angle = radiusFactor * 4*Math.PI + arm*2*Math.PI/arms + angleOffset;
+                    const angle = radiusFactor * 4 * Math.PI + arm * 2 * Math.PI / arms + angleOffset;
                     starsInGalaxy.push({
-                        angle, radiusX, radiusY, centerX, centerY, tilt, armAngleOffset: arm*2*Math.PI/arms,
-                        radius: Math.random()*1.2+0.3,
-                        color: colors[Math.floor(Math.random()*colors.length)],
+                        angle, radiusX, radiusY, centerX, centerY, tilt, armAngleOffset: arm * 2 * Math.PI / arms,
+                        radius: Math.random() * 1.2 + 0.3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
                         speed: rotationSpeed,
-                        parallax: 0.02 + Math.random()*0.03,
+                        parallax: 0.02 + Math.random() * 0.03,
                         driftX: Math.random() * 0.01 - 0.005,
                         driftY: Math.random() * 0.01 - 0.005,
                         radiusFactor
@@ -91,77 +107,45 @@
         function generateShootingStar() {
             shootingStars.push({
                 x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height/2,
-                speedX: 20 + Math.random() * 30, // faster
+                y: Math.random() * canvas.height / 2,
+                speedX: 20 + Math.random() * 30,
                 speedY: 5 + Math.random() * 5,
                 length: 100 + Math.random() * 50,
                 color: '#ffffff',
-                parallax: 0.02 + Math.random()*0.03
+                parallax: 0.02 + Math.random() * 0.03
             });
         }
 
         function drawStars() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Background stars
             stars.forEach(s => {
-                s.x += s.driftX;
-                s.y += s.driftY;
-                if(s.x < 0) s.x = canvas.width; if(s.x > canvas.width) s.x = 0;
-                if(s.y < 0) s.y = canvas.height; if(s.y > canvas.height) s.y = 0;
-                const dx = (mouseX - canvas.width/2) * s.parallax;
-                const dy = (mouseY - canvas.height/2) * s.parallax;
-
-                ctx.beginPath();
-                ctx.arc(s.x + dx, s.y + dy, s.radius, 0, Math.PI*2);
-                ctx.fillStyle = s.color;
-                ctx.fill();
+                s.x += s.driftX; s.y += s.driftY;
+                if (s.x < 0) s.x = canvas.width; if (s.x > canvas.width) s.x = 0;
+                if (s.y < 0) s.y = canvas.height; if (s.y > canvas.height) s.y = 0;
+                const dx = (mouseX - canvas.width / 2) * s.parallax;
+                const dy = (mouseY - canvas.height / 2) * s.parallax;
+                ctx.beginPath(); ctx.arc(s.x + dx, s.y + dy, s.radius, 0, 2 * Math.PI); ctx.fillStyle = s.color; ctx.fill();
             });
 
-            // Galaxy stars with spiral arms
-            galaxies.forEach(galaxy => {
-                galaxy.forEach(star => {
-                    star.angle += star.speed;
-                    const spiralRadiusX = star.radiusX * star.radiusFactor;
-                    const spiralRadiusY = star.radiusY * star.radiusFactor;
-                    const x0 = star.centerX + spiralRadiusX * Math.cos(star.angle + star.armAngleOffset);
-                    const y0 = star.centerY + spiralRadiusY * Math.sin(star.angle + star.armAngleOffset) * Math.cos(star.tilt);
-                    star.x0 = x0 + star.driftX;
-                    star.y0 = y0 + star.driftY;
+            galaxies.forEach(g => g.forEach(star => {
+                star.angle += star.speed;
+                const x0 = star.centerX + star.radiusX * star.radiusFactor * Math.cos(star.angle + star.armAngleOffset);
+                const y0 = star.centerY + star.radiusY * star.radiusFactor * Math.sin(star.angle + star.armAngleOffset) * Math.cos(star.tilt);
+                star.x0 = x0 + star.driftX; star.y0 = y0 + star.driftY;
+                const dx = (mouseX - canvas.width / 2) * star.parallax;
+                const dy = (mouseY - canvas.height / 2) * star.parallax;
+                ctx.beginPath(); ctx.ellipse(star.x0 + dx, star.y0 + dy, star.radius * 1.2, star.radius, 0, 0, 2 * Math.PI); ctx.fillStyle = star.color; ctx.fill();
+            }));
 
-                    const dx = (mouseX - canvas.width/2) * star.parallax;
-                    const dy = (mouseY - canvas.height/2) * star.parallax;
-
-                    ctx.beginPath();
-                    ctx.ellipse(star.x0 + dx, star.y0 + dy, star.radius*1.2, star.radius, 0, 0, 2*Math.PI);
-                    ctx.fillStyle = star.color;
-                    ctx.fill();
-                });
-            });
-
-            // Shooting stars as lines pointing in direction
-            shootingStars.forEach((s, index) => {
-                s.x += s.speedX;
-                s.y += s.speedY;
-                const dx = (mouseX - canvas.width/2) * s.parallax;
-                const dy = (mouseY - canvas.height/2) * s.parallax;
-
+            shootingStars.forEach((s, i) => {
+                s.x += s.speedX; s.y += s.speedY;
+                const dx = (mouseX - canvas.width / 2) * s.parallax;
+                const dy = (mouseY - canvas.height / 2) * s.parallax;
                 const angle = Math.atan2(s.speedY, s.speedX);
-
-                ctx.save();
-                ctx.translate(s.x + dx, s.y + dy);
-                ctx.rotate(angle);
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(-s.length, 0);
-                ctx.strokeStyle = s.color;
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.restore();
-
-                if(s.x - s.length > canvas.width || s.y - s.length/2 > canvas.height) {
-                    shootingStars.splice(index, 1);
-                }
+                ctx.save(); ctx.translate(s.x + dx, s.y + dy); ctx.rotate(angle);
+                ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-s.length, 0); ctx.strokeStyle = s.color; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+                if (s.x - s.length > canvas.width || s.y - s.length / 2 > canvas.height) { shootingStars.splice(i, 1); }
             });
 
             requestAnimationFrame(drawStars);
@@ -169,29 +153,51 @@
 
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-        resizeCanvas();
-        drawStars();
+        resizeCanvas(); drawStars();
+        setInterval(() => { if (Math.random() < 0.05) generateShootingStar(); }, 2000);
 
-        // Shooting stars less frequent
-        setInterval(() => {
-            if(Math.random() < 0.05) generateShootingStar();
-        }, 2000);
+        // Load main README
+        fetch(`https://raw.githubusercontent.com/${username}/directedhunt42.github.io/main/README.md`).then(res => res.text()).then(md => {
+            document.getElementById('readmeContent').innerHTML = marked.parse(md);
+        });
 
-        const username = "directedhunt42";
-        fetch(`https://api.github.com/users/${username}/repos`)
-            .then(res => res.json())
-            .then(repos => {
-                const container = document.getElementById("projectList");
-                repos.filter(r => r.name !== 'directedhunt42.github.io').forEach(r => {
-                    const card = document.createElement("div");
-                    card.className = "project-card fade-in";
-                    card.innerHTML = `
-                        <h3>${r.name}</h3>
-                        <a href="${r.html_url}" target="_blank">View on GitHub</a>
-                    `;
-                    container.appendChild(card);
+        // Load GitHub repos with dropdowns
+        fetch(`https://api.github.com/users/${username}/repos`).then(res => res.json()).then(async repos => {
+            const container = document.getElementById('projectList');
+            for (const r of repos.filter(r => r.name !== 'directedhunt42.github.io')) {
+                const card = document.createElement('div'); card.className = 'project-card fade-in';
+                card.innerHTML = `
+                    <h3>${r.name}</h3>
+                    <div class='repo-info'>
+                        <p>⭐ Stars: ${r.stargazers_count}</p>
+                        <p>🪲 Issues: ${r.open_issues_count}</p>
+                        <p>📦 Size: ${(r.size/1024).toFixed(2)} MB</p>
+                    </div>
+                    <button class='toggle-readme'>Show README</button>
+                    <div class='repo-readme' style='display:none;'></div>
+                    <a href='${r.html_url}' target='_blank'>View on GitHub</a>`;
+                container.appendChild(card);
+                const readmeDiv = card.querySelector('.repo-readme');
+                const toggleBtn = card.querySelector('.toggle-readme');
+
+                const tagsRes = await fetch(`https://api.github.com/repos/${username}/${r.name}/tags`);
+                const tags = await tagsRes.json();
+                if (tags.length) { const tagEl = document.createElement('p'); tagEl.textContent = `🏷️ Latest Tag: ${tags[0].name}`; card.querySelector('.repo-info').appendChild(tagEl); }
+
+                toggleBtn.addEventListener('click', async () => {
+                    if (readmeDiv.style.display === 'none') {
+                        if (!readmeDiv.innerHTML) {
+                            try {
+                                const readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${r.name}/main/README.md`);
+                                const md = await readmeRes.text();
+                                readmeDiv.innerHTML = marked.parse(md);
+                            } catch (e) { readmeDiv.innerHTML = '<p>No README found</p>'; }
+                        }
+                        readmeDiv.style.display = 'block';
+                    } else { readmeDiv.style.display = 'none'; }
                 });
-            });
+            }
+        });
     </script>
 </body>
 </html>
