@@ -1,5 +1,3 @@
-# Nova Foundry
-
 Welcome to **Nova Foundry**!  
 
 We create simple, practical software to make life easier. Our focus is on clean, efficient solutions that just work.
