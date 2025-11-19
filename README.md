@@ -24,4 +24,4 @@ Thank you for visiting **Nova Foundry**. Explore our projects and see what we’
 
 ---
 
-[Buy me a coffee](https://buymeacoffee.com/novafoundry)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-NovaFoundry-6f4e37?style=for-the-badge&logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/novafoundry)
