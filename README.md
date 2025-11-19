@@ -14,3 +14,9 @@ We create simple, practical software to make life easier. Our focus is on clean,
 - **Innovation:** Always looking for better ways to do things.  
 
 Thank you for visiting **Nova Foundry**. Explore our projects and see what we’re building!
+
+## Links
+
+- [Github](https://github.com/DirectedHunt42)
+- [Itch.io](https://nova-foundry.itch.io/)
+- [Printables](https://www.printables.com/@NovaFoundry)
