@@ -159,9 +159,48 @@ function drawStars(){
 }
 
 window.addEventListener('resize',resizeCanvas);
-window.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
 resizeCanvas();drawStars();
 setInterval(()=>{if(Math.random()<0.05)generateShootingStar();},2000);
+
+// Mobile detection and input handling for parallax
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+function addOrientationListener() {
+  window.addEventListener('deviceorientation', (event) => {
+    // Map device tilt to simulated mouse position
+    // Adjust the divisor (180) for sensitivity: smaller number = more sensitive
+    mouseX = (window.innerWidth / 2) - (event.gamma * (window.innerWidth / 180));
+    mouseY = (window.innerHeight / 2) - (event.beta * (window.innerHeight / 180));
+    // Clamp to screen bounds to mimic mouse
+    mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
+    mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
+  });
+}
+
+if (isMobile && window.DeviceOrientationEvent) {
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    // iOS 13+: Request permission on user interaction (touchstart)
+    document.addEventListener('touchstart', async () => {
+      try {
+        const permission = await DeviceOrientationEvent.requestPermission();
+        if (permission === 'granted') {
+          addOrientationListener();
+        }
+      } catch (err) {
+        console.error('Device orientation permission error:', err);
+      }
+    }, { once: true });
+  } else {
+    // Android and other devices: Add listener directly
+    addOrientationListener();
+  }
+} else {
+  // Desktop: Use mouse position
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+}
 
 // ===== LOAD LOCAL MAIN README =====
 fetch('README.md').then(res=>res.text()).then(md=>{
