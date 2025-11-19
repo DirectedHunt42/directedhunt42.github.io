@@ -21,7 +21,6 @@ Thank you for visiting **Nova Foundry**. Explore our projects and see what we’
 [![Itch.io Profile](https://img.shields.io/badge/Itch.io-NovaFoundry-red?style=for-the-badge&logo=itchdotio&logoColor=white)](https://nova-foundry.itch.io/)
 [![Printables Profile](https://img.shields.io/badge/Printables-NovaFoundry-blue?style=for-the-badge&logo=prusa3d&logoColor=white)](https://www.printables.com/@NovaFoundry)
 [![SourceForge Profile](https://img.shields.io/badge/SourceForge%20User-directedhunt42-orange?style=for-the-badge&logo=sourceforge)](https://sourceforge.net/u/directedhunt42/profile)
-[![YouTube Channel](https://img.shields.io/badge/YouTube-NovaFoundry-ff0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@Nova-Foundry)
 
 ---
 
