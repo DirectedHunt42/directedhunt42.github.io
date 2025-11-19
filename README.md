@@ -20,3 +20,7 @@ Thank you for visiting **Nova Foundry**. Explore our projects and see what we’
 - [Github](https://github.com/DirectedHunt42)
 - [Itch.io](https://nova-foundry.itch.io/)
 - [Printables](https://www.printables.com/@NovaFoundry)
+
+---
+
+[Buy me a coffee](https://buymeacoffee.com/novafoundry)
