@@ -20,7 +20,7 @@ Thank you for visiting **Nova Foundry**. Explore our projects and see what we’
 [![GitHub Profile](https://img.shields.io/badge/GitHub-DirectedHunt42-black?style=for-the-badge&logo=github)](https://github.com/DirectedHunt42)
 [![Itch.io Profile](https://img.shields.io/badge/Itch.io-NovaFoundry-red?style=for-the-badge&logo=itchdotio&logoColor=white)](https://nova-foundry.itch.io/)
 [![Printables Profile](https://img.shields.io/badge/Printables-NovaFoundry-blue?style=for-the-badge&logo=prusa3d&logoColor=white)](https://www.printables.com/@NovaFoundry)
-[![SourceForge Profile](https://img.shields.io/badge/SourceForge%20User-directedhunt42-orange?style=for-the-badge&logo=sourceforge)](https://sourceforge.net/u/directedhunt42/profile)
+[![SourceForge Profile](https://img.shields.io/badge/SourceForge-directedhunt42-orange?style=for-the-badge&logo=sourceforge)](https://sourceforge.net/u/directedhunt42/profile)
 
 ---
 
