@@ -31,7 +31,18 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
         <img class="logo-small" src="Images/Nova_foundry_wide_transparent.png" alt="Nova Foundry Image" />
         <div id="readmeContent" class="readme"></div>
     </div>
-    <div class="right-panel" id="projectList"></div>
+    <div class="right-panel">
+        <div class="tabs">
+            <button class="tab active" data-tab="home">Home</button>
+            <button class="tab" data-tab="github">GitHub Repos</button>
+            <button class="tab" data-tab="itch">itch.io Projects</button>
+        </div>
+        <div class="tab-contents">
+            <div id="home" class="tab-content"></div>
+            <div id="github" class="tab-content" style="display: none;"></div>
+            <div id="itch" class="tab-content" style="display: none;"></div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -40,7 +51,9 @@ const canvas = document.getElementById('starCanvas');
 const ctx = canvas.getContext('2d');
 let stars=[], galaxies=[], shootingStars=[];
 let mouseX=0, mouseY=0;
-const username = "directedhunt42";
+const githubUsername = "directedhunt42";
+const itchCollectionUrl = "https://itch.io/c/6591033/nova-foundrys-collection";
+const proxyUrl = "https://api.allorigins.win/raw?url=";
 
 // ===== STARFIELD, GALAXIES, SHOOTING STARS =====
 function resizeCanvas() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; generateStars(); generateGalaxies(); }
@@ -144,12 +157,28 @@ fetch('README.md').then(res=>res.text()).then(md=>{
     document.getElementById('readmeContent').innerHTML=marked.parse(md);
 }).catch(()=>document.getElementById('readmeContent').innerHTML='<p>Could not load README.md</p>');
 
+// ===== TABS FUNCTIONALITY =====
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        document.getElementById(tab.dataset.tab).style.display = 'block';
+    });
+});
+
 // ===== LOAD GITHUB REPOS =====
-fetch(`https://api.github.com/users/${username}/repos`).then(res=>res.json()).then(async repos=>{
-    const container=document.getElementById('projectList');
-    for(const r of repos.filter(r=>r.name!=='directedhunt42.github.io')){
-        const card=document.createElement('div');card.className='project-card fade-in';
-        card.innerHTML=`
+fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
+    const filteredRepos = repos.filter(r=>r.name!=='directedhunt42.github.io');
+    const homeContainer = document.getElementById('home');
+    const githubContainer = document.getElementById('github');
+    for(const r of filteredRepos){
+        const card = document.createElement('div');
+        card.className = 'project-card fade-in';
+        card.innerHTML = `
             <h3>${r.name}</h3>
             <div class='repo-info'>
                 <p>⭐ Stars: ${r.stargazers_count}</p>
@@ -159,27 +188,110 @@ fetch(`https://api.github.com/users/${username}/repos`).then(res=>res.json()).th
             <button class='toggle-readme'>Show README</button>
             <div class='repo-readme' style='display:none;'></div>
             <a href='${r.html_url}' target='_blank'>View on GitHub</a>`;
-        container.appendChild(card);
-        const readmeDiv=card.querySelector('.repo-readme');
-        const toggleBtn=card.querySelector('.toggle-readme');
+        const readmeDiv = card.querySelector('.repo-readme');
+        const toggleBtn = card.querySelector('.toggle-readme');
 
-        const tagsRes=await fetch(`https://api.github.com/repos/${username}/${r.name}/tags`);
-        const tags=await tagsRes.json();
+        const tagsRes = await fetch(`https://api.github.com/repos/${githubUsername}/${r.name}/tags`);
+        const tags = await tagsRes.json();
         if(tags.length){const tagEl=document.createElement('p');tagEl.textContent=`🏷️ Latest Tag: ${tags[0].name}`;card.querySelector('.repo-info').appendChild(tagEl);}
 
-        toggleBtn.addEventListener('click',async ()=>{
-            if(readmeDiv.style.display==='none'){
+        toggleBtn.addEventListener('click', async () => {
+            if(readmeDiv.style.display === 'none'){
                 if(!readmeDiv.innerHTML){
                     try{
-                        const readmeRes=await fetch(`https://raw.githubusercontent.com/${username}/${r.name}/main/README.md`);
-                        const md=await readmeRes.text();
-                        readmeDiv.innerHTML=marked.parse(md);
-                    }catch(e){readmeDiv.innerHTML='<p>No README found</p>';}
+                        const readmeRes = await fetch(`https://raw.githubusercontent.com/${githubUsername}/${r.name}/main/README.md`);
+                        const md = await readmeRes.text();
+                        readmeDiv.innerHTML = marked.parse(md);
+                    }catch(e){readmeDiv.innerHTML = '<p>No README found</p>';}
                 }
-                readmeDiv.style.display='block';
-            } else{readmeDiv.style.display='none';}
+                readmeDiv.style.display = 'block';
+                toggleBtn.textContent = 'Hide README';
+            } else {
+                readmeDiv.style.display = 'none';
+                toggleBtn.textContent = 'Show README';
+            }
         });
+
+        githubContainer.appendChild(card);
     }
+
+    // Add top 4 GitHub to home
+    for (let i = 0; i < Math.min(4, filteredRepos.length); i++) {
+        const r = filteredRepos[i];
+        const card = githubContainer.children[i].cloneNode(true);
+        card.querySelector('.toggle-readme').remove();
+        card.querySelector('.repo-readme').remove();
+        homeContainer.appendChild(card);
+    }
+    homeContainer.offsetHeight; // Force reflow
+
+    // Add horizontal line
+    const hr = document.createElement('hr');
+    homeContainer.appendChild(hr);
+    homeContainer.offsetHeight; // Force reflow
+
+    // ===== LOAD ITCH.IO PROJECTS FROM COLLECTION =====
+    fetch(proxyUrl + encodeURIComponent(itchCollectionUrl))
+        .then(res => res.text())
+        .then(async html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const games = doc.querySelectorAll('.game_cell');
+            const itchContainer = document.getElementById('itch');
+            for (const game of Array.from(games)) {
+                const titleEl = game.querySelector('.game_title a');
+                const title = titleEl ? titleEl.textContent.trim() : 'Unknown Title';
+                const link = titleEl ? titleEl.href : '#';
+                const descEl = game.querySelector('.game_text');
+                const desc = descEl ? descEl.textContent.trim() : 'No description available';
+                const thumbEl = game.querySelector('.game_thumb img');
+                const thumb = thumbEl ? (thumbEl.src || thumbEl.dataset.lazySrc) : '';
+
+                // Fetch project page for stats
+                let ratingsCount = 'N/A';
+                let averageRating = 'N/A';
+                try {
+                    const projectRes = await fetch(proxyUrl + encodeURIComponent(link));
+                    const projectHtml = await projectRes.text();
+                    const projectDoc = parser.parseFromString(projectHtml, 'text/html');
+                    const ratingCountEl = projectDoc.querySelector('.rating_count');
+                    ratingsCount = ratingCountEl ? ratingCountEl.textContent.trim().replace(/[^\d]/g, '') : 'N/A';
+                    const aggregateRatingEl = projectDoc.querySelector('.aggregate_rating');
+                    averageRating = aggregateRatingEl ? aggregateRatingEl.textContent.trim() : 'N/A';
+                } catch (e) {
+                    console.error('Error fetching project stats:', e);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'project-card fade-in';
+                let innerHTML = `
+                    <h3>${title}</h3>
+                    <div class='repo-info'>
+                        <p>⭐ Rating: ${averageRating} (${ratingsCount} ratings)</p>
+                    </div>
+                    <p>${desc}</p>
+                    <a href='${link}' target='_blank'>View on itch.io</a>`;
+                if (thumb) {
+                    innerHTML = `<img src="${thumb}" alt="${title} thumbnail" style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">` + innerHTML;
+                }
+                card.innerHTML = innerHTML;
+
+                itchContainer.appendChild(card);
+            }
+
+            // Add top 4 itch to home
+            for (let i = 0; i < Math.min(4, games.length); i++) {
+                const card = itchContainer.children[i].cloneNode(true);
+                homeContainer.appendChild(card);
+            }
+            homeContainer.offsetHeight; // Force reflow
+
+            // Force full reflow on home tab
+            homeContainer.style.display = 'none';
+            homeContainer.offsetHeight;
+            homeContainer.style.display = 'block';
+        })
+        .catch(err => console.error('Error loading itch.io projects:', err));
 });
 </script>
 </body>
