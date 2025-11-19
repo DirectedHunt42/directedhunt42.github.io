@@ -15,7 +15,7 @@ body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; 
 .right-panel { flex: 2; display: flex; flex-direction: column; gap: 10px; }
 .project-card { margin-bottom: 20px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
 .project-card h3 { margin: 0 0 10px; }
-.repo-info { display: flex; gap: 20px; flex-wrap: wrap; }
+.repo-info { display: flex; gap: 10px; flex-wrap: wrap; line-height: 3px;}
 .toggle-readme { padding: 5px 10px; border-radius: 5px; background-color: #444; color: #fff; border: none; cursor: pointer; }
 .toggle-readme:hover { background-color: #666; }
 .project-card a { color: #fff; text-decoration: none; margin-top: 10px; display: inline-block; }
@@ -234,6 +234,8 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 <p>⭐ Stars: ${r.stargazers_count}</p>
                 <p>🪲 Issues: ${r.open_issues_count}</p>
                 <p>📦 Size: ${(r.size/1024).toFixed(2)} MB</p>
+                <p>🕒 Updated: ${new Date(r.updated_at).toLocaleDateString()}</p>
+                <p>🌱 Forks: ${r.forks_count}</p>
             </div>
             <button class='toggle-readme'>Show README</button>
             <div class='repo-readme' style='display:none;'></div>
