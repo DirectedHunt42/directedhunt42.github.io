@@ -267,8 +267,8 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
         githubContainer.appendChild(card);
     }
 
-    // Add top 4 GitHub to home
-    for (let i = 0; i < Math.min(4, filteredRepos.length); i++) {
+    // Add top 2 GitHub to home
+    for (let i = 0; i < Math.min(2, filteredRepos.length); i++) {
         const r = filteredRepos[i];
         const card = githubContainer.children[i].cloneNode(true);
         card.querySelector('.toggle-readme').remove();
@@ -331,8 +331,8 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 itchContainer.appendChild(card);
             }
 
-            // Add top 4 itch to home
-            for (let i = 0; i < Math.min(4, games.length); i++) {
+            // Add top 2 itch to home
+            for (let i = 0; i < Math.min(2, games.length); i++) {
                 const card = itchContainer.children[i].cloneNode(true);
                 homeContainer.appendChild(card);
             }
