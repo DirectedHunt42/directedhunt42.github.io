@@ -223,6 +223,7 @@ tabs.forEach(tab => {
 // ===== LOAD GITHUB REPOS =====
 fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
     const filteredRepos = repos.filter(r=>r.name!=='directedhunt42.github.io');
+    filteredRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
     const homeContainer = document.getElementById('home');
     const githubContainer = document.getElementById('github');
     for(const r of filteredRepos){
@@ -268,6 +269,9 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
     }
 
     // Add top 2 GitHub to home
+    const githubHomeHeader = document.createElement('h2');
+    githubHomeHeader.textContent = 'Top GitHub Repos';
+    homeContainer.appendChild(githubHomeHeader);
     for (let i = 0; i < Math.min(2, filteredRepos.length); i++) {
         const r = filteredRepos[i];
         const card = githubContainer.children[i].cloneNode(true);
@@ -290,7 +294,7 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
             const doc = parser.parseFromString(html, 'text/html');
             const games = doc.querySelectorAll('.game_cell');
             const itchContainer = document.getElementById('itch');
-            for (const game of Array.from(games)) {
+            const gamePromises = Array.from(games).map(async (game) => {
                 const titleEl = game.querySelector('.game_title a');
                 const title = titleEl ? titleEl.textContent.trim() : 'Unknown Title';
                 const link = titleEl ? titleEl.href : '#';
@@ -300,31 +304,39 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 const thumb = thumbEl ? (thumbEl.src || thumbEl.dataset.lazySrc) : '';
 
                 // Fetch project page for stats
-                let ratingsCount = 'N/A';
+                let ratingsCount = 0;
                 let averageRating = 'N/A';
                 try {
                     const projectRes = await fetch(proxyUrl + encodeURIComponent(link));
                     const projectHtml = await projectRes.text();
                     const projectDoc = parser.parseFromString(projectHtml, 'text/html');
                     const ratingCountEl = projectDoc.querySelector('.rating_count');
-                    ratingsCount = ratingCountEl ? ratingCountEl.textContent.trim().replace(/[^\d]/g, '') : 'N/A';
+                    const ratingsCountStr = ratingCountEl ? ratingCountEl.textContent.trim().replace(/[^\d]/g, '') : '0';
+                    ratingsCount = parseInt(ratingsCountStr, 10) || 0;
                     const aggregateRatingEl = projectDoc.querySelector('.aggregate_rating');
                     averageRating = aggregateRatingEl ? aggregateRatingEl.textContent.trim() : 'N/A';
                 } catch (e) {
                     console.error('Error fetching project stats:', e);
                 }
 
+                return { title, link, desc, thumb, ratingsCount, averageRating };
+            });
+
+            const itchProjects = await Promise.all(gamePromises);
+            itchProjects.sort((a, b) => b.ratingsCount - a.ratingsCount);
+
+            for (const project of itchProjects) {
                 const card = document.createElement('div');
                 card.className = 'project-card fade-in';
                 let innerHTML = `
-                    <h3>${title}</h3>
+                    <h3>${project.title}</h3>
                     <div class='repo-info'>
-                        <p>⭐ Rating: ${averageRating} (${ratingsCount} ratings)</p>
+                        <p>⭐ Rating: ${project.averageRating} (${project.ratingsCount} ratings)</p>
                     </div>
-                    <p>${desc}</p>
-                    <a href='${link}' target='_blank'>View on itch.io</a>`;
-                if (thumb) {
-                    innerHTML = `<img src="${thumb}" alt="${title} thumbnail" style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">` + innerHTML;
+                    <p>${project.desc}</p>
+                    <a href='${project.link}' target='_blank'>View on itch.io</a>`;
+                if (project.thumb) {
+                    innerHTML = `<img src="${project.thumb}" alt="${project.title} thumbnail" style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">` + innerHTML;
                 }
                 card.innerHTML = innerHTML;
 
@@ -332,7 +344,10 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
             }
 
             // Add top 2 itch to home
-            for (let i = 0; i < Math.min(2, games.length); i++) {
+            const itchHomeHeader = document.createElement('h2');
+            itchHomeHeader.textContent = 'Top itch.io Projects';
+            homeContainer.appendChild(itchHomeHeader);
+            for (let i = 0; i < Math.min(2, itchProjects.length); i++) {
                 const card = itchContainer.children[i].cloneNode(true);
                 homeContainer.appendChild(card);
             }
