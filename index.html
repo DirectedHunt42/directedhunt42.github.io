@@ -47,11 +47,13 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
             <button class="tab active" data-tab="home">Home</button>
             <button class="tab" data-tab="github">GitHub Repos</button>
             <button class="tab" data-tab="itch">itch.io Projects</button>
+            <button class="tab" data-tab="appsscript">Apps Script</button>
         </div>
         <div class="tab-contents">
             <div id="home" class="tab-content"></div>
             <div id="github" class="tab-content" style="display: none;"></div>
             <div id="itch" class="tab-content" style="display: none;"></div>
+            <div id="appsscript" class="tab-content" style="display: none;"></div>
         </div>
     </div>
 </div>
@@ -359,6 +361,46 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
             homeContainer.style.display = 'block';
         })
         .catch(err => console.error('Error loading itch.io projects:', err));
+
+    // ===== LOAD APPS SCRIPT FROM JSON =====
+    fetch('appsscript.json')
+        .then(res => res.json())
+        .then(apps => {
+            if (!Array.isArray(apps)) {
+                apps = [apps]; // Wrap in array if single object
+            }
+            const appsContainer = document.getElementById('appsscript');
+            for (const app of apps) {
+                const card = document.createElement('div');
+                card.className = 'project-card fade-in';
+                card.innerHTML = `
+                    <h3>${app.title}</h3>
+                    <button class='toggle-readme'>Show README</button>
+                    <div class='repo-readme' style='display:none;'></div>
+                    <a href='${app.link}' target='_blank'>View Link</a>`;
+                const readmeDiv = card.querySelector('.repo-readme');
+                const toggleBtn = card.querySelector('.toggle-readme');
+
+                toggleBtn.addEventListener('click', () => {
+                    if (readmeDiv.style.display === 'none') {
+                        if (!readmeDiv.innerHTML) {
+                            readmeDiv.innerHTML = marked.parse(app.description || '<p>No description available</p>');
+                        }
+                        readmeDiv.style.display = 'block';
+                        toggleBtn.textContent = 'Hide README';
+                    } else {
+                        readmeDiv.style.display = 'none';
+                        toggleBtn.textContent = 'Show README';
+                    }
+                });
+
+                appsContainer.appendChild(card);
+            }
+        })
+        .catch(err => {
+            console.error('Error loading appsscript.json:', err);
+            document.getElementById('appsscript').innerHTML = '<p>Could not load Apps Script data</p>';
+        });
 });
 </script>
 </body>
