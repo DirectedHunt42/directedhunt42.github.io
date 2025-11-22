@@ -222,6 +222,21 @@ tabs.forEach(tab => {
     });
 });
 
+// ===== HELPER FUNCTION FOR RENDERING STARS =====
+function renderStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars += '★';  // Full star
+        } else if (i - 0.5 <= rating) {
+            stars += '½';  // Half star
+        } else {
+            stars += '☆';  // Empty star
+        }
+    }
+    return stars;
+}
+
 // ===== LOAD GITHUB REPOS =====
 fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
     const filteredRepos = repos.filter(r=>r.name!=='directedhunt42.github.io');
@@ -307,25 +322,28 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
 
                 // Fetch project page for stats
                 let ratingsCount = 0;
-                let averageRating = 'N/A';
+                let averageRatingStars = 'No ratings yet';
+
                 try {
                     const projectRes = await fetch(proxyUrl + encodeURIComponent(link));
                     const projectHtml = await projectRes.text();
                     const projectDoc = parser.parseFromString(projectHtml, 'text/html');
+
                     const ratingCountEl = projectDoc.querySelector('.rating_count');
                     const ratingsCountStr = ratingCountEl ? ratingCountEl.textContent.trim().replace(/[^\d]/g, '') : '0';
                     ratingsCount = parseInt(ratingsCountStr, 10) || 0;
+
                     const aggregateRatingEl = projectDoc.querySelector('.aggregate_rating');
-                    averageRating = aggregateRatingEl ? aggregateRatingEl.textContent.trim() : 'N/A';
-                    if (averageRating !== 'N/A') {
-                        averageRating = parseFloat(averageRating);
-                    }
-                    let averageRatingStars = 'N/A';
-                    if (averageRating !== 'N/A') {
-                        averageRatingStars = '⭐'.repeat(Math.round(averageRating));
+                    if (aggregateRatingEl) {
+                        const text = aggregateRatingEl.textContent.trim();
+                        const match = text.match(/([\d.]+)\s*out\s*of\s*5/);
+                        if (match) {
+                            const rating = parseFloat(match[1]);
+                            averageRatingStars = renderStars(rating);
+                        }
                     }
                 } catch (e) {
-                    console.error('Error fetching project stats:', e);
+                    console.error('Error fetching rating:', e);
                 }
 
                 return { title, link, desc, thumb, ratingsCount, averageRatingStars };
