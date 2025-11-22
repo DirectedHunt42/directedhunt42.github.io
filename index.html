@@ -27,10 +27,69 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .tabs button:hover { background: rgba(255,255,255,0.2); }
 .tabs button.active { background: rgba(255,255,255,0.3); }
 
+/* New Project Links Grid */
+.project-links-section {
+    margin-bottom: 40px;
+}
+.project-links-section h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    text-align: center;
+}
+.project-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.project-link-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.project-link-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0,255,255,0.2);
+}
+.project-link-card a {
+    display: flex;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+}
+.project-link-content {
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+    gap: 15px;
+    align-items: center;
+}
+.project-link-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+.project-link-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0;
+}
+
 @media (max-width: 768px) {
     .container { flex-direction: column; }
     .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
     .right-panel { width: 100%; flex: none; }
+    .project-link-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .project-link-card img {
+        width: 80px;
+        height: 80px;
+    }
 }
 </style>
 </head>
@@ -236,6 +295,49 @@ function renderStars(rating) {
     }
     return stars;
 }
+
+// ===== LOAD PROJECT LINKS FROM JSON (NEW SECTION) =====
+fetch('projectpagelinks.json')
+    .then(res => {
+        if (!res.ok) throw new Error('projectpagelinks.json not found');
+        return res.json();
+    })
+    .then(projects => {
+        const homeContainer = document.getElementById('home');
+
+        // Create Project Links section at the top
+        const projectLinksSection = document.createElement('div');
+        projectLinksSection.className = 'project-links-section';
+        projectLinksSection.innerHTML = `<h2>Projects:</h2>`;
+
+        const grid = document.createElement('div');
+        grid.className = 'project-links-grid';
+
+        projects.forEach(project => {
+            const card = document.createElement('div');
+            card.className = 'project-link-card';
+            card.innerHTML = `
+                <a href="${project.link}" target="_blank">
+                    <div class="project-link-content">
+                        <img src="${project.image}" alt="${project.title}" onerror="this.src='Images/placeholder.jpg'">
+                        <h3 class="project-link-title">${project.title}</h3>
+                    </div>
+                </a>
+            `;
+            grid.appendChild(card);
+        });
+
+        projectLinksSection.appendChild(grid);
+        homeContainer.insertBefore(projectLinksSection, homeContainer.firstChild);
+    })
+    .catch(err => {
+        console.error('Error loading projectpagelinks.json:', err);
+        // Optional: show fallback message
+        const homeContainer = document.getElementById('home');
+        const fallback = document.createElement('div');
+        fallback.innerHTML = `<p style="color: #aaa; font-style: italic;">Could not load project links (projectpagelinks.json missing or invalid)</p>`;
+        homeContainer.insertBefore(fallback, homeContainer.firstChild);
+    });
 
 // ===== LOAD GITHUB REPOS =====
 fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
