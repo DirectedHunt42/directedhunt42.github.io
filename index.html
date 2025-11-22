@@ -317,11 +317,18 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                     ratingsCount = parseInt(ratingsCountStr, 10) || 0;
                     const aggregateRatingEl = projectDoc.querySelector('.aggregate_rating');
                     averageRating = aggregateRatingEl ? aggregateRatingEl.textContent.trim() : 'N/A';
+                    if (averageRating !== 'N/A') {
+                        averageRating = parseFloat(averageRating);
+                    }
+                    let averageRatingStars = 'N/A';
+                    if (averageRating !== 'N/A') {
+                        averageRatingStars = '⭐'.repeat(Math.round(averageRating));
+                    }
                 } catch (e) {
                     console.error('Error fetching project stats:', e);
                 }
 
-                return { title, link, desc, thumb, ratingsCount, averageRating };
+                return { title, link, desc, thumb, ratingsCount, averageRatingStars };
             });
 
             const itchProjects = await Promise.all(gamePromises);
@@ -333,7 +340,7 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 let innerHTML = `
                     <h3>${project.title}</h3>
                     <div class='repo-info'>
-                        <p>⭐ Rating: ${project.averageRating} (${project.ratingsCount} ratings)</p>
+                        <p>⭐ Rating: ${project.averageRatingStars} (${project.ratingsCount} ratings)</p>
                     </div>
                     <p>${project.desc}</p>
                     <a href='${project.link}' target='_blank'>View on itch.io</a>`;
