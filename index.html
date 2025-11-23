@@ -38,7 +38,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 }
 .project-links-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
     gap: 20px;
 }
 .project-link-card {
@@ -89,6 +89,9 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
     .project-link-card img {
         width: 80px;
         height: 80px;
+    }
+    .project-links-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 }
 </style>

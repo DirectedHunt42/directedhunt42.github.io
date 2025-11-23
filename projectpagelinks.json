@@ -8,5 +8,10 @@
     "title": "Black Hole",
     "image": "Images/BlackHole_Transparent_Light.png",
     "link": "blackhole.html"
+  },
+  {
+    "title": "Wormhole",
+    "image": "Images/Wormhole_Square.png",
+    "link": "wormhole.html"
   }
 ]
