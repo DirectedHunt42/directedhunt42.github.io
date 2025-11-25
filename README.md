@@ -15,6 +15,10 @@ We create simple, practical software to make life easier. Our focus is on clean,
 
 Thank you for visiting **Nova Foundry**. Explore our projects and see what we’re building!
 
+<div>
+  <a href="https://info.flagcounter.com/YCtD"><img src="https://s01.flagcounter.com/count2/YCtD/bg_0B0F1A/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_20/viewers_0/labels_0/pageviews_1/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
+</div>
+
 ## Links
 
 [![GitHub Profile](https://img.shields.io/badge/GitHub-DirectedHunt42-black?style=for-the-badge&logo=github)](https://github.com/DirectedHunt42)
