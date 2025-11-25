@@ -24,5 +24,5 @@ Thank you for visiting **Nova Foundry**. Explore our projects and see what we’
 [![Archive.org Profile](https://img.shields.io/badge/Internet_Archive-directedhunt42-lightgrey?style=for-the-badge&logo=internetarchive&logoColor=white)](https://archive.org/details/@jack_murray170)
 
 ---
-
+## Support Nova Foundry
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-NovaFoundry-6f4e37?style=for-the-badge&logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/novafoundry)
