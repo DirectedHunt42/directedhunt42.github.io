@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>404 - Nova Foundry</title>
+<link rel="icon" type="image/x-icon" href="Images/Nova_foundry_favicon.ico" />
+<link rel="stylesheet" href="style.css" />
+<style>
+body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow: hidden; }
+.container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; z-index: 10; position: relative; text-align: center; box-sizing: border-box; }
+.logo-small { max-width: 300px; height: auto; margin-bottom: 20px; animation: fadeIn 2s ease-in-out; }
+.error-code { font-size: 12em; margin: 0; animation: spaceFloat 5s ease-in-out infinite, spaceGlow 3s ease-in-out infinite; color: #ff5501; text-shadow: 0 0 10px #ff5501; }
+.error-message { font-size: 2em; margin: 10px 0; overflow: hidden; border-right: .15em solid #fff; white-space: nowrap; letter-spacing: .15em; animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite; }
+.error-sub { font-size: 1.2em; margin: 20px 0; opacity: 0; animation: fadeIn 2s ease-in-out forwards; animation-delay: 4s; }
+.home-link { color: #fff; text-decoration: none; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 5px; transition: background 0.3s; }
+.home-link:hover { background: rgba(255,255,255,0.2); }
+canvas { position: fixed; top:0; left:0; z-index:0; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes spaceFloat { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } 100% { transform: translateY(0) rotate(0deg); } }
+@keyframes spaceGlow { 0% { text-shadow: 0 0 10px #add8e6, 0 0 20px #ffd700; } 50% { text-shadow: 0 0 20px #add8e6, 0 0 30px #ffd700, 0 0 40px #ffcccb; } 100% { text-shadow: 0 0 10px #add8e6, 0 0 20px #ffd700; } }
+@keyframes typing { from { width: 0; } to { width: 100%; } }
+@keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: #fff; } }
+
+@media (max-width: 768px) {
+    .error-code { font-size: 6em; }
+    .error-message { font-size: 1.5em; }
+    .logo-small { max-width: 200px; }
+}
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+
+<div class="container">
+    <img class="logo-small" src="Images/Nova_foundry_wide_transparent.png" alt="Nova Foundry Image" />
+    <h1 class="error-code">404</h1>
+    <p class="error-message">Page Not Found - Lost in Space</p>
+    <p class="error-sub">The page you're looking for has drifted into the void. Head back to the foundry!</p>
+    <a href="/" class="home-link">Return Home</a>
+</div>
+
+<script>
+// ===== STARFIELD, GALAXIES, SHOOTING STARS =====
+const canvas = document.getElementById('starCanvas');
+const ctx = canvas.getContext('2d');
+let stars=[], galaxies=[], shootingStars=[];
+let mouseX=0, mouseY=0;
+
+function resizeCanvas() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; generateStars(); generateGalaxies(); }
+
+function generateStars() {
+    stars=[];
+    const starCount=400;
+    const colors=['#ffffff','#ffd700','#add8e6','#ffcccb'];
+    for(let i=0;i<starCount;i++){stars.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        radius:Math.random()*1.5+0.5,
+        color:colors[Math.floor(Math.random()*colors.length)],
+        driftX:Math.random()*0.02-0.01,
+        driftY:Math.random()*0.02-0.01,
+        parallax:0.01+Math.random()*0.04
+    });}
+}
+
+function generateGalaxies(){
+    galaxies=[];
+    const galaxyCount=6;
+    const colors=['#ffffff','#ffd700','#add8e6','#ffcccb'];
+    for(let g=0;g<galaxyCount;g++){
+        const centerX=Math.random()*canvas.width;
+        const centerY=Math.random()*canvas.height;
+        const radiusX=30+Math.random()*70;
+        const radiusY=20+Math.random()*50;
+        const rotationSpeed=0.0001+Math.random()*0.001;
+        const tilt=(Math.random()*40-20)*Math.PI/180;
+        const angleOffset=Math.random()*2*Math.PI;
+        const arms=3+Math.floor(Math.random()*2);
+        const starsInGalaxy=[];
+        for(let i=0;i<50;i++){
+            const arm=i%arms;
+            const radiusFactor=Math.random();
+            const angle=radiusFactor*4*Math.PI + arm*2*Math.PI/arms + angleOffset;
+            starsInGalaxy.push({
+                angle, radiusX, radiusY, centerX, centerY, tilt, armAngleOffset:arm*2*Math.PI/arms,
+                radius:Math.random()*1.2+0.3,
+                color:colors[Math.floor(Math.random()*colors.length)],
+                speed:rotationSpeed,
+                parallax:0.02+Math.random()*0.03,
+                driftX:Math.random()*0.01-0.005,
+                driftY:Math.random()*0.01-0.005,
+                radiusFactor
+            });
+        }
+        galaxies.push(starsInGalaxy);
+    }
+}
+
+function generateShootingStar(){shootingStars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height/2,
+    speedX:20+Math.random()*30,
+    speedY:5+Math.random()*5,
+    length:100+Math.random()*50,
+    color:'#ffffff',
+    parallax:0.02+Math.random()*0.03
+});}
+
+function drawStars(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{
+        s.x+=s.driftX;s.y+=s.driftY;
+        if(s.x<0)s.x=canvas.width;if(s.x>canvas.width)s.x=0;
+        if(s.y<0)s.y=canvas.height;if(s.y>canvas.height)s.y=0;
+        const dx=(mouseX-canvas.width/2)*s.parallax;
+        const dy=(mouseY-canvas.height/2)*s.parallax;
+        ctx.beginPath();ctx.arc(s.x+dx,s.y+dy,s.radius,0,2*Math.PI);ctx.fillStyle=s.color;ctx.fill();
+    });
+    galaxies.forEach(g=>g.forEach(star=>{
+        star.angle+=star.speed;
+        const x0=star.centerX+star.radiusX*star.radiusFactor*Math.cos(star.angle+star.armAngleOffset);
+        const y0=star.centerY+star.radiusY*star.radiusFactor*Math.sin(star.angle+star.armAngleOffset)*Math.cos(star.tilt);
+        star.x0=x0+star.driftX;star.y0=y0+star.driftY;
+        const dx=(mouseX-canvas.width/2)*star.parallax;
+        const dy=(mouseY-canvas.height/2)*star.parallax;
+        ctx.beginPath();ctx.ellipse(star.x0+dx,star.y0+dy,star.radius*1.2,star.radius,0,0,2*Math.PI);ctx.fillStyle=star.color;ctx.fill();
+    }));
+    shootingStars.forEach((s,i)=>{
+        s.x+=s.speedX;s.y+=s.speedY;
+        const dx=(mouseX-canvas.width/2)*s.parallax;
+        const dy=(mouseY-canvas.height/2)*s.parallax;
+        const angle=Math.atan2(s.speedY,s.speedX);
+        ctx.save();ctx.translate(s.x+dx,s.y+dy);ctx.rotate(angle);
+        ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s.length,0);ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.stroke();ctx.restore();
+        if(s.x-s.length>canvas.width||s.y-s.length/2>canvas.height){shootingStars.splice(i,1);}
+    });
+    requestAnimationFrame(drawStars);
+}
+
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();drawStars();
+setInterval(()=>{if(Math.random()<0.05)generateShootingStar();},2000);
+
+// Mobile detection and input handling for parallax
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+function addOrientationListener() {
+  window.addEventListener('deviceorientation', (event) => {
+    mouseX = (window.innerWidth / 2) - (event.gamma * (window.innerWidth / 180));
+    mouseY = (window.innerHeight / 2) - (event.beta * (window.innerHeight / 180));
+    mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
+    mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
+  });
+}
+
+if (isMobile && window.DeviceOrientationEvent) {
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    document.addEventListener('touchstart', async () => {
+      try {
+        const permission = await DeviceOrientationEvent.requestPermission();
+        if (permission === 'granted') {
+          addOrientationListener();
+        }
+      } catch (err) {
+        console.error('Device orientation permission error:', err);
+      }
+    }, { once: true });
+  } else {
+    addOrientationListener();
+  }
+} else {
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+}
+</script>
+</body>
+</html>
