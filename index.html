@@ -231,11 +231,8 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
 function addOrientationListener() {
   window.addEventListener('deviceorientation', (event) => {
-    // Map device tilt to simulated mouse position
-    // Adjust the divisor (180) for sensitivity: smaller number = more sensitive
     mouseX = (window.innerWidth / 2) - (event.gamma * (window.innerWidth / 180));
     mouseY = (window.innerHeight / 2) - (event.beta * (window.innerHeight / 180));
-    // Clamp to screen bounds to mimic mouse
     mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
     mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
   });
@@ -243,7 +240,6 @@ function addOrientationListener() {
 
 if (isMobile && window.DeviceOrientationEvent) {
   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-    // iOS 13+: Request permission on user interaction (touchstart)
     document.addEventListener('touchstart', async () => {
       try {
         const permission = await DeviceOrientationEvent.requestPermission();
@@ -255,11 +251,9 @@ if (isMobile && window.DeviceOrientationEvent) {
       }
     }, { once: true });
   } else {
-    // Android and other devices: Add listener directly
     addOrientationListener();
   }
 } else {
-  // Desktop: Use mouse position
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -267,9 +261,23 @@ if (isMobile && window.DeviceOrientationEvent) {
 }
 
 // ===== LOAD LOCAL MAIN README =====
-fetch('README.md').then(res=>res.text()).then(md=>{
-    document.getElementById('readmeContent').innerHTML=marked.parse(md);
-}).catch(()=>document.getElementById('readmeContent').innerHTML='<p>Could not load README.md</p>');
+fetch('README.md')
+  .then(res => res.text())
+  .then(md => {
+    const readmeContent = document.getElementById('readmeContent');
+    readmeContent.innerHTML = marked.parse(md);
+
+    // FIX: Force flagcounter.com images to protocol-relative URL so it loads on HTTPS (fixes mixed-content + GitHub camo issues)
+    readmeContent.querySelectorAll('img').forEach(img => {
+      const src = img.getAttribute('src');
+      if (src && src.startsWith('http://') && src.includes('flagcounter.com')) {
+        img.setAttribute('src', src.replace('http://', '//'));
+      }
+    });
+  })
+  .catch(() => {
+    document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>';
+  });
 
 // ===== TABS FUNCTIONALITY =====
 const tabs = document.querySelectorAll('.tab');
@@ -289,11 +297,11 @@ function renderStars(rating) {
     let stars = '';
     for (let i = 1; i <= 5; i++) {
         if (i <= rating) {
-            stars += '★';  // Full star
+            stars += '★';
         } else if (i - 0.5 <= rating) {
-            stars += '½';  // Half star
+            stars += '½';
         } else {
-            stars += '☆';  // Empty star
+            stars += '☆';
         }
     }
     return stars;
@@ -308,7 +316,6 @@ fetch('projectpagelinks.json')
     .then(projects => {
         const homeContainer = document.getElementById('home');
 
-        // Create Project Links section at the top
         const projectLinksSection = document.createElement('div');
         projectLinksSection.className = 'project-links-section';
         projectLinksSection.innerHTML = `<h2>Projects:</h2>`;
@@ -335,7 +342,6 @@ fetch('projectpagelinks.json')
     })
     .catch(err => {
         console.error('Error loading projectpagelinks.json:', err);
-        // Optional: show fallback message
         const homeContainer = document.getElementById('home');
         const fallback = document.createElement('div');
         fallback.innerHTML = `<p style="color: #aaa; font-style: italic;">Could not load project links (projectpagelinks.json missing or invalid)</p>`;
@@ -425,7 +431,6 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 const thumbEl = game.querySelector('.game_thumb img');
                 const thumb = thumbEl ? (thumbEl.src || thumbEl.dataset.lazySrc) : '';
 
-                // Fetch project page for stats
                 let ratingsCount = 0;
                 let averageRatingStars = 'No ratings yet';
 
@@ -497,7 +502,7 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
         .then(res => res.json())
         .then(apps => {
             if (!Array.isArray(apps)) {
-                apps = [apps]; // Wrap in array if single object
+                apps = [apps];
             }
             const appsContainer = document.getElementById('appsscript');
             for (const app of apps) {
