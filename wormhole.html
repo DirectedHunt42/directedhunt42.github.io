@@ -237,6 +237,29 @@
             .then(res => res.text())
             .then(md => {
                 document.getElementById('readmeContent').innerHTML = marked.parse(md);
+
+                // Fix relative image URLs in README + completely remove any image that fails to load (no alt text, no broken icon)
+                const repoBase = 'https://raw.githubusercontent.com/DirectedHunt42/Wormhole/main/';
+                const readmeImages = document.querySelectorAll('#readmeContent img');
+
+                readmeImages.forEach(img => {
+                    const src = img.getAttribute('src');
+
+                    // Fix relative paths
+                    if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:') && !src.startsWith('//')) {
+                        img.src = repoBase + src;
+                    }
+
+                    // If image fails to load → remove the entire <img> element (nothing shows at all)
+                    img.onerror = function() {
+                        this.remove();
+                    };
+
+                    // Catch images that already failed before we could fix them
+                    if (img.complete && img.naturalWidth === 0) {
+                        img.remove();
+                    }
+                });
             })
             .catch(() => document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>');
     </script>

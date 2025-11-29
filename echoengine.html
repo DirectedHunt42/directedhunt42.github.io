@@ -41,7 +41,7 @@
             box-sizing: border-box;
         }
         .home-button:hover { 
-            background: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,255,0.2); 
         }
 
         @media (max-width: 768px) {
@@ -186,8 +186,8 @@
             shootingStars.forEach((s,i)=>{
                 s.x+=s.speedX;s.y+=s.speedY;
                 const dx=(mouseX-canvas.width/2)*s.parallax;
-                const dy=(mouseY-canvas.height/2)*s.parallax;
-                const angle=Math.atan2(s.speedY,s.speedX);
+                dy=(mouseY-canvas.height/2)*s.parallax;
+                angle=Math.atan2(s.speedY,s.speedX);
                 ctx.save();ctx.translate(s.x+dx,s.y+dy);ctx.rotate(angle);
                 ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s.length,0);ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.stroke();ctx.restore();
                 if(s.x-s.length>canvas.width||s.y-s.length/2>canvas.height){shootingStars.splice(i,1);}
@@ -238,6 +238,29 @@
             .then(res => res.text())
             .then(md => {
                 document.getElementById('readmeContent').innerHTML = marked.parse(md);
+
+                // Fix relative image URLs in the README so they actually load + hide completely if they still fail (shows nothing, not even alt text)
+                const repoBase = 'https://raw.githubusercontent.com/DirectedHunt42/EchoEngine/main/';
+                const readmeImages = document.querySelectorAll('#readmeContent img');
+
+                readmeImages.forEach(img => {
+                    const src = img.getAttribute('src');
+
+                    // Fix relative paths (most README images are relative, so they currently 404 and show alt text)
+                    if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:') && !src.startsWith('//')) {
+                        img.src = repoBase + src;
+                    }
+
+                    // If image fails to load (even after fix), remove it entirely → no broken icon, no alt text, no empty space
+                    img.onerror = function() {
+                        this.remove();
+                    };
+
+                    // Catch any images that already failed before we could fix them
+                    if (img.complete && img.naturalWidth === 0) {
+                        img.remove();
+                    }
+                });
             })
             .catch(() => document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>');
     </script>

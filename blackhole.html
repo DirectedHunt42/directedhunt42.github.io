@@ -240,6 +240,29 @@
             .then(res => res.text())
             .then(md => {
                 document.getElementById('readmeContent').innerHTML = marked.parse(md);
+
+                // Fix relative image URLs in README + completely remove any image that fails to load (no alt text, no broken icon)
+                const repoBase = 'https://raw.githubusercontent.com/DirectedHunt42/BlackHole/main/';
+                const readmeImages = document.querySelectorAll('#readmeContent img');
+
+                readmeImages.forEach(img => {
+                    const src = img.getAttribute('src');
+
+                    // Fix relative paths (GitHub README images are usually relative → would 404 without this)
+                    if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:') && !src.startsWith('//')) {
+                        img.src = repoBase + src;
+                    }
+
+                    // If the image fails to load (even after fixing the URL), remove the entire <img> element
+                    img.onerror = function() {
+                        this.remove();
+                    };
+
+                    // Catch images that already failed to load before we got here
+                    if (img.complete && img.naturalWidth === 0) {
+                        img.remove();
+                    }
+                });
             })
             .catch(() => document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>');
     </script>
