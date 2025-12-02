@@ -327,7 +327,7 @@ fetch('projectpagelinks.json')
             const card = document.createElement('div');
             card.className = 'project-link-card';
             card.innerHTML = `
-                <a href="${project.link}" target="_blank">
+                <a href="${project.link}">
                     <div class="project-link-content">
                         <img src="${project.image}" alt="${project.title}" onerror="this.src='Images/placeholder.jpg'">
                         <h3 class="project-link-title">${project.title}</h3>
