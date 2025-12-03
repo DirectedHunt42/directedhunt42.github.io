@@ -2,16 +2,16 @@
   {
     "title": "Echo Engine",
     "image": "Images/Echo_engine_transparent.png",
-    "link": "echoengine"
+    "link": "Projects/echoengine"
   },
   {
     "title": "Black Hole",
     "image": "Images/BlackHole_Transparent_Light.png",
-    "link": "blackhole"
+    "link": "Projects/blackhole"
   },
   {
     "title": "Wormhole",
     "image": "Images/Wormhole_Square.png",
-    "link": "wormhole"
+    "link": "Projects/wormhole"
   }
 ]
