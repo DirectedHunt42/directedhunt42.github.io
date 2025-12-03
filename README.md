@@ -30,3 +30,15 @@ Thank you for visiting **Nova Foundry**. Explore our projects and see what we’
 ---
 ## Support Nova Foundry
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-NovaFoundry-6f4e37?style=for-the-badge&logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/novafoundry)
+
+---
+## Thanks
+Special thanks to **Quantum Glitch Software** for inspiring this whole thing
+
+
+<a href="https://qgsoftware.github.io/">
+  <img src="https://qgsoftware.github.io/textures/logo.dib" width="200">
+</a>
+
+
+<sub>*And thanks to my girlfriend Lucy for keeping me going, I couldn't do it without you ❤️*</sub>
