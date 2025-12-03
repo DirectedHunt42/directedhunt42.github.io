@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echo Engine</title>
+    <link rel="icon" type="image/x-icon" href="../Images/Nova_foundry_favicon.ico" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; }
+        .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
+        .left-panel { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; max-width: 95%;}
+        .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
+        .readme { max-width: 100%; }
+        .right-panel { flex: 2; display: flex; flex-direction: column; gap: 20px; }
+        .section { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
+        .section h1, .section h2 { margin-top: 0; }
+        .features-list { list-style-type: disc; padding-left: 20px; }
+        .screenshots-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .screenshot { width: 100%; border-radius: 5px; }
+        .links-list { list-style-type: none; padding: 0; }
+        .links-list li { margin-bottom: 10px; }
+        .links-list a { color: #fff; text-decoration: none; }
+        .links-list a:hover { text-decoration: underline; }
+        canvas { position: fixed; top:0; left:0; z-index:0; }
+
+        /* Home Button Styles */
+        .home-button { 
+            display: block;
+            width: 100%;
+            padding: 10px 20px; 
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-weight: bold; 
+            text-align: center;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .home-button:hover { 
+            background: rgba(255,255,255,255,0.2); 
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
+            .right-panel { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+
+    <div class="container">
+        <div class="left-panel">
+            <a href="https://novafoundry.ca" class="home-button">Home</a>
+            <img class="logo-small" src="../Images/Echo_engine_transparent.png" alt="Echo Engine Logo" onerror="this.src='https://img.itch.zone/aW1hZ2UvMzk5NzI1OC8yMzgzNzA1MC5wbmc=/original/Fv22OV.png';" />
+            <div id="readmeContent" class="readme"></div>
+            <a href="../licenses/echoenginelicense" target="_blank" class="home-button" style="margin-top: 20px;">View License</a>
+        </div>
+        <div class="right-panel">
+            <div class="section">
+                <h1>Echo Engine</h1>
+                <p>The Echo Engine is a simple game engine with a visual editor for creating simple room-based text adventure games. Explore worlds, move through rooms, and craft interactive stories—all through text!</p>
+                <p>The Echo Editor provides an intuitive GUI for designing and configuring games, including game setup, tutorial levels, main levels, and exporting to a playable format.</p>
+            </div>
+            <div class="section">
+                <h2>Features</h2>
+                <ul class="features-list">
+                    <li>🎛️ Easy-to-use interface for text-based adventures.</li>
+                    <li>🗺️ Create interconnected rooms and explore them.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2>Screenshots</h2>
+                <div class="screenshots-grid">
+                    <img class="screenshot" src="https://img.itch.zone/aW1hZ2UvMzk5NzI1OC8yMzgzNzA1MC5wbmc=/original/Fv22OV.png" alt="Screenshot 1" />
+                    <img class="screenshot" src="https://img.itch.zone/aW1hZ2UvMzk5NzI1OC8yMzgzNzA0Ny5wbmc=/original/9EAl%2BZ.png" alt="Screenshot 2" />
+                    <img class="screenshot" src="https://img.itch.zone/aW1hZ2UvMzk5NzI1OC8yMzgzNzA0OC5wbmc=/original/OLabau.png" alt="Screenshot 3" />
+                    <img class="screenshot" src="https://img.itch.zone/aW1hZ2UvMzk5NzI1OC8yMzgzNzA0OS5wbmc=/original/ZYKtEz.png" alt="Screenshot 4" />
+                </div>
+            </div>
+            <div class="section">
+                <h2>Downloads & Links</h2>
+                <div>
+                    <a href="../Downloads/echoenginedownloads" class="home-button">View All Releases</a>
+                </div>
+                <ul class="links-list">
+                    <li><a href="https://github.com/DirectedHunt42/EchoEngine" target="_blank">View on GitHub</a> <img src="https://img.shields.io/github/stars/DirectedHunt42/EchoEngine" alt="Stars" /> <img src="https://img.shields.io/github/forks/DirectedHunt42/EchoEngine" alt="Forks" /></li>
+                    <li><a href="https://nova-foundry.itch.io/echo-editor" target="_blank">View on itch.io</a> (Rated 5.0/5 from 1 rating)</li>
+                    <li><a href="https://sourceforge.net/projects/echoengine/" target="_blank">View on SourceForge</a></li>
+                    <li><a href="https://sourceforge.net/projects/echoengine/files/latest/download" target="_blank">Download Latest from SourceForge</a></li>
+                    <li><a href="https://nova-foundry.itch.io/echo-editor/purchase" target="_blank">Download from itch.io (Name Your Price)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars=[], galaxies=[], shootingStars=[];
+        let mouseX=0, mouseY=0;
+
+        // ===== STARFIELD, GALAXIES, SHOOTING STARS =====
+        function resizeCanvas() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; generateStars(); generateGalaxies(); }
+
+        function generateStars() {
+            stars=[];
+            const starCount=400;
+            const colors=['#ffffff','#ffd700','#add8e6','#ffcccb'];
+            for(let i=0;i<starCount;i++){stars.push({
+                x:Math.random()*canvas.width,
+                y:Math.random()*canvas.height,
+                radius:Math.random()*1.5+0.5,
+                color:colors[Math.floor(Math.random()*colors.length)],
+                driftX:Math.random()*0.02-0.01,
+                driftY:Math.random()*0.02-0.01,
+                parallax:0.01+Math.random()*0.04
+            });}
+        }
+
+        function generateGalaxies(){
+            galaxies=[];
+            const galaxyCount=6;
+            const colors=['#ffffff','#ffd700','#add8e6','#ffcccb'];
+            for(let g=0;g<galaxyCount;g++){
+                const centerX=Math.random()*canvas.width;
+                const centerY=Math.random()*canvas.height;
+                const radiusX=30+Math.random()*70;
+                const radiusY=20+Math.random()*50;
+                const rotationSpeed=0.0001+Math.random()*0.001;
+                const tilt=(Math.random()*40-20)*Math.PI/180;
+                const angleOffset=Math.random()*2*Math.PI;
+                const arms=3+Math.floor(Math.random()*2);
+                const starsInGalaxy=[];
+                for(let i=0;i<50;i++){
+                    const arm=i%arms;
+                    const radiusFactor=Math.random();
+                    const angle=radiusFactor*4*Math.PI + arm*2*Math.PI/arms + angleOffset;
+                    starsInGalaxy.push({
+                        angle, radiusX, radiusY, centerX, centerY, tilt, armAngleOffset:arm*2*Math.PI/arms,
+                        radius:Math.random()*1.2+0.3,
+                        color:colors[Math.floor(Math.random()*colors.length)],
+                        speed:rotationSpeed,
+                        parallax:0.02+Math.random()*0.03,
+                        driftX:Math.random()*0.01-0.005,
+                        driftY:Math.random()*0.01-0.005,
+                        radiusFactor
+                    });
+                }
+                galaxies.push(starsInGalaxy);
+            }
+        }
+
+        function generateShootingStar(){shootingStars.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height/2,
+            speedX:20+Math.random()*30,
+            speedY:5+Math.random()*5,
+            length:100+Math.random()*50,
+            color:'#ffffff',
+            parallax:0.02+Math.random()*0.03
+        });}
+
+        function drawStars(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            stars.forEach(s=>{
+                s.x+=s.driftX;s.y+=s.driftY;
+                if(s.x<0)s.x=canvas.width;if(s.x>canvas.width)s.x=0;
+                if(s.y<0)s.y=canvas.height;if(s.y>canvas.height)s.y=0;
+                const dx=(mouseX-canvas.width/2)*s.parallax;
+                const dy=(mouseY-canvas.height/2)*s.parallax;
+                ctx.beginPath();ctx.arc(s.x+dx,s.y+dy,s.radius,0,2*Math.PI);ctx.fillStyle=s.color;ctx.fill();
+            });
+            galaxies.forEach(g=>g.forEach(star=>{
+                star.angle+=star.speed;
+                const x0=star.centerX+star.radiusX*star.radiusFactor*Math.cos(star.angle+star.armAngleOffset);
+                const y0=star.centerY+star.radiusY*star.radiusFactor*Math.sin(star.angle+star.armAngleOffset)*Math.cos(star.tilt);
+                star.x0=x0+star.driftX;star.y0=y0+star.driftY;
+                const dx=(mouseX-canvas.width/2)*star.parallax;
+                const dy=(mouseY-canvas.height/2)*star.parallax;
+                ctx.beginPath();ctx.ellipse(star.x0+dx,star.y0+dy,star.radius*1.2,star.radius,0,0,2*Math.PI);ctx.fillStyle=star.color;ctx.fill();
+            }));
+            shootingStars.forEach((s,i)=>{
+                s.x+=s.speedX;s.y+=s.speedY;
+                const dx=(mouseX-canvas.width/2)*s.parallax;
+                dy=(mouseY-canvas.height/2)*s.parallax;
+                angle=Math.atan2(s.speedY,s.speedX);
+                ctx.save();ctx.translate(s.x+dx,s.y+dy);ctx.rotate(angle);
+                ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s.length,0);ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.stroke();ctx.restore();
+                if(s.x-s.length>canvas.width||s.y-s.length/2>canvas.height){shootingStars.splice(i,1);}
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        window.addEventListener('resize',resizeCanvas);
+        resizeCanvas();drawStars();
+        setInterval(()=>{if(Math.random()<0.05)generateShootingStar();},2000);
+
+        // Mobile detection and input handling for parallax
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+        function addOrientationListener() {
+          window.addEventListener('deviceorientation', (event) => {
+            mouseX = (window.innerWidth / 2) - (event.gamma * (window.innerWidth / 180));
+            mouseY = (window.innerHeight / 2) - (event.beta * (window.innerHeight / 180));
+            mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
+            mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
+          });
+        }
+
+        if (isMobile && window.DeviceOrientationEvent) {
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            document.addEventListener('touchstart', async () => {
+              try {
+                const permission = await DeviceOrientationEvent.requestPermission();
+                if (permission === 'granted') {
+                  addOrientationListener();
+                }
+              } catch (err) {
+                console.error('Device orientation permission error:', err);
+              }
+            }, { once: true });
+          } else {
+            addOrientationListener();
+          }
+        } else {
+          window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+        }
+
+        // ===== LOAD README FROM GITHUB =====
+        fetch('https://raw.githubusercontent.com/DirectedHunt42/EchoEngine/main/README.md')
+            .then(res => res.text())
+            .then(md => {
+                document.getElementById('readmeContent').innerHTML = marked.parse(md);
+
+                // Fix relative image URLs in the README so they actually load + hide completely if they still fail (shows nothing, not even alt text)
+                const repoBase = 'https://raw.githubusercontent.com/DirectedHunt42/EchoEngine/main/';
+                const readmeImages = document.querySelectorAll('#readmeContent img');
+
+                readmeImages.forEach(img => {
+                    const src = img.getAttribute('src');
+
+                    // Fix relative paths (most README images are relative, so they currently 404 and show alt text)
+                    if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:') && !src.startsWith('//')) {
+                        img.src = repoBase + src;
+                    }
+
+                    // If image fails to load (even after fix), remove it entirely → no broken icon, no alt text, no empty space
+                    img.onerror = function() {
+                        this.remove();
+                    };
+
+                    // Catch any images that already failed before we could fix them
+                    if (img.complete && img.naturalWidth === 0) {
+                        img.remove();
+                    }
+                });
+            })
+            .catch(() => document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>');
+    </script>
+</body>
+</html>
