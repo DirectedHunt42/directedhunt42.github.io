@@ -102,8 +102,8 @@
 
         @media (max-width: 768px) {
             .container { flex-direction: column; }
-            .download-buttons { justify-content: center; }
-            .download-button, .link-button { min-width: auto; width: 100%; }
+            .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
+            .right-panel { width: 100%; }
         }
     </style>
 </head>
@@ -148,7 +148,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // === STARFIELD BACKGROUND CODE (100% identical to your other pages) ===
         const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
         let stars=[], galaxies=[], shootingStars=[];

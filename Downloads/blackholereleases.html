@@ -103,8 +103,8 @@
 
         @media (max-width: 768px) {
             .container { flex-direction: column; }
-            .download-buttons { justify-content: center; }
-            .download-button, .link-button { min-width: auto; width: 100%; }
+            .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
+            .right-panel { width: 100%; }
         }
     </style>
 </head>
@@ -149,8 +149,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // === STARFIELD BACKGROUND CODE (unchanged) ===
-        const canvas = document.getElementById('starCanvas');
+    const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
         let stars=[], galaxies=[], shootingStars=[];
         let mouseX=0, mouseY=0;
@@ -229,6 +228,7 @@
                 star.angle+=star.speed;
                 const x0=star.centerX+star.radiusX*star.radiusFactor*Math.cos(star.angle+star.armAngleOffset);
                 const y0=star.centerY+star.radiusY*star.radiusFactor*Math.sin(star.angle+star.armAngleOffset)*Math.cos(star.tilt);
+                star.x0=x0+star.driftX;star.y0=y0+star.driftY;
                 const dx=(mouseX-canvas.width/2)*star.parallax;
                 const dy=(mouseY-canvas.height/2)*star.parallax;
                 ctx.beginPath();ctx.ellipse(star.x0+dx,star.y0+dy,star.radius*1.2,star.radius,0,0,2*Math.PI);ctx.fillStyle=star.color;ctx.fill();
@@ -238,7 +238,7 @@
                 const dx=(mouseX-canvas.width/2)*s.parallax;
                 const dy=(mouseY-canvas.height/2)*s.parallax;
                 const angle=Math.atan2(s.speedY,s.speedX);
-                ctx.save();ctx.translate(s.x+dx,s.y+s.dy);ctx.rotate(angle);
+                ctx.save();ctx.translate(s.x+dx,s.y+dy);ctx.rotate(angle);
                 ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s.length,0);ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.stroke();ctx.restore();
                 if(s.x-s.length>canvas.width||s.y-s.length/2>canvas.height){shootingStars.splice(i,1);}
             });
