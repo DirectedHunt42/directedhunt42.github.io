@@ -28,71 +28,52 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .tabs button.active { background: rgba(255,255,255,0.3); }
 
 /* New Project Links Grid */
-.project-links-section {
-    margin-bottom: 40px;
-}
-.project-links-section h2 {
-    margin-bottom: 20px;
-    font-size: 2em;
-    text-align: center;
-}
-.project-links-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-    gap: 20px;
-}
-.project-link-card {
-    background: rgba(255,255,255,0.08);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-.project-link-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 30px rgba(0,255,255,0.2);
-}
-.project-link-card a {
-    display: flex;
-    color: inherit;
-    text-decoration: none;
-    height: 100%;
-}
-.project-link-content {
-    display: flex;
-    flex-direction: row;
-    padding: 15px;
-    gap: 15px;
-    align-items: center;
-}
-.project-link-card img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-.project-link-title {
-    font-size: 1.4em;
-    font-weight: bold;
-    margin: 0;
+.project-links-section { margin-bottom: 40px; }
+.project-links-section h2 { margin-bottom: 20px; font-size: 2em; text-align: center; }
+.project-links-grid { display: grid; grid-template-columns: repeat(2, minmax(280px, 1fr)); gap: 20px; }
+.project-link-card { background: rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+.project-link-card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,255,255,0.2); }
+.project-link-card a { display: flex; color: inherit; text-decoration: none; height: 100%; }
+.project-link-content { display: flex; flex-direction: row; padding: 15px; gap: 15px; align-items: center; }
+.project-link-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.project-link-title { font-size: 1.4em; font-weight: bold; margin: 0; }
+
+/* BADGES SECTION STYLES */
+.badges-section { margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+.badges-section h2 { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+.badges-columns { display: flex; flex-direction: row; gap: 20px; }
+.badge-column { flex: 1; }
+.badge-column h3 { text-align: center; color: #aaa; margin-bottom: 15px; font-size: 1.1em; }
+.badge-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.badge-item { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.2s; position: relative; }
+.badge-item:hover { transform: scale(2); z-index: 2; box-shadow: 0 0 10px rgba(255,255,255,0); }
+.badge-item img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Tooltip for badges */
+.badge-item:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 100;
 }
 
 @media (max-width: 768px) {
     .container { flex-direction: column; }
     .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
     .right-panel { width: 100%; flex: none; }
-    .project-link-content {
-        flex-direction: column;
-        text-align: center;
-    }
-    .project-link-card img {
-        width: 80px;
-        height: 80px;
-    }
-    .project-links-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
+    .project-link-content { flex-direction: column; text-align: center; }
+    .project-link-card img { width: 80px; height: 80px; }
+    .project-links-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .badges-columns { flex-direction: column; }
 }
 </style>
 </head>
@@ -117,6 +98,23 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
             <div id="itch" class="tab-content" style="display: none;"></div>
             <div id="appsscript" class="tab-content" style="display: none;"></div>
         </div>
+
+        <div class="badges-section">
+            <h2>Achievements & Badges</h2>
+            <div class="badges-columns">
+                <div class="badge-column">
+                    <h3>GitHub Achievements</h3>
+                    <div id="github-badges" class="badge-grid">
+                        <p style="font-size: 0.8em; color: #666;">Loading...</p>
+                    </div>
+                </div>
+                <div class="badge-column">
+                    <h3>Printables Badges</h3>
+                    <div id="printables-badges" class="badge-grid">
+                        </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -127,14 +125,34 @@ const githubUsername = "directedhunt42";
 const itchCollectionUrl = "https://itch.io/c/6591033/nova-foundrys-collection";
 const proxyUrl = "https://api.allorigins.win/raw?url=";
 
+// ===== CONFIG: MANUAL PRINTABLES BADGES =====
+// Go to your Printables profile, right click your badges -> "Copy Image Address" and paste them here.
+const printablesBadgesList = [
+    { title: "Designer 1\nNewcomer", img: "https://media.printables.com/media/badges/3/levels/7c/designer_01.svg" },
+    { title: "Designer 2\nBeginner", img: "https://media.printables.com/media/badges/3/levels/1a/designer_02.svg" },
+    { title: "Designer 3\nProficient", img: "https://media.printables.com/media/badges/3/levels/6e/designer_03.svg" },
+    { title: "Maker 1\nNovice", img: "https://media.printables.com/media/badges/11/levels/e1/maker_01.svg"},
+    { title: "Maker 2\nBeginner", img: "https://media.printables.com/media/badges/11/levels/65/maker_02.svg"},
+    { title: "Maker 3\nExplorer", img: "https://media.printables.com/media/badges/11/levels/c6/maker_03.svg"},
+    { title: "Maker 4\nSkilled", img: "https://media.printables.com/media/badges/11/levels/3a/maker_04.svg"},
+    { title: "Maker 5\nExpert", img: "https://media.printables.com/media/badges/11/levels/ff/maker_05.svg"},
+    { title: "Star of Designe 1\nNebula", img: "https://media.printables.com/media/badges/12/levels/3b/star_of_design_01.svg"},
+    { title: "Star of Designe 2\nStar", img: "https://media.printables.com/media/badges/12/levels/33/star_of_design_02.svg"},
+    { title: "Star of Designe 3\nRed Dwarf", img: "https://media.printables.com/media/badges/12/levels/f9/star_of_design_03.svg"},
+    { title: "Download Manic 1\nIron", img: "https://media.printables.com/media/badges/13/levels/f3/download_maniac_01.svg"},
+    { title: "Download Manic 2\nTin", img: "https://media.printables.com/media/badges/13/levels/11/download_maniac_02.svg"},
+    { title: "Download Manic 3\nBrass", img: "https://media.printables.com/media/badges/13/levels/56/download_maniac_03.svg"},
+    { title: "Printables Promoter", img: "https://media.printables.com/media/badges/20/levels/49/printables_promoter.svg"},
+    { title: "Printables Maniac", img: "https://media.printables.com/media/badges/22/levels/12/prusa_printers_maniac.svg"}
+    // Add more here manually as you earn them
+];
+
 // ===== LOAD LOCAL MAIN README =====
 fetch('README.md')
   .then(res => res.text())
   .then(md => {
     const readmeContent = document.getElementById('readmeContent');
     readmeContent.innerHTML = marked.parse(md);
-
-    // FIX: Force flagcounter.com images to protocol-relative URL so it loads on HTTPS (fixes mixed-content + GitHub camo issues)
     readmeContent.querySelectorAll('img').forEach(img => {
       const src = img.getAttribute('src');
       if (src && src.startsWith('http://') && src.includes('flagcounter.com')) {
@@ -163,16 +181,75 @@ tabs.forEach(tab => {
 function renderStars(rating) {
     let stars = '';
     for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
-            stars += '★';
-        } else if (i - 0.5 <= rating) {
-            stars += '½';
-        } else {
-            stars += '☆';
-        }
+        if (i <= rating) { stars += '★'; } else if (i - 0.5 <= rating) { stars += '½'; } else { stars += '☆'; }
     }
     return stars;
 }
+
+// ===== LOAD BADGES FUNCTIONS =====
+function loadBadges() {
+    // 1. Load Printables (Manual Array)
+    const printablesContainer = document.getElementById('printables-badges');
+    printablesContainer.innerHTML = '';
+    if(printablesBadgesList.length > 0) {
+        printablesBadgesList.forEach(badge => {
+            const div = document.createElement('div');
+            div.className = 'badge-item';
+            div.setAttribute('data-title', badge.title);
+            div.innerHTML = `<img src="${badge.img}" alt="${badge.title}">`;
+            printablesContainer.appendChild(div);
+        });
+    } else {
+        printablesContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No badges configured</p>';
+    }
+
+    // 2. Load GitHub Achievements (Scraping via Proxy)
+    const ghContainer = document.getElementById('github-badges');
+    const ghProfileUrl = `https://github.com/${githubUsername}?tab=achievements`;
+    
+    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(ghProfileUrl)}`)
+    .then(response => {
+        if (response.ok) return response.json();
+        throw new Error('Network response was not ok.');
+    })
+    .then(data => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data.contents, 'text/html');
+        // GitHub usually uses 'achievement-badge-card' class for these images
+        const badgeImages = doc.querySelectorAll('img.achievement-badge-card');
+        
+        ghContainer.innerHTML = ''; // Clear loading text
+        
+        if (badgeImages.length === 0) {
+            ghContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No achievements found or GitHub blocked the request.</p>';
+            return;
+        }
+
+        const uniqueBadges = new Set();
+
+        badgeImages.forEach(img => {
+            // Deduplicate based on src
+            if (!uniqueBadges.has(img.src)) {
+                uniqueBadges.add(img.src);
+                const div = document.createElement('div');
+                div.className = 'badge-item';
+                // Clean up the alt text (remove "Achievement: " prefix if present)
+                let title = img.alt || 'Achievement';
+                title = title.replace('Achievement: ', '');
+                div.setAttribute('data-title', title);
+                div.innerHTML = `<img src="${img.src}" alt="${title}">`;
+                ghContainer.appendChild(div);
+            }
+        });
+    })
+    .catch(err => {
+        console.error('Error fetching GitHub achievements:', err);
+        ghContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">Failed to load.</p>';
+    });
+}
+
+// Call badge loader immediately
+loadBadges();
 
 // ===== LOAD PROJECT LINKS FROM JSON (NEW SECTION) =====
 fetch('projectpagelinks.json')
@@ -182,14 +259,11 @@ fetch('projectpagelinks.json')
     })
     .then(projects => {
         const homeContainer = document.getElementById('home');
-
         const projectLinksSection = document.createElement('div');
         projectLinksSection.className = 'project-links-section';
         projectLinksSection.innerHTML = `<h2>Projects:</h2>`;
-
         const grid = document.createElement('div');
         grid.className = 'project-links-grid';
-
         projects.forEach(project => {
             const card = document.createElement('div');
             card.className = 'project-link-card';
@@ -203,7 +277,6 @@ fetch('projectpagelinks.json')
             `;
             grid.appendChild(card);
         });
-
         projectLinksSection.appendChild(grid);
         homeContainer.insertBefore(projectLinksSection, homeContainer.firstChild);
     })
@@ -238,11 +311,9 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
             <a href='${r.html_url}' target='_blank'>View on GitHub</a>`;
         const readmeDiv = card.querySelector('.repo-readme');
         const toggleBtn = card.querySelector('.toggle-readme');
-
         const tagsRes = await fetch(`https://api.github.com/repos/${githubUsername}/${r.name}/tags`);
         const tags = await tagsRes.json();
         if(tags.length){const tagEl=document.createElement('p');tagEl.textContent=`🏷️ Latest Tag: ${tags[0].name}`;card.querySelector('.repo-info').appendChild(tagEl);}
-
         toggleBtn.addEventListener('click', async () => {
             if(readmeDiv.style.display === 'none'){
                 if(!readmeDiv.innerHTML){
@@ -259,11 +330,8 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 toggleBtn.textContent = 'Show README';
             }
         });
-
         githubContainer.appendChild(card);
     }
-
-    // Add top 2 GitHub to home
     const githubHomeHeader = document.createElement('h2');
     githubHomeHeader.textContent = 'Top GitHub Repos';
     homeContainer.appendChild(githubHomeHeader);
@@ -274,14 +342,12 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
         card.querySelector('.repo-readme').remove();
         homeContainer.appendChild(card);
     }
-    homeContainer.offsetHeight; // Force reflow
-
-    // Add horizontal line
+    homeContainer.offsetHeight; 
     const hr = document.createElement('hr');
     homeContainer.appendChild(hr);
-    homeContainer.offsetHeight; // Force reflow
+    homeContainer.offsetHeight; 
 
-    // ===== LOAD ITCH.IO PROJECTS FROM COLLECTION =====
+    // ===== LOAD ITCH.IO PROJECTS =====
     fetch(proxyUrl + encodeURIComponent(itchCollectionUrl))
         .then(res => res.text())
         .then(async html => {
@@ -297,19 +363,15 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 const desc = descEl ? descEl.textContent.trim() : 'No description available';
                 const thumbEl = game.querySelector('.game_thumb img');
                 const thumb = thumbEl ? (thumbEl.src || thumbEl.dataset.lazySrc) : '';
-
                 let ratingsCount = 0;
                 let averageRatingStars = 'No ratings yet';
-
                 try {
                     const projectRes = await fetch(proxyUrl + encodeURIComponent(link));
                     const projectHtml = await projectRes.text();
                     const projectDoc = parser.parseFromString(projectHtml, 'text/html');
-
                     const ratingCountEl = projectDoc.querySelector('.rating_count');
                     const ratingsCountStr = ratingCountEl ? ratingCountEl.textContent.trim().replace(/[^\d]/g, '') : '0';
                     ratingsCount = parseInt(ratingsCountStr, 10) || 0;
-
                     const aggregateRatingEl = projectDoc.querySelector('.aggregate_rating');
                     if (aggregateRatingEl) {
                         const text = aggregateRatingEl.textContent.trim();
@@ -319,16 +381,11 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                             averageRatingStars = renderStars(rating);
                         }
                     }
-                } catch (e) {
-                    console.error('Error fetching rating:', e);
-                }
-
+                } catch (e) { console.error('Error fetching rating:', e); }
                 return { title, link, desc, thumb, ratingsCount, averageRatingStars };
             });
-
             const itchProjects = await Promise.all(gamePromises);
             itchProjects.sort((a, b) => b.ratingsCount - a.ratingsCount);
-
             for (const project of itchProjects) {
                 const card = document.createElement('div');
                 card.className = 'project-card fade-in';
@@ -343,11 +400,8 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                     innerHTML = `<img src="${project.thumb}" alt="${project.title} thumbnail" style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">` + innerHTML;
                 }
                 card.innerHTML = innerHTML;
-
                 itchContainer.appendChild(card);
             }
-
-            // Add top 2 itch to home
             const itchHomeHeader = document.createElement('h2');
             itchHomeHeader.textContent = 'Top itch.io Projects';
             homeContainer.appendChild(itchHomeHeader);
@@ -355,22 +409,18 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 const card = itchContainer.children[i].cloneNode(true);
                 homeContainer.appendChild(card);
             }
-            homeContainer.offsetHeight; // Force reflow
-
-            // Force full reflow on home tab
+            homeContainer.offsetHeight; 
             homeContainer.style.display = 'none';
             homeContainer.offsetHeight;
             homeContainer.style.display = 'block';
         })
         .catch(err => console.error('Error loading itch.io projects:', err));
 
-    // ===== LOAD APPS SCRIPT FROM JSON =====
+    // ===== LOAD APPS SCRIPT =====
     fetch('appsscript.json')
         .then(res => res.json())
         .then(apps => {
-            if (!Array.isArray(apps)) {
-                apps = [apps];
-            }
+            if (!Array.isArray(apps)) { apps = [apps]; }
             const appsContainer = document.getElementById('appsscript');
             for (const app of apps) {
                 const card = document.createElement('div');
@@ -382,7 +432,6 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                     <a href='${app.link}' target='_blank'>View Link</a>`;
                 const readmeDiv = card.querySelector('.repo-readme');
                 const toggleBtn = card.querySelector('.toggle-readme');
-
                 toggleBtn.addEventListener('click', () => {
                     if (readmeDiv.style.display === 'none') {
                         if (!readmeDiv.innerHTML) {
@@ -395,7 +444,6 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                         toggleBtn.textContent = 'Show README';
                     }
                 });
-
                 appsContainer.appendChild(card);
             }
         })
