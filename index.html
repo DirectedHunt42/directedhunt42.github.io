@@ -28,7 +28,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .tabs button.active { background: rgba(255,255,255,0.3); }
 
 /* New Project Links Grid */
-.project-links-section { margin-bottom: 40px; }
+.project-links-section { margin-bottom: 10px; }
 .project-links-section h2 { margin-bottom: 20px; font-size: 2em; text-align: center; }
 .project-links-grid { display: grid; grid-template-columns: repeat(2, minmax(280px, 1fr)); gap: 20px; }
 .project-link-card { background: rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
@@ -39,32 +39,32 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .project-link-title { font-size: 1.4em; font-weight: bold; margin: 0; }
 
 /* BADGES SECTION STYLES */
-.badges-section { margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; }
-.badges-section h2 { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+.badges-section { margin-top: -40px; padding: 20px; background: transparent; border-radius: 10px; }
+.badges-section h2 { text-align: center; margin-bottom: 20px; font-size: 2em; }
 .badges-columns { display: flex; flex-direction: row; gap: 20px; }
-.badge-column { flex: 1; }
+.badge-column { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
 .badge-column h3 { text-align: center; color: #aaa; margin-bottom: 15px; font-size: 1.1em; }
 .badge-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.badge-item { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.2s; position: relative; }
-.badge-item:hover { transform: scale(2); z-index: 2; box-shadow: 0 0 10px rgba(255,255,255,0); }
-.badge-item img { width: 100%; height: 100%; object-fit: contain; }
-
-/* Tooltip for badges */
-.badge-item:hover::after {
-    content: attr(data-title);
+.badge-item { width: 64px; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0); transition: transform 0.2s; position: relative; }
+.badge-image { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.badge-image img { width: 100%; height: 100%; object-fit: contain; }
+.badge-banner { 
+    display: none; 
+    background: #333; 
+    color: #fff; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    font-size: 7px; 
+    text-align: center; 
+    white-space: nowrap;
     position: absolute;
-    bottom: -30px;
+    top: calc(100% + 5px);
     left: 50%;
     transform: translateX(-50%);
-    background: #333;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 100;
+    z-index: 3;
 }
+.badge-item:hover { transform: scale(2); z-index: 2; box-shadow: 0 0 10px rgba(255,255,255,0); }
+.badge-item:hover .badge-banner { display: block; }
 
 @media (max-width: 768px) {
     .container { flex-direction: column; }
@@ -125,23 +125,30 @@ const githubUsername = "directedhunt42";
 const itchCollectionUrl = "https://itch.io/c/6591033/nova-foundrys-collection";
 const proxyUrl = "https://api.allorigins.win/raw?url=";
 
+// ===== CONFIG: MANUAL GITHUB ACHIEVEMENTS =====
+const githubBadgesList = [
+    { title: "Pull Shark", img: "https://github.githubassets.com/assets/pull-shark-default-498c279a747d.png"},
+    { title: "Quickdraw", img: "https://github.githubassets.com/assets/quickdraw-default-39c6aec8ff89.png"}
+    // Add more here manually as you earn them
+];
+
 // ===== CONFIG: MANUAL PRINTABLES BADGES =====
 // Go to your Printables profile, right click your badges -> "Copy Image Address" and paste them here.
 const printablesBadgesList = [
-    { title: "Designer 1\nNewcomer", img: "https://media.printables.com/media/badges/3/levels/7c/designer_01.svg" },
-    { title: "Designer 2\nBeginner", img: "https://media.printables.com/media/badges/3/levels/1a/designer_02.svg" },
-    { title: "Designer 3\nProficient", img: "https://media.printables.com/media/badges/3/levels/6e/designer_03.svg" },
-    { title: "Maker 1\nNovice", img: "https://media.printables.com/media/badges/11/levels/e1/maker_01.svg"},
-    { title: "Maker 2\nBeginner", img: "https://media.printables.com/media/badges/11/levels/65/maker_02.svg"},
-    { title: "Maker 3\nExplorer", img: "https://media.printables.com/media/badges/11/levels/c6/maker_03.svg"},
-    { title: "Maker 4\nSkilled", img: "https://media.printables.com/media/badges/11/levels/3a/maker_04.svg"},
-    { title: "Maker 5\nExpert", img: "https://media.printables.com/media/badges/11/levels/ff/maker_05.svg"},
-    { title: "Star of Designe 1\nNebula", img: "https://media.printables.com/media/badges/12/levels/3b/star_of_design_01.svg"},
-    { title: "Star of Designe 2\nStar", img: "https://media.printables.com/media/badges/12/levels/33/star_of_design_02.svg"},
-    { title: "Star of Designe 3\nRed Dwarf", img: "https://media.printables.com/media/badges/12/levels/f9/star_of_design_03.svg"},
-    { title: "Download Manic 1\nIron", img: "https://media.printables.com/media/badges/13/levels/f3/download_maniac_01.svg"},
-    { title: "Download Manic 2\nTin", img: "https://media.printables.com/media/badges/13/levels/11/download_maniac_02.svg"},
-    { title: "Download Manic 3\nBrass", img: "https://media.printables.com/media/badges/13/levels/56/download_maniac_03.svg"},
+    { title: "Designer 1: Newcomer", img: "https://media.printables.com/media/badges/3/levels/7c/designer_01.svg" },
+    { title: "Designer 2: Beginner", img: "https://media.printables.com/media/badges/3/levels/1a/designer_02.svg" },
+    { title: "Designer 3: Proficient", img: "https://media.printables.com/media/badges/3/levels/6e/designer_03.svg" },
+    { title: "Maker 1: Novice", img: "https://media.printables.com/media/badges/11/levels/e1/maker_01.svg"},
+    { title: "Maker 2: Beginner", img: "https://media.printables.com/media/badges/11/levels/65/maker_02.svg"},
+    { title: "Maker 3: Explorer", img: "https://media.printables.com/media/badges/11/levels/c6/maker_03.svg"},
+    { title: "Maker 4: Skilled", img: "https://media.printables.com/media/badges/11/levels/3a/maker_04.svg"},
+    { title: "Maker 5: Expert", img: "https://media.printables.com/media/badges/11/levels/ff/maker_05.svg"},
+    { title: "Star of Design 1: Nebula", img: "https://media.printables.com/media/badges/12/levels/3b/star_of_design_01.svg"},
+    { title: "Star of Design 2: Star", img: "https://media.printables.com/media/badges/12/levels/33/star_of_design_02.svg"},
+    { title: "Star of Design 3: Red Dwarf", img: "https://media.printables.com/media/badges/12/levels/f9/star_of_design_03.svg"},
+    { title: "Download Maniac 1: Iron", img: "https://media.printables.com/media/badges/13/levels/f3/download_maniac_01.svg"},
+    { title: "Download Maniac 2: Tin", img: "https://media.printables.com/media/badges/13/levels/11/download_maniac_02.svg"},
+    { title: "Download Maniac 3: Brass", img: "https://media.printables.com/media/badges/13/levels/56/download_maniac_03.svg"},
     { title: "Printables Promoter", img: "https://media.printables.com/media/badges/20/levels/49/printables_promoter.svg"},
     { title: "Printables Maniac", img: "https://media.printables.com/media/badges/22/levels/12/prusa_printers_maniac.svg"}
     // Add more here manually as you earn them
@@ -195,57 +202,36 @@ function loadBadges() {
         printablesBadgesList.forEach(badge => {
             const div = document.createElement('div');
             div.className = 'badge-item';
-            div.setAttribute('data-title', badge.title);
-            div.innerHTML = `<img src="${badge.img}" alt="${badge.title}">`;
+            div.innerHTML = `
+                <div class="badge-image">
+                    <img src="${badge.img}" alt="${badge.title}">
+                </div>
+                <div class="badge-banner">${badge.title.replace(/\n/g, ' ')}</div>
+            `;
             printablesContainer.appendChild(div);
         });
     } else {
         printablesContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No badges configured</p>';
     }
 
-    // 2. Load GitHub Achievements (Scraping via Proxy)
+    // 2. Load GitHub Achievements (Manual Array)
     const ghContainer = document.getElementById('github-badges');
-    const ghProfileUrl = `https://github.com/${githubUsername}?tab=achievements`;
-    
-    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(ghProfileUrl)}`)
-    .then(response => {
-        if (response.ok) return response.json();
-        throw new Error('Network response was not ok.');
-    })
-    .then(data => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data.contents, 'text/html');
-        // GitHub usually uses 'achievement-badge-card' class for these images
-        const badgeImages = doc.querySelectorAll('img.achievement-badge-card');
-        
-        ghContainer.innerHTML = ''; // Clear loading text
-        
-        if (badgeImages.length === 0) {
-            ghContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No achievements found or GitHub blocked the request.</p>';
-            return;
-        }
-
-        const uniqueBadges = new Set();
-
-        badgeImages.forEach(img => {
-            // Deduplicate based on src
-            if (!uniqueBadges.has(img.src)) {
-                uniqueBadges.add(img.src);
-                const div = document.createElement('div');
-                div.className = 'badge-item';
-                // Clean up the alt text (remove "Achievement: " prefix if present)
-                let title = img.alt || 'Achievement';
-                title = title.replace('Achievement: ', '');
-                div.setAttribute('data-title', title);
-                div.innerHTML = `<img src="${img.src}" alt="${title}">`;
-                ghContainer.appendChild(div);
-            }
+    ghContainer.innerHTML = '';
+    if(githubBadgesList.length > 0) {
+        githubBadgesList.forEach(badge => {
+            const div = document.createElement('div');
+            div.className = 'badge-item';
+            div.innerHTML = `
+                <div class="badge-image">
+                    <img src="${badge.img}" alt="${badge.title}">
+                </div>
+                <div class="badge-banner">${badge.title.replace(/\n/g, ' ')}</div>
+            `;
+            ghContainer.appendChild(div);
         });
-    })
-    .catch(err => {
-        console.error('Error fetching GitHub achievements:', err);
-        ghContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">Failed to load.</p>';
-    });
+    } else {
+        ghContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No badges configured</p>';
+    }
 }
 
 // Call badge loader immediately
