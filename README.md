@@ -1,6 +1,6 @@
 Welcome to **Nova Foundry**!  
 
-Hi! I'm Jack, and Nova Foundry is my place to put forward my projects and show what I'm working on, from simple software projects to CAD. I can be found on the interweb as Nova Foundry or DirectedHunt42, or just Jack.
+Hi! I'm Jack, and Nova Foundry is my place to put forward my projects and show what I'm working on, from simple software projects to CAD. I'm a solo dev/CAD-er, so this is just my place to show off my hobbies. I can be found on the interweb as Nova Foundry or DirectedHunt42, or just Jack.
 
 Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm building!
 
