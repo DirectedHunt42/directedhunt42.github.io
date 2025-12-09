@@ -19,6 +19,8 @@ Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm bu
 
 ---
 ## Support Nova Foundry
+If you like what you see, or enjoy using my projects, feel free to follow my accounts, follow or star my repos, or buy me a coffee
+
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-NovaFoundry-6f4e37?style=for-the-badge&logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/novafoundry)
 
 ---
