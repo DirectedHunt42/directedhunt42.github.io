@@ -428,7 +428,7 @@ githubHomeLoading.innerHTML = `<h2>Top GitHub Repos</h2><div class="loading-thro
 homeContainer.appendChild(githubHomeLoading);
 
 fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
-    githubContainer.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     const filteredRepos = repos.filter(r=>r.name!=='directedhunt42.github.io');
     filteredRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
 
@@ -472,8 +472,11 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
             }
         });
 
-        githubContainer.appendChild(card);
+        fragment.appendChild(card);
     }
+
+    githubContainer.innerHTML = '';
+    githubContainer.appendChild(fragment);
 
     homeContainer.removeChild(githubHomeLoading);
     const githubHomeHeader = document.createElement('h2');
@@ -481,9 +484,10 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
     homeContainer.appendChild(githubHomeHeader);
 
     for (let i = 0; i < Math.min(2, filteredRepos.length); i++) {
-        const r = filteredRepos[i];
         const card = githubContainer.children[i].cloneNode(true);
-        card.querySelector('.toggle-readme').remove();
+        if (card.querySelector('.toggle-readme')) {
+            card.querySelector('.toggle-readme').remove();
+        }
         card.querySelector('.repo-readme').remove();
         homeContainer.appendChild(card);
     }
@@ -505,7 +509,7 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
     fetch(proxyUrl + encodeURIComponent(itchCollectionUrl))
         .then(res => res.text())
         .then(async html => {
-            itchContainer.innerHTML = '';
+            const itchFragment = document.createDocumentFragment();
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const games = doc.querySelectorAll('.game_cell');
@@ -564,8 +568,11 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                     innerHTML = `<img src="${project.thumb}" alt="${project.title} thumbnail" style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">` + innerHTML;
                 }
                 card.innerHTML = innerHTML;
-                itchContainer.appendChild(card);
+                itchFragment.appendChild(card);
             }
+
+            itchContainer.innerHTML = '';
+            itchContainer.appendChild(itchFragment);
 
             homeContainer.removeChild(itchHomeLoading);
             const itchHomeHeader = document.createElement('h2');
