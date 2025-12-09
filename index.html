@@ -107,6 +107,65 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
     .project-links-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
     .badges-columns { flex-direction: column; }
 }
+
+/* Galaxy-themed loading throbber */
+.loading-container {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+}
+
+.loading-throbber {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        rgba(0, 0, 50, 0),
+        rgba(0, 0, 100, 0.5),
+        rgba(50, 0, 100, 0.7),
+        rgba(100, 0, 50, 0.5),
+        rgba(0, 0, 50, 0)
+    );
+    animation: spin 1.5s linear infinite;
+    position: relative;
+}
+
+.loading-throbber::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loading-throbber::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+}
 </style>
 </head>
 <body>
@@ -135,13 +194,14 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
                 <div class="badge-column">
                     <h3>GitHub Achievements</h3>
                     <div id="github-badges" class="badge-grid">
-                        <p style="font-size: 0.8em; color: #666;">Loading...</p>
+                        <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
                     </div>
                 </div>
                 <div class="badge-column">
                     <h3>Printables Badges</h3>
                     <div id="printables-badges" class="badge-grid">
-                        </div>
+                        <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,6 +268,17 @@ tabs.forEach(tab => {
         });
         document.getElementById(tab.dataset.tab).style.display = 'block';
     });
+});
+
+// Auto switch to home tab on reload
+window.addEventListener('load', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    const homeTab = document.querySelector('.tab[data-tab="home"]');
+    homeTab.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.style.display = 'none';
+    });
+    document.getElementById('home').style.display = 'block';
 });
 
 // ===== HELPER FUNCTION FOR RENDERING STARS =====
@@ -303,13 +374,19 @@ function loadBadges() {
 loadBadges();
 
 // ===== LOAD PROJECT LINKS FROM JSON =====
+const homeContainer = document.getElementById('home');
+const linksLoading = document.createElement('div');
+linksLoading.className = 'loading-container';
+linksLoading.innerHTML = `<h2>Projects:</h2><div class="loading-throbber"></div><p>Loading project links...</p>`;
+homeContainer.insertBefore(linksLoading, homeContainer.firstChild);
+
 fetch('projectpagelinks.json')
     .then(res => {
         if (!res.ok) throw new Error('projectpagelinks.json not found');
         return res.json();
     })
     .then(projects => {
-        const homeContainer = document.getElementById('home');
+        homeContainer.removeChild(linksLoading);
         const projectLinksSection = document.createElement('div');
         projectLinksSection.className = 'project-links-section';
         projectLinksSection.innerHTML = `<h2>Projects:</h2>`;
@@ -335,19 +412,25 @@ fetch('projectpagelinks.json')
     })
     .catch(err => {
         console.error('Error loading projectpagelinks.json:', err);
-        const homeContainer = document.getElementById('home');
+        homeContainer.removeChild(linksLoading);
         const fallback = document.createElement('div');
         fallback.innerHTML = `<p style="color: #aaa; font-style: italic;">Could not load project links (projectpagelinks.json missing or invalid)</p>`;
         homeContainer.insertBefore(fallback, homeContainer.firstChild);
     });
 
 // ===== LOAD GITHUB REPOS =====
+const githubContainer = document.getElementById('github');
+githubContainer.innerHTML = '<div class="loading-container"><div class="loading-throbber"></div><p>Loading GitHub Repos...</p></div>';
+
+const githubHomeLoading = document.createElement('div');
+githubHomeLoading.className = 'loading-container';
+githubHomeLoading.innerHTML = `<h2>Top GitHub Repos</h2><div class="loading-throbber"></div><p>Loading...</p>`;
+homeContainer.appendChild(githubHomeLoading);
+
 fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
+    githubContainer.innerHTML = '';
     const filteredRepos = repos.filter(r=>r.name!=='directedhunt42.github.io');
     filteredRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
-
-    const homeContainer = document.getElementById('home');
-    const githubContainer = document.getElementById('github');
 
     for(const r of filteredRepos){
         const card = document.createElement('div');
@@ -392,6 +475,7 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
         githubContainer.appendChild(card);
     }
 
+    homeContainer.removeChild(githubHomeLoading);
     const githubHomeHeader = document.createElement('h2');
     githubHomeHeader.textContent = 'Top GitHub Repos';
     homeContainer.appendChild(githubHomeHeader);
@@ -410,13 +494,21 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
     homeContainer.offsetHeight;
 
     // ===== LOAD ITCH.IO PROJECTS =====
+    const itchContainer = document.getElementById('itch');
+    itchContainer.innerHTML = '<div class="loading-container"><div class="loading-throbber"></div><p>Loading itch.io Projects...</p></div>';
+
+    const itchHomeLoading = document.createElement('div');
+    itchHomeLoading.className = 'loading-container';
+    itchHomeLoading.innerHTML = `<h2>Top itch.io Projects</h2><div class="loading-throbber"></div><p>Loading...</p>`;
+    homeContainer.appendChild(itchHomeLoading);
+
     fetch(proxyUrl + encodeURIComponent(itchCollectionUrl))
         .then(res => res.text())
         .then(async html => {
+            itchContainer.innerHTML = '';
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const games = doc.querySelectorAll('.game_cell');
-            const itchContainer = document.getElementById('itch');
 
             const gamePromises = Array.from(games).map(async (game) => {
                 const titleEl = game.querySelector('.game_title a');
@@ -475,6 +567,7 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
                 itchContainer.appendChild(card);
             }
 
+            homeContainer.removeChild(itchHomeLoading);
             const itchHomeHeader = document.createElement('h2');
             itchHomeHeader.textContent = 'Top itch.io Projects';
             homeContainer.appendChild(itchHomeHeader);
@@ -489,48 +582,66 @@ fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json
             homeContainer.offsetHeight;
             homeContainer.style.display = 'block';
         })
-        .catch(err => console.error('Error loading itch.io projects:', err));
-
-    // ===== LOAD APPS SCRIPT =====
-    fetch('appsscript.json')
-        .then(res => res.json())
-        .then(apps => {
-            if (!Array.isArray(apps)) { apps = [apps]; }
-            const appsContainer = document.getElementById('appsscript');
-            
-            for (const app of apps) {
-                const card = document.createElement('div');
-                card.className = 'project-card fade-in';
-                card.innerHTML = `
-                    <h3>${app.title}</h3>
-                    <button class='toggle-readme'>Show README</button>
-                    <div class='repo-readme' style='display:none;'></div>
-                    <a href='${app.link}' target='_blank'>View Link</a>`;
-                
-                const readmeDiv = card.querySelector('.repo-readme');
-                const toggleBtn = card.querySelector('.toggle-readme');
-
-                toggleBtn.addEventListener('click', () => {
-                    if (readmeDiv.style.display === 'none') {
-                        if (!readmeDiv.innerHTML) {
-                            readmeDiv.innerHTML = marked.parse(app.description || '<p>No description available</p>');
-                        }
-                        readmeDiv.style.display = 'block';
-                        toggleBtn.textContent = 'Hide README';
-                    } else {
-                        readmeDiv.style.display = 'none';
-                        toggleBtn.textContent = 'Show README';
-                    }
-                });
-
-                appsContainer.appendChild(card);
-            }
-        })
         .catch(err => {
-            console.error('Error loading appsscript.json:', err);
-            document.getElementById('appsscript').innerHTML = '<p>Could not load Apps Script data</p>';
+            console.error('Error loading itch.io projects:', err);
+            itchContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load itch.io projects</p>';
+            homeContainer.removeChild(itchHomeLoading);
+            const fallback = document.createElement('div');
+            fallback.innerHTML = `<h2>Top itch.io Projects</h2><p style="color: #aaa; font-style: italic;">Could not load itch.io projects</p>`;
+            homeContainer.appendChild(fallback);
         });
+})
+.catch(err => {
+    console.error('Error loading GitHub repos:', err);
+    githubContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load GitHub repos</p>';
+    homeContainer.removeChild(githubHomeLoading);
+    const fallback = document.createElement('div');
+    fallback.innerHTML = `<h2>Top GitHub Repos</h2><p style="color: #aaa; font-style: italic;">Could not load GitHub repos</p>`;
+    homeContainer.appendChild(fallback);
 });
+
+// ===== LOAD APPS SCRIPT =====
+const appsContainer = document.getElementById('appsscript');
+appsContainer.innerHTML = '<div class="loading-container"><div class="loading-throbber"></div><p>Loading Apps Scripts...</p></div>';
+
+fetch('appsscript.json')
+    .then(res => res.json())
+    .then(apps => {
+        appsContainer.innerHTML = '';
+        if (!Array.isArray(apps)) { apps = [apps]; }
+        
+        for (const app of apps) {
+            const card = document.createElement('div');
+            card.className = 'project-card fade-in';
+            card.innerHTML = `
+                <h3>${app.title}</h3>
+                <button class='toggle-readme'>Show README</button>
+                <div class='repo-readme' style='display:none;'></div>
+                <a href='${app.link}' target='_blank'>View Link</a>`;
+            
+            const readmeDiv = card.querySelector('.repo-readme');
+            const toggleBtn = card.querySelector('.toggle-readme');
+
+            toggleBtn.addEventListener('click', () => {
+                if (readmeDiv.style.display === 'none') {
+                    if (!readmeDiv.innerHTML) {
+                        readmeDiv.innerHTML = marked.parse(app.description || '<p>No description available</p>');
+                    }
+                    readmeDiv.style.display = 'block';
+                    toggleBtn.textContent = 'Hide README';
+                } else {
+                    readmeDiv.style.display = 'none';
+                    toggleBtn.textContent = 'Show README';
+                }
+            });
+
+            appsContainer.appendChild(card);
+        }
+    })
+    .catch(err => {
+        console.error('Error loading appsscript.json:', err);
+        appsContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load Apps Script data</p>';
+    });
 </script>
 </body>
 </html>
