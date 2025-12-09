@@ -1,19 +1,8 @@
 Welcome to **Nova Foundry**!  
 
-We create simple, practical software to make life easier. Our focus is on clean, efficient solutions that just work.
+Hi! I'm Jack, and Nova Foundry is my place to put forward my projects and show what I'm working on, from simple software projects to CAD. I can be found on the interweb as Nova Foundry or DirectedHunt42, or just Jack.
 
-## What We Do
-
-- 🛠️ **Software Tools:** Lightweight applications for everyday tasks.  
-- 🌟 **Small Projects:** Fun experiments and open-source projects.  
-
-## Our Approach
-
-- **Simplicity:** Easy to use, no unnecessary complexity.  
-- **Quality:** Reliable and well-crafted software.  
-- **Innovation:** Always looking for better ways to do things.  
-
-Thank you for visiting **Nova Foundry**. Explore our projects and see what we’re building!
+Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm building!
 
 <div>
   <a href="https://info.flagcounter.com/YCtD"><img src="https://s01.flagcounter.com/count2/YCtD/bg_0B0F1A/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_20/viewers_0/labels_0/pageviews_1/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
