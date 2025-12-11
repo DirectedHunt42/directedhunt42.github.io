@@ -3,13 +3,56 @@ const canvas = document.getElementById('starCanvas');
 const ctx = canvas.getContext('2d');
 let stars = [], galaxies = [], shootingStars = [];
 let mouseX = 0, mouseY = 0;
+let targetMouseX = 0, targetMouseY = 0; // For smoothing
+let lastWidth = 0, lastHeight = 0;
 
 // ===== STARFIELD, GALAXIES, SHOOTING STARS =====
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    generateStars();
-    generateGalaxies();
+    const newWidth = window.innerWidth;
+    const newHeight = window.innerHeight;
+
+    if (lastWidth && lastHeight) {
+        const sx = newWidth / lastWidth;
+        const sy = newHeight / lastHeight;
+
+        // Scale existing stars
+        stars.forEach(s => {
+            s.x *= sx;
+            s.y *= sy;
+            s.driftX *= sx;
+            s.driftY *= sy;
+        });
+
+        // Scale existing galaxies
+        galaxies.forEach(g => g.forEach(star => {
+            star.centerX *= sx;
+            star.centerY *= sy;
+            star.radiusX *= sx;
+            star.radiusY *= sy;
+            star.driftX *= sx;
+            star.driftY *= sy;
+        }));
+
+        // Scale existing shooting stars
+        shootingStars.forEach(s => {
+            s.x *= sx;
+            s.y *= sy;
+            s.speedX *= sx;
+            s.speedY *= sy;
+            s.length *= sx; // Approximate scaling for length
+        });
+    }
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    if (!lastWidth || !lastHeight) {
+        generateStars();
+        generateGalaxies();
+    }
+
+    lastWidth = newWidth;
+    lastHeight = newHeight;
 }
 
 function generateStars() {
@@ -17,14 +60,16 @@ function generateStars() {
     const starCount = 400;
     const colors = ['#ffffff', '#ffd700', '#add8e6', '#ffcccb'];
     for (let i = 0; i < starCount; i++) {
+        const parallax = 0.01 + Math.random() * 0.04;
+        const radius = 0.5 + (parallax - 0.01) / 0.04 * 1.5; // Tie radius to parallax for depth
         stars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            radius: Math.random() * 1.5 + 0.5,
+            radius,
             color: colors[Math.floor(Math.random() * colors.length)],
             driftX: Math.random() * 0.02 - 0.01,
             driftY: Math.random() * 0.02 - 0.01,
-            parallax: 0.01 + Math.random() * 0.04
+            parallax: parallax * 1.5 // Increase parallax range for more 3D feel
         });
     }
 }
@@ -47,12 +92,14 @@ function generateGalaxies() {
             const arm = i % arms;
             const radiusFactor = Math.random();
             const angle = radiusFactor * 4 * Math.PI + arm * 2 * Math.PI / arms + angleOffset;
+            const parallax = 0.02 + Math.random() * 0.03;
+            const radius = 0.3 + (parallax - 0.02) / 0.03 * 0.9; // Tie radius to parallax
             starsInGalaxy.push({
                 angle, radiusX, radiusY, centerX, centerY, tilt, armAngleOffset: arm * 2 * Math.PI / arms,
-                radius: Math.random() * 1.2 + 0.3,
+                radius,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 speed: rotationSpeed,
-                parallax: 0.02 + Math.random() * 0.03,
+                parallax: parallax * 1.5, // Increase for more 3D
                 driftX: Math.random() * 0.01 - 0.005,
                 driftY: Math.random() * 0.01 - 0.005,
                 radiusFactor
@@ -70,12 +117,17 @@ function generateShootingStar() {
         speedY: 5 + Math.random() * 5,
         length: 100 + Math.random() * 50,
         color: '#ffffff',
-        parallax: 0.02 + Math.random() * 0.03
+        parallax: (0.02 + Math.random() * 0.03) * 1.5 // Increase for more 3D
     });
 }
 
 function drawStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Smooth mouse position
+    mouseX = mouseX * 0.9 + targetMouseX * 0.1;
+    mouseY = mouseY * 0.9 + targetMouseY * 0.1;
+
     stars.forEach(s => {
         s.x += s.driftX;
         s.y += s.driftY;
@@ -94,12 +146,12 @@ function drawStars() {
         star.angle += star.speed;
         const x0 = star.centerX + star.radiusX * star.radiusFactor * Math.cos(star.angle + star.armAngleOffset);
         const y0 = star.centerY + star.radiusY * star.radiusFactor * Math.sin(star.angle + star.armAngleOffset) * Math.cos(star.tilt);
-        star.x0 = x0 + star.driftX;
-        star.y0 = y0 + star.driftY;
+        star.centerX += star.driftX;
+        star.centerY += star.driftY;
         const dx = (mouseX - canvas.width / 2) * star.parallax;
         const dy = (mouseY - canvas.height / 2) * star.parallax;
         ctx.beginPath();
-        ctx.ellipse(star.x0 + dx, star.y0 + dy, star.radius * 1.2, star.radius, 0, 0, 2 * Math.PI);
+        ctx.ellipse(x0 + dx, y0 + dy, star.radius * 1.2, star.radius, 0, 0, 2 * Math.PI);
         ctx.fillStyle = star.color;
         ctx.fill();
     }));
@@ -136,10 +188,11 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
 function addOrientationListener() {
     window.addEventListener('deviceorientation', (event) => {
-        mouseX = (window.innerWidth / 2) - (event.gamma * (window.innerWidth / 180));
-        mouseY = (window.innerHeight / 2) - (event.beta * (window.innerHeight / 180));
-        mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
-        mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
+        // Increased sensitivity: /120 instead of /180 for more responsive tilt
+        targetMouseX = (window.innerWidth / 2) - (event.gamma * (window.innerWidth / 120));
+        targetMouseY = (window.innerHeight / 2) - (event.beta * (window.innerHeight / 120));
+        targetMouseX = Math.max(0, Math.min(window.innerWidth, targetMouseX));
+        targetMouseY = Math.max(0, Math.min(window.innerHeight, targetMouseY));
     });
 }
 
@@ -160,7 +213,7 @@ if (isMobile && window.DeviceOrientationEvent) {
     }
 } else {
     window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        targetMouseX = e.clientX;
+        targetMouseY = e.clientY;
     });
 }
