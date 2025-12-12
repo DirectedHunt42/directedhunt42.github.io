@@ -376,7 +376,7 @@ loadBadges();
 const homeContainer = document.getElementById('home');
 const linksLoading = document.createElement('div');
 linksLoading.className = 'loading-container';
-linksLoading.innerHTML = `<h2>Projects:</h2><div class="loading-throbber"></div><p>Loading project links...</p>`;
+linksLoading.innerHTML = `<h2>Projects</h2><div class="loading-throbber"></div><p>Loading project links...</p>`;
 homeContainer.insertBefore(linksLoading, homeContainer.firstChild);
 
 fetch('projectpagelinks.json')
