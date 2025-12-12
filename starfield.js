@@ -108,7 +108,12 @@ function resizeCanvas() {
             {light: '#93c47d', mid: '#38761d', dark: '#006400', shadow: '#000000'}, // Green Continents / Dark Green Forest
             {light: '#e06666', mid: '#990000', dark: '#8B0000', shadow: '#000000'}, // Red/Mars-like
             {light: '#b4a7d6', mid: '#674ea7', dark: '#4B0082', shadow: '#000000'}, // Purple Alien
-            {light: '#f6b26b', mid: '#783f04', dark: '#8B4513', shadow: '#000000'}  // Desert/Earthy
+            {light: '#f6b26b', mid: '#783f04', dark: '#8B4513', shadow: '#000000'}, // Desert/Earthy
+            {light: '#ffd966', mid: '#bf9000', dark: '#996600', shadow: '#000000'}, // Yellow/Barren
+            {light: '#a4c2f4', mid: '#1155cc', dark: '#0b3d91', shadow: '#000000'}, // Icy/Glacial
+            {light: '#d5a6bd', mid: '#c27ba0', dark: '#8b3a62', shadow: '#000000'}, // Pinkish/Fantasy
+            {light: '#ffffff', mid: '#c0c0c0', dark: '#808080', shadow: '#000000'}, // Grey/Metallic
+            {light: '#6fa8dc', mid: '#58c63dff', dark: '#274e75', shadow: '#000000'}  // Standard Earth-like
         ];
         planet.palette = planetPalettes[Math.floor(Math.random() * planetPalettes.length)];
 
