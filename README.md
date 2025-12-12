@@ -29,6 +29,8 @@ If you like what you see, or enjoy using my projects, feel free to follow my acc
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-NovaFoundry-6f4e37?style=for-the-badge&logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/novafoundry)
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-❤-ea4aaa?style=flat-square)](https://github.com/sponsors/DirectedHunt42)
+
 ---
 ## Thanks
 Special thanks to **Quantum Glitch Software** for inspiring this whole thing
