@@ -8,6 +8,12 @@ Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm bu
   <a href="https://info.flagcounter.com/YCtD"><img src="https://s01.flagcounter.com/count2/YCtD/bg_0B0F1A/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_20/viewers_0/labels_0/pageviews_1/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
 </div>
 
+<img
+  src="https://gh-heat.anishroy.com/api/DirectedHunt42/svg?darkMode=true"
+  style="max-width: 100%; height: auto;"
+  alt="GitHub Heat Chart"
+/>
+
 ---
 ## Links
 
