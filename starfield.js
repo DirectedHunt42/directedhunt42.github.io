@@ -113,8 +113,8 @@ function generateShootingStar() {
     shootingStars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height / 2,
-        speedX: 20 + Math.random() * 30,
-        speedY: 5 + Math.random() * 5,
+        speedX: 20 + Math.random() * 300,
+        speedY: 5 + Math.random() * 50,
         length: 100 + Math.random() * 50,
         color: '#ffffff',
         parallax: (0.02 + Math.random() * 0.03) * 1.5 // Increase for more 3D
