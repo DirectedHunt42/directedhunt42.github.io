@@ -128,7 +128,8 @@ function resizeCanvas() {
             {core: 'white', mid1: 'yellow', mid2: 'orange'},
             {core: 'white', mid1: '#FFD700', mid2: '#FF8C00'},
             {core: 'white', mid1: '#FFFFE0', mid2: '#FF4500'},
-            {core: 'white', mid1: '#FFFACD', mid2: '#FFA500'}
+            {core: 'white', mid1: '#FFFACD', mid2: '#FFA500'},
+            {core: '#aac9ffff', mid1: '#8fb6faff', mid2: '#9d9af7ff'}
         ];
         sun.palette = sunPalettes[Math.floor(Math.random() * sunPalettes.length)];
     }
