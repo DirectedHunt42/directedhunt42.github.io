@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulsar</title>
+    <link rel="icon" type="image/x-icon" href="../Images/Nova_foundry_favicon.ico" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow-x: hidden; }
+        .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
+        .left-panel { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; max-width: 95%;}
+        .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
+        .readme { max-width: 100%; }
+        .right-panel { flex: 2; display: flex; flex-direction: column; gap: 20px; }
+        .section { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
+        .section h1, .section h2 { margin-top: 0; }
+        .features-list { list-style-type: disc; padding-left: 20px; }
+        .screenshots-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .screenshot { width: 100%; border-radius: 5px; }
+        .links-list { list-style-type: none; padding: 0; }
+        .links-list li { margin-bottom: 10px; }
+        .links-list a { color: #fff; text-decoration: none; }
+        .links-list a:hover { text-decoration: underline; }
+        canvas { position: fixed; top:0; left:0; z-index:0; }
+
+        /* Home Button Styles */
+        .home-button { 
+            display: block;
+            width: 100%;
+            padding: 10px 20px; 
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-weight: bold; 
+            text-align: center;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .home-button:hover { 
+            background: rgba(255,255,255,0.2); 
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
+            .right-panel { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+
+    <div class="container">
+        <div class="left-panel">
+            <a href="https://novafoundry.ca" class="home-button">Home</a>
+            <img class="logo-small" src="../Images/Pulsar_Logo_Light.png" alt="Pulsar Logo" onerror="this.style.display='none';" />
+            <div id="readmeContent" class="readme"></div>
+            <a href="../licenses/pulsarlicense" target="_blank" class="home-button" style="margin-top: 20px;">View License</a>
+        </div>
+        <div class="right-panel">
+            <div class="section">
+                <h1>Pulsar</h1>
+                <p>Pulsar is a modern, offline-first financial tracker built for clarity and privacy. Track your income and spending, visualize your financial trajectory with predictive graphing, and keep your data secure on your own machine.</p>
+            </div>
+            <div class="section">
+                <h2>Features</h2>
+                <ul class="features-list">
+                    <li>📈 <strong>Smart Visualization</strong> — Interactive graphs with linear regression trends.</li>
+                    <li>🔒 <strong>Local-Only Storage</strong> — Your data never leaves your device.</li>
+                    <li>⚡ <strong>Flexible Export</strong> — Export data to Excel, ODS, or CSV.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2>Screenshots</h2>
+                <div class="screenshots-grid">
+                    <img class="screenshot" src="https://img.itch.zone/aW1hZ2UvNDEyMDQ1Ny8yNDU1NDEzOC5wbmc=/original/6Iv5Dv.png" alt="Dashboard View" onerror="this.style.display='none';"/>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Downloads & Links</h2>
+                <div>
+                    <a href="../Downloads/pulsardownloads" class="home-button">View All Releases</a>
+                </div>
+                <ul class="links-list">
+                    <li><a href="https://github.com/DirectedHunt42/Pulsar" target="_blank">View on GitHub</a> <img src="https://img.shields.io/github/stars/DirectedHunt42/Pulsar" alt="Stars" /> <img src="https://img.shields.io/github/forks/DirectedHunt42/Pulsar" alt="Forks" /></li>
+                    
+                    <li><a href="https://nova-foundry.itch.io/pulsar" target="_blank">View on itch.io</a></li>
+                    
+                    <li><a href="https://sourceforge.net/projects/pulsar-financial/" target="_blank">View on SourceForge</a></li>
+                    <li><a href="https://sourceforge.net/projects/pulsar-financial/files/latest/download" target="_blank">Download Latest from SourceForge</a></li>
+                    
+                    <li><a href="https://nova-foundry.itch.io/pulsar/purchase" target="_blank">Download from itch.io (Name Your Price)</a></li>
+                    
+                    <li><a href="https://sourceforge.net/projects/pulsar-financial/files/latest/download"><img alt="Download Pulsar" src="https://a.fsdn.com/con/app/sf-download-button" width=276 height=48 srcset="https://a.fsdn.com/con/app/sf-download-button?button_size=2x 2x"></a></li>
+                    
+                    <li><iframe frameborder="0" src="https://itch.io/embed/4120457?bg_color=2a2a2a&amp;fg_color=ffffff&amp;link_color=1f6aa5&amp;border_color=474747" width="552" height="167"><a href="https://nova-foundry.itch.io/pulsar">Pulsar by Nova Foundry</a></iframe></li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2>Badges</h2>
+                <!-- Begin  Tag -->
+                <div class="sf-root" data-id="3939349" data-badge="oss-users-love-us-white" style="width:125px">
+                    <a href="https://sourceforge.net/projects/pulsar-financial/" target="_blank">Pulsar</a>
+                </div>
+                <script>(function () {var sc=document.createElement('script');sc.async=true;sc.src='https://b.sf-syn.com/badge_js?sf_id=3939349';var p=document.getElementsByTagName('script')[0];p.parentNode.insertBefore(sc, p);})();
+                </script>
+                <!-- End  Tag -->
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../starfield.js"></script>
+    <script>// ===== LOAD README FROM GITHUB (Pulsar Repo) =====
+        fetch('https://raw.githubusercontent.com/DirectedHunt42/Pulsar/main/README.md')
+            .then(res => res.text())
+            .then(md => {
+                document.getElementById('readmeContent').innerHTML = marked.parse(md);
+
+                // Fix relative image URLs in README + completely remove any image that fails to load
+                const repoBase = 'https://raw.githubusercontent.com/DirectedHunt42/Pulsar/main/';
+                const readmeImages = document.querySelectorAll('#readmeContent img');
+
+                readmeImages.forEach(img => {
+                    const src = img.getAttribute('src');
+
+                    // Fix relative paths
+                    if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:') && !src.startsWith('//')) {
+                        img.src = repoBase + src;
+                    }
+
+                    // If image fails to load → remove the entire <img> element
+                    img.onerror = function() {
+                        this.remove();
+                    };
+
+                    // Catch images that already failed before we could fix them
+                    if (img.complete && img.naturalWidth === 0) {
+                        img.remove();
+                    }
+                });
+            })
+            .catch(() => document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>');
+    </script>
+</body>
+</html>

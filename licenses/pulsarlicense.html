@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulsar License</title>
+    <link rel="icon" type="image/x-icon" href="../Images/Nova_foundry_favicon.ico" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow-x: hidden; }
+        .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
+        .left-panel { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; max-width: 95%; margin-right: 20px; }
+        .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
+        .right-panel { flex: 2; display: flex; flex-direction: column; gap: 20px; }
+        .section { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
+        .section h1 { margin-top: 0; }
+        .license-text { line-height: 1.5; }
+        .features-list { list-style-type: disc; padding-left: 20px; }
+        canvas { position: fixed; top:0; left:0; z-index:0; }
+
+        /* Home Button Styles */
+        .return-button { 
+            display: block;
+            width: 100%;
+            padding: 10px 20px; 
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-weight: bold; 
+            text-align: center;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .return-button:hover { 
+            background: rgba(255,255,255,0.2); 
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; }
+            .right-panel { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+
+    <div class="container">
+        <div class="left-panel">
+            <a href="../Projects/pulsar" class="return-button">Return to Project</a>
+            <img class="logo-small" src="../Images/Pulsar_Logo_Light.png" alt="Pulsar Logo" />
+        </div>
+        <div class="right-panel">
+            <div class="section">
+                <h1>Pulsar License</h1>
+                <div class="license-text">
+                    <p>© Nova Foundry 2025. All rights reserved.</p>
+
+                    <p>This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License (CC BY-ND 4.0).</p>
+
+                    <p>You are free to:</p>
+                    <ul class="features-list">
+                        <li>Share: copy and redistribute the material in any medium or format.</li>
+                    </ul>
+
+                    <p>Under the following terms:</p>
+                    <ul class="features-list">
+                        <li>Attribution: You must give appropriate credit to Nova Foundry, provide a link to the license, and indicate if changes were made.</li>
+                        <li>NoDerivatives: If you remix, transform, or build upon the material, you may not distribute the modified material.</li>
+                    </ul>
+
+                    <p>No additional restrictions:</p>
+                    <ul class="features-list">
+                        <li>You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</li>
+                    </ul>
+
+                    <p>For full license text, see:<br>
+                    <a href="https://creativecommons.org/licenses/by-nd/4.0/" style="color: #fff; text-decoration: underline;">https://creativecommons.org/licenses/by-nd/4.0/</a></p>
+
+                    <p>THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,<br>
+                    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br>
+                    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.<br>
+                    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,<br>
+                    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,<br>
+                    ARISING FROM, OUT OF OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../starfield.js"></script>
+</body>
+</html>
