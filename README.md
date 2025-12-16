@@ -8,21 +8,6 @@ Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm bu
   <a href="https://info.flagcounter.com/YCtD"><img src="https://s01.flagcounter.com/count2/YCtD/bg_0B0F1A/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_20/viewers_0/labels_0/pageviews_1/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
 </div>
 
-<img
-  src="https://github-readme-activity-graph.vercel.app/graph?username=DirectedHunt42&theme=github-dark"
-/>
-<img
-  src="https://github-readme-stats.vercel.app/api/top-langs/?username=DirectedHunt42&theme=dark"
-/>
-<img
-  src="https://github-readme-stats.vercel.app/api?username=DirectedHunt42&theme=github_dark"
-  alt="GitHub profile stats for DirectedHunt42"
-/>
-<img
-  src="https://metrics.lecoq.io/DirectedHunt42?theme=github-dark"
-  alt="GitHub metrics for DirectedHunt42"
-/>
-
 ---
 ## Links
 
