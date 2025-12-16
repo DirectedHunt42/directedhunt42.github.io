@@ -9,9 +9,11 @@ Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm bu
 </div>
 
 <img
-  src="https://gh-heat.anishroy.com/api/DirectedHunt42/svg?darkMode=true"
-  style="max-width: 100%; height: auto;"
-  alt="GitHub Heat Chart"
+  src="https://github-readme-activity-graph.vercel.app/graph?username=DirectedHunt42&theme=github-dark"
+/>
+
+<img
+  src="https://github-readme-stats.vercel.app/api/top-langs/?username=DirectedHunt42&theme=dark"
 />
 
 ---
