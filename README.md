@@ -12,7 +12,7 @@ Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm bu
 ## Links
 
 [![GitHub Profile](https://img.shields.io/badge/GitHub-DirectedHunt42-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DirectedHunt42)
-[![Itch.io Profile](https://img.shields.io/badge/Itch.io-DirectedHunt42-red?style=for-the-badge&logo=itchdotio&logoColor=white)]([https://directedhunt42.itch.io/)
+[![Itch.io Profile](https://img.shields.io/badge/Itch.io-DirectedHunt42-red?style=for-the-badge&logo=itchdotio&logoColor=white)](https://directedhunt42.itch.io/)
 [![Printables Profile](https://img.shields.io/badge/Printables-DirectedHunt42-blue?style=for-the-badge&logo=printables&logoColor=white)](https://www.printables.com/@DirectedHunt42)
 [![SourceForge Profile](https://img.shields.io/badge/SourceForge-directedhunt42-orange?style=for-the-badge&logo=sourceforge&logoColor=white)](https://sourceforge.net/u/directedhunt42/profile)
 [![Archive.org Profile](https://img.shields.io/badge/Internet_Archive-directedhunt42-lightgrey?style=for-the-badge&logo=internetarchive&logoColor=white)](https://archive.org/details/@jack_murray170)
