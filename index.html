@@ -34,7 +34,6 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .project-link-card a { display: flex; color: inherit; text-decoration: none; height: 100%; }
 .project-link-content { display: flex; flex-direction: row; padding: 15px; gap: 15px; align-items: center; }
 .project-link-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-.project-link-title { font-size: 1.4em; font-weight: bold; margin: 0; }
 
 /* BADGES SECTION STYLES */
 .badges-section { padding: 0px; background: transparent; border-radius: 10px; margin-bottom: 25px; }
@@ -163,6 +162,61 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
     0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
 }
+
+/* Stats Grid Styles */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* two equal columns */
+    gap: 20px;
+    background: rgba(255,255,255,0.05);
+    justify-items: center;
+    align-items: start;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    min-height: 200px; /* Reserve space while loading */
+}
+
+.stats-grid .loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.stats-grid img {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    transition: transform 0.2s ease;
+    display: none; /* Hide initially */
+}
+
+.stats-grid img:hover {
+    transform: scale(1.05);
+}
+
+/* Layout: first row two images, bottom two full width */
+.stats-grid img:nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 1;
+}
+
+.stats-grid img:nth-child(2) {
+    grid-column: 2 / 3;
+    grid-row: 1;
+}
+
+.stats-grid img:nth-child(3) {
+    grid-column: 1 / 3; /* span both columns */
+    grid-row: 2;
+}
+
+.stats-grid img:nth-child(4) {
+    grid-column: 1 / 3; /* span both columns */
+    grid-row: 3;
+}
 </style>
 </head>
 <body>
@@ -201,10 +255,11 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
                 <div class="badges-section">
                     <h2>Stats</h2>
                     <div class="stats-grid">
-                        <img src="https://metrics.lecoq.io/DirectedHunt42?theme=github-dark" alt="Metrics Overview" />
-                        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=DirectedHunt42&theme=github_dark" alt="Top Languages" />
-                        <img src="https://github-readme-activity-graph.vercel.app/graph?username=DirectedHunt42&theme=github-dark" alt="GitHub Activity Graph" />
-                        <img src="https://github-readme-stats.vercel.app/api?username=DirectedHunt42&theme=github_dark" alt="GitHub Profile Stats" />
+                        <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
+                        <img data-src="https://metrics.lecoq.io/DirectedHunt42?theme=github-dark" alt="Metrics Overview" />
+                        <img data-src="https://github-readme-activity-graph.vercel.app/graph?username=DirectedHunt42&theme=github-dark" alt="GitHub Activity Graph" />
+                        <img data-src="https://github-readme-stats.vercel.app/api?username=DirectedHunt42&theme=github_dark" alt="GitHub Profile Stats" />
+                        <img data-src="https://github-readme-stats.vercel.app/api/top-langs/?username=DirectedHunt42&theme=github_dark" alt="Top Languages" />
                     </div>
                 </div>
             </div>
@@ -659,6 +714,37 @@ fetch('appsscript.json')
         console.error('Error loading appsscript.json:', err);
         appsContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load Apps Script data</p>';
     });
+
+// ===== STATS IMAGES SEQUENTIAL LOADING =====
+const statsGrid = document.querySelector('.stats-grid');
+if (statsGrid) {
+    const loadingContainer = statsGrid.querySelector('.loading-container');
+    const statsImages = Array.from(statsGrid.querySelectorAll('img[data-src]'));
+    let index = 0;
+
+    const loadNext = () => {
+        if (index >= statsImages.length) {
+            if (loadingContainer) {
+                loadingContainer.style.display = 'none';
+            }
+            return;
+        }
+
+        const img = statsImages[index];
+        img.src = img.dataset.src;
+        img.style.display = 'block'; // Show as it loads
+
+        const onLoadOrError = () => {
+            index++;
+            loadNext();
+        };
+
+        img.addEventListener('load', onLoadOrError, { once: true });
+        img.addEventListener('error', onLoadOrError, { once: true });
+    };
+
+    loadNext();
+}
 </script>
 </body>
 </html>
