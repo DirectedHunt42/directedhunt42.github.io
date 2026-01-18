@@ -217,6 +217,23 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
     grid-column: 1 / 3; /* span both columns */
     grid-row: 3;
 }
+
+/* Tab animation styles */
+.tab-contents {
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.tab-content.active-content {
+    opacity: 1;
+    transform: translateY(0);
+}
 </style>
 </head>
 <body>
@@ -263,9 +280,9 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
                     </div>
                 </div>
             </div>
-            <div id="github" class="tab-content" style="display: none;"></div>
-            <div id="itch" class="tab-content" style="display: none;"></div>
-            <div id="appsscript" class="tab-content" style="display: none;"></div>
+            <div id="github" class="tab-content"></div>
+            <div id="itch" class="tab-content"></div>
+            <div id="appsscript" class="tab-content"></div>
         </div>
     </div>
 </div>
@@ -329,9 +346,14 @@ tabs.forEach(tab => {
         tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active-content');
             content.style.display = 'none';
         });
-        document.getElementById(tab.dataset.tab).style.display = 'block';
+        const selectedContent = document.getElementById(tab.dataset.tab);
+        selectedContent.style.display = 'block';
+        setTimeout(() => {
+            selectedContent.classList.add('active-content');
+        }, 10);
     });
 });
 
@@ -343,7 +365,11 @@ window.addEventListener('load', () => {
     document.querySelectorAll('.tab-content').forEach(content => {
         content.style.display = 'none';
     });
-    document.getElementById('home').style.display = 'block';
+    const homeContent = document.getElementById('home');
+    homeContent.style.display = 'block';
+    setTimeout(() => {
+        homeContent.classList.add('active-content');
+    }, 10);
 });
 
 // ===== HELPER FUNCTION FOR RENDERING STARS =====
