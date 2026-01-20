@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jack Murray | Resume - Nova Foundry</title>
+
+<link rel="icon" href="Images/Nova_foundry_favicon.ico" />
+
+<style>
+/* ================= BASE ================= */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background: #000;
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: auto;
+    padding: 60px 20px;
+}
+
+/* ================= HEADER ================= */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.logo-small {
+    max-width: 280px;
+    margin-bottom: 20px;
+}
+
+.name {
+    font-size: 3em;
+    margin: 0;
+    color: #ff5501;
+    text-shadow: 0 0 15px #ff5501;
+}
+
+.subtitle {
+    opacity: 0.85;
+}
+
+/* ================= SECTIONS ================= */
+.section {
+    margin-bottom: 50px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section h2 {
+    color: #ff5501;
+    border-bottom: 2px solid rgba(255,85,1,0.4);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ff5501;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    line-height: 1.6;
+}
+
+/* ================= IMAGE LINKS ================= */
+.image-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.image-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.image-card:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.15);
+}
+
+.image-card img {
+    background-color: #eee;
+    border-radius: 20px;
+    max-width: 100%;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.image-card2 img {
+    background-color: #eee;
+    border-radius: 20px;
+    max-width: 100%;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.image-card a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ================= SKILLS ================= */
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.badge {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+}
+
+.badge img {
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    text-align: center;
+    margin-top: 60px;
+    opacity: 0.6;
+}
+
+/* ================= PRINT ================= */
+@media print {
+    canvas { display: none; }
+    body {
+        background: #fff;
+        color: #000;
+    }
+    .section, .header {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    h2 {
+        color: #000;
+        text-shadow: none;
+        border-color: #000;
+    }
+    .badge {
+        background: #eee;
+        color: #000;
+    }
+    a {
+        color: #000;
+        text-decoration: underline;
+    }
+}
+</style>
+</head>
+
+<body>
+<canvas id="starCanvas"></canvas>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header section">
+        <a href="https://novafoundry.ca">
+            <img class="logo-small"
+                src="Images/Nova_foundry_wide_transparent_SVG.svg"
+                alt="Nova Foundry">
+        </a>
+        <h1 class="name">Jack Murray</h1>
+        <p>Ottawa, ON · jackpwmurray@gmail.com · 613-698-4984</p>
+    </div>
+
+    <!-- IMAGE LINKS -->
+    <div class="section">
+        <h2>Online Profiles & Work</h2>
+        <div class="image-links">
+            <div class="image-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg">
+                <a href="https://www.github.com/DirectedHunt42">Github</a>
+            </div>
+            <div class="image-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg">
+                <a href="https://www.linkedin.com/in/jack-murray-a272aa2b2">LinkedIn</a>
+            </div>
+            <div class="image-card">
+                <img src="https://cdn.help.prusa3d.com/wp-content/uploads/2023/07/366d60739e94863995cfbf6b855df5fe-2048x748.jpg">
+                <a href="https://www.printables.com/@NovaFoundry">Printables</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="section">
+        <h2>Work Experience</h2>
+        <p><strong></strong></p>
+        <div class="image-card2">
+            <a href="https://www.equinoxpowerinc.com/">
+                <img src="https://cdn.prod.website-files.com/687543290a90ea02101221ce/68c0adecec22ec22a9bb7c52_EquinoxPowerLogo_BlackColour%201.svg" alt="Equinox Power Innovations Inc. Logo" style="max-width: 200px; margin-bottom: 10px;">
+            </a>
+        </div>
+        <p><strong>Equinox Power Innovations Inc.</strong><br>
+        Lab Assistant · Feb 2024 - Present</p>
+        <ul>
+            <li>PCB soldering and electronic assembly</li>
+            <li>Electrical testing and debugging</li>
+            <li>Test fixture and jig fabrication</li>
+        </ul>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section">
+    <h2>Skills</h2>
+    <div class="badges">
+        <span class="badge">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png" alt="Python logo" class="skill-icon">
+        Python
+        </span>
+        <span class="badge">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png" alt="C logo" class="skill-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/960px-ISO_C%2B%2B_Logo.svg.png" alt="C++ logo" class="skill-icon">
+        C / C++
+        </span>
+        <span class="badge">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_C_sharp.svg/960px-Logo_C_sharp.svg.png" alt="C# logo" class="skill-icon">
+        C#
+        </span>
+        <span class="badge">
+        <img src="https://img.icons8.com/color/512/java-coffee-cup-logo--v2.png" alt="Java logo" class="skill-icon">
+        Java
+        </span>
+        <span class="badge">
+        <img src="https://img.icons8.com/color/512/solidworks.png" alt="SolidWorks logo" class="skill-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Fusion360_Logo.svg/250px-Fusion360_Logo.svg.png" alt="Fusion 360 logo" class="skill-icon">
+        CAD
+        </span>
+        <span class="badge">
+        <img src="https://www.metcal.com/wp-content/uploads/2022/01/metcal-favicon.png" alt="Soldering icon" class="skill-icon">
+        PCB Soldering
+        </span>
+        <span class="badge">
+        <img src="https://cdn2.steamgriddb.com/icon/9fea8de3d6571fa87307a48cbdb9f345.png" alt="3D Printing icon" class="skill-icon">
+        3D Printing
+        </span>
+    </div>
+    </div>
+
+    </div>
+
+    <div class="footer section">
+        © Nova Foundry · Jack Murray
+    </div>
+
+</div>
+
+<script src="starfield.js"></script>
+
+<script>
+/* Scroll fade-in */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>
