@@ -9,7 +9,11 @@
 <style>
 body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow-x: hidden; }
 .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
-.left-panel { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; max-width: 95%;}
+.left-panel { flex: 1; padding: 15px; border-radius: 10px; max-width: 95%; background: rgba(255,255,255,0); box-shadow: 0 0 0px rgba(255,255,255,0.1);}
+.readme {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+.readme img { max-width: 100%; height: auto; transition: transform 0.2s ease; }
+.readme img:hover { transform: scale(1.05); }
+.disqus {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
 .left-panel a { color: #fff; text-decoration: none; display: inline-block; margin-bottom: 15px; }
 .left-panel a:hover { text-decoration: underline; }
 .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
@@ -18,8 +22,8 @@ body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; 
 .project-card { margin-bottom: 20px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
 .project-card h3 { margin: 0 0 10px; }
 .repo-info { display: flex; gap: 10px; flex-wrap: wrap; line-height: 3px;}
-.toggle-readme { padding: 5px 10px; border-radius: 5px; background-color: #444; color: #fff; border: none; cursor: pointer; }
-.toggle-readme:hover { background-color: #666; }
+.toggle-readme { padding: 5px 10px; border-radius: 5px; background-color: #444; color: #fff ; border:none ; cursor:pointer ; }
+.toggle-readme:hover { background-color:#666 ; }
 .project-card a { color: #fff; text-decoration: none; margin-top: 10px; display: inline-block; }
 .project-card a:hover { text-decoration: underline; }
 canvas { position: fixed; top:0; left:0; z-index:0; }
@@ -242,9 +246,32 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 <canvas id="starCanvas"></canvas>
 <div class="container">
     <div class="left-panel">
-        <img class="logo-small" src="Images/Nova_foundry_wide_transparent_SVG.svg" alt="Nova Foundry Image" />
-        <a href="resume">My Resume</a>
-        <div id="readmeContent" class="readme"></div>
+        <div id="readme">
+            <img class="logo-small" src="Images/Nova_foundry_wide_transparent_SVG.svg" alt="Nova Foundry Image" />
+            <a href="resume">My Resume</a>
+            <div id="readmeContent" class="readme"></div>
+        </div>
+        <div class="disqus">
+            <div id="disqus_thread"></div>
+        </div>
+            <script>
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                /*
+                var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+                */
+                (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://novafoundry.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
     <div class="right-panel">
         <div class="tabs">

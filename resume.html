@@ -108,6 +108,7 @@ li {
     height: 80px;
     object-fit: contain;
     margin-bottom: 15px;
+    padding: 5px;
 }
 
 .image-card2 img {
@@ -122,6 +123,48 @@ li {
 .image-card a {
     color: #fff;
     text-decoration: none;
+}
+
+/* ================= EXPERIENCE GRID ================= */
+.section2 h2 {
+    color: #ff5501;
+    border-bottom: 2px solid rgba(255,85,1,0.4);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ff5501;
+}
+
+.section2 .experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+.image-card2 {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s, background 0.3s;
+    margin-bottom: 20px;
+}
+
+.image-card2:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.15);
+}
+
+.image-card2 img {
+    max-width: 100%;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    padding: 5px;
+}
+
+.section2 p {
+    line-height: 1.6;
 }
 
 /* ================= SKILLS ================= */
@@ -192,7 +235,7 @@ li {
                 alt="Nova Foundry">
         </a>
         <h1 class="name">Jack Murray</h1>
-        <p>Ottawa, ON · jackpwmurray@gmail.com · 613-698-4984</p>
+        <p class="subtitle">Ottawa • Ontario • Canada • Earth • Solar System • Orion Arm • Milky Way</p>
     </div>
 
     <!-- IMAGE LINKS -->
@@ -200,36 +243,55 @@ li {
         <h2>Online Profiles & Work</h2>
         <div class="image-links">
             <div class="image-card">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg">
-                <a href="https://www.github.com/DirectedHunt42">Github</a>
+                <a href="https://www.github.com/DirectedHunt42">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg">
+                    <a href="https://www.github.com/DirectedHunt42">Github</a>
+                </a>
             </div>
             <div class="image-card">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg">
-                <a href="https://www.linkedin.com/in/jack-murray-a272aa2b2">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/jack-murray-a272aa2b2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg">
+                    <a href="https://www.linkedin.com/in/jack-murray-a272aa2b2">LinkedIn</a>
+                </a>
             </div>
             <div class="image-card">
-                <img src="https://cdn.help.prusa3d.com/wp-content/uploads/2023/07/366d60739e94863995cfbf6b855df5fe-2048x748.jpg">
-                <a href="https://www.printables.com/@DirectedHunt42">Printables</a>
+                <a href="https://www.printables.com/@DirectedHunt42">
+                    <img src="https://cdn.help.prusa3d.com/wp-content/uploads/2023/07/366d60739e94863995cfbf6b855df5fe-2048x748.jpg">
+                    <a href="https://www.printables.com/@DirectedHunt42">Printables</a>
+                </a>
             </div>
         </div>
     </div>
 
     <!-- EXPERIENCE -->
-    <div class="section">
+    <div class="section2">
         <h2>Work Experience</h2>
         <p><strong></strong></p>
-        <div class="image-card2">
-            <a href="https://www.equinoxpowerinc.com/">
-                <img src="https://cdn.prod.website-files.com/687543290a90ea02101221ce/68c0adecec22ec22a9bb7c52_EquinoxPowerLogo_BlackColour%201.svg" alt="Equinox Power Innovations Inc. Logo" style="max-width: 200px; margin-bottom: 10px;">
-            </a>
+        <div class="experience-grid">
+            <div class="image-card2">
+                <a href="https://www.equinoxpowerinc.com/">
+                    <img src="https://cdn.prod.website-files.com/687543290a90ea02101221ce/68c0adecec22ec22a9bb7c52_EquinoxPowerLogo_BlackColour%201.svg" alt="Equinox Power Innovations Inc. Logo" style="max-width: 200px; margin-bottom: 10px;">
+                </a>
+                <p><strong>Equinox Power Innovations Inc.</strong><br>
+                Lab Assistant • Feb 2024 - Present</p>
+                <ul>
+                    <li>PCB soldering and electronic assembly</li>
+                    <li>Electrical testing and debugging</li>
+                    <li>Test fixture and jig fabrication</li>
+                </ul>
+            </div>
+            <div class="image-card2">
+                <a href="https://www.team2706.ca/">
+                    <img src="https://content.app-sources.com/s/46484333957999677/uploads/Images/merge_logo_outlined-2628077.png" alt="Merge Robotics Logo" style="max-width: 200px; margin-bottom: 10px;">
+                </a>
+                <p><strong>Merger Robotics</strong><br>
+                Team Member • Sept 2022 - Apr 2023</p>
+                <ul>
+                    <li>Assist with delivery of community outreach programs for children (STEM)</li>
+                    <li>Interacted with public to promote and solicit team sponsorship</li>
+                </ul>
+            </div>
         </div>
-        <p><strong>Equinox Power Innovations Inc.</strong><br>
-        Lab Assistant · Feb 2024 - Present</p>
-        <ul>
-            <li>PCB soldering and electronic assembly</li>
-            <li>Electrical testing and debugging</li>
-            <li>Test fixture and jig fabrication</li>
-        </ul>
     </div>
 
     <!-- SKILLS -->
