@@ -31,7 +31,7 @@ Special thanks to **Quantum Glitch Software** for inspiring this whole thing
 
 
 <a href="https://qgsoftware.github.io/">
-  <img src="https://qgsoftware.github.io/textures/logo.dib" width="200">
+  <img src="Images/QuantumGlitch.dib" width="200">
 </a>
 
 
