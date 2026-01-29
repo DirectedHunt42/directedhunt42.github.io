@@ -305,11 +305,91 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
                     <h2>Statistics</h2>
                     <div class="stats-grid">
                         <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
-                        <img data-src="https://metrics.lecoq.io/DirectedHunt42?theme=github-dark" alt="Metrics Overview" />
-                        <img data-src="https://github-readme-activity-graph.vercel.app/graph?username=DirectedHunt42&theme=github-dark" alt="GitHub Activity Graph" />
-                        <img data-src="https://github-readme-stats.vercel.app/api?username=DirectedHunt42&theme=github_dark" alt="GitHub Profile Stats" />
-                        <img data-src="https://github-readme-stats.vercel.app/api/top-langs/?username=DirectedHunt42&theme=github_dark" alt="Top Languages" />
+                        <div id="github-stats" class="stat-card">
+                            <div id="metrics-overview"></div>
+                            <div id="profile-stats"></div>
+                        </div>
                     </div>
+
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                    <style>
+                        .stat-card {
+                            color: #fff;
+                            padding: 20px;
+                            border-radius: 10px;
+                            width: 100%;
+                            max-width: 800px;
+                        }
+                        .stat-card h2, .stat-card h3 {
+                            color: #58a6ff;
+                            margin-bottom: 15px;
+                        }
+                        .stat-item {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 10px;
+                        }
+                        .stat-item i {
+                            margin-right: 10px;
+                            color: #58a6ff;
+                            width: 20px;
+                            text-align: center;
+                        }
+                    </style>
+
+                    <script>
+                    async function loadGitHubStats() {
+                        const user = 'DirectedHunt42';
+                        const loadingContainer = document.querySelector('.stats-grid .loading-container');
+                        try {
+                            const userData = await fetch(`https://api.github.com/users/${user}`).then(res => res.json());
+                            const repos = await fetch(`https://api.github.com/users/${user}/repos?per_page=100`).then(res => res.json());
+                            
+                            // Calculate additional stats
+                            let totalStars = 0;
+                            let totalForks = 0;
+                            repos.forEach(repo => {
+                                totalStars += repo.stargazers_count;
+                                totalForks += repo.forks_count;
+                            });
+                            
+                            // Metrics Overview with icons
+                            document.getElementById('metrics-overview').innerHTML = `
+                                <h3>Metrics Overview</h3>
+                                <div class="stat-item"><i class="fas fa-calendar-alt"></i> Joined: ${new Date(userData.created_at).toLocaleDateString()}</div>
+                                <div class="stat-item"><i class="fas fa-users"></i> Followers: ${userData.followers}</div>
+                                <div class="stat-item"><i class="fas fa-user-friends"></i> Following: ${userData.following}</div>
+                                <div class="stat-item"><i class="fas fa-archive"></i> Public Repos: ${userData.public_repos}</div>
+                                <div class="stat-item"><i class="fas fa-star"></i> Total Stars: ${totalStars}</div>
+                                <div class="stat-item"><i class="fas fa-code-branch"></i> Total Forks: ${totalForks}</div>
+                            `;
+                            
+                            // Profile Stats with icons
+                            document.getElementById('profile-stats').innerHTML = `
+                                <h3>Profile Stats</h3>
+                                <div class="stat-item"><i class="fas fa-user"></i> Name: ${userData.name || 'N/A'}</div>
+                                <div class="stat-item"><i class="fas fa-info-circle"></i> Bio: ${userData.bio || 'N/A'}</div>
+                                <div class="stat-item"><i class="fas fa-map-marker-alt"></i> Location: ${userData.location || 'N/A'}</div>
+                            `;
+                        } catch (error) {
+                            console.error('Error loading GitHub stats:', error);
+                            document.getElementById('github-stats').innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load GitHub statistics.</p>';
+                        } finally {
+                            // Remove loading indicator
+                            if (loadingContainer) {
+                                loadingContainer.style.display = 'none';
+                            }
+                            // Show images after loading
+                            document.querySelectorAll('.stats-grid img').forEach(img => {
+                                img.style.display = 'block';
+                            });
+                        }
+                    }
+
+                    loadGitHubStats();
+                    </script>
                 </div>
             </div>
             <div id="github" class="tab-content"></div>
