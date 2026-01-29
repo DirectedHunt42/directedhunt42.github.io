@@ -9,7 +9,7 @@
 <style>
 body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow-x: hidden; }
 .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
-.left-panel { flex: 1; padding: 15px; border-radius: 10px; max-width: 95%; background: rgba(255,255,255,0); box-shadow: 0 0 0px rgba(255,255,255,0.1);}
+.left-panel { flex: 1; padding: 15px; border-radius: 10px; max-width: 90%; background: rgba(255,255,255,0); box-shadow: 0 0 0px rgba(255,255,255,0.1);}
 .readme {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
 .readme img { max-width: 100%; height: auto; transition: transform 0.2s ease; }
 .readme img:hover { transform: scale(1.05); }
@@ -18,7 +18,7 @@ body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; 
 .left-panel a:hover { text-decoration: underline; }
 .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
 .readme { max-width: 100%; }
-.right-panel { flex: 2; display: flex; flex-direction: column; gap: 10px; }
+.right-panel { flex: 2; display: flex; flex-direction: column; gap: 10px; max-width: 95%; }
 .project-card { margin-bottom: 20px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
 .project-card h3 { margin: 0 0 10px; }
 .repo-info { display: flex; gap: 10px; flex-wrap: wrap; line-height: 3px;}
@@ -109,6 +109,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
     .right-panel { width: 100%; flex: none; justify-content: center; }
     .tabs { justify-content: center; width: 100%; }
     .badges-columns { flex-direction: column; }
+    html, body { overflow-x: hidden; }
 }
 
 /* Galaxy-themed loading throbber */
@@ -326,31 +327,32 @@ const proxyUrl = "https://api.allorigins.win/raw?url=";
 
 // ===== CONFIG: MANUAL GITHUB ACHIEVEMENTS =====
 const githubBadgesList = [
-    { title: "Public Sponsor", img: "https://github.githubassets.com/assets/public-sponsor-default-9fa68986b057.png"},
-    { title: "Pull Shark", img: "https://github.githubassets.com/assets/pull-shark-default-498c279a747d.png"},
-    { title: "Quickdraw", img: "https://github.githubassets.com/assets/quickdraw-default-39c6aec8ff89.png"}
+    { title: "Public Sponsor", img: "Icons/Badges/GitHub/Sponsor.png"},
+    { title: "Pull Shark", img: "Icons/Badges/GitHub/PullShark.png"},
+    { title: "Pull Shark Bronze", img: "Icons/Badges/GitHub/PullSharkBronze.png"},
+    { title: "Quickdraw", img: "Icons/Badges/GitHub/QuickDraw.png"}
 ];
 
 // ===== CONFIG: MANUAL PRINTABLES BADGES =====
 const printablesBadgesList = [
-    { title: "Designer 1: Newcomer", img: "https://media.printables.com/media/badges/3/levels/7c/designer_01.svg" },
-    { title: "Designer 2: Beginner", img: "https://media.printables.com/media/badges/3/levels/1a/designer_02.svg" },
-    { title: "Designer 3: Proficient", img: "https://media.printables.com/media/badges/3/levels/6e/designer_03.svg" },
-    { title: "Designer 4: Advanced", img: "https://media.printables.com/media/badges/3/levels/c5/designer_04.svg"},
-    { title: "Maker 1: Novice", img: "https://media.printables.com/media/badges/11/levels/e1/maker_01.svg"},
-    { title: "Maker 2: Beginner", img: "https://media.printables.com/media/badges/11/levels/65/maker_02.svg"},
-    { title: "Maker 3: Explorer", img: "https://media.printables.com/media/badges/11/levels/c6/maker_03.svg"},
-    { title: "Maker 4: Skilled", img: "https://media.printables.com/media/badges/11/levels/3a/maker_04.svg"},
-    { title: "Maker 5: Expert", img: "https://media.printables.com/media/badges/11/levels/ff/maker_05.svg"},
-    { title: "Star of Design 1: Nebula", img: "https://media.printables.com/media/badges/12/levels/3b/star_of_design_01.svg"},
-    { title: "Star of Design 2: Star", img: "https://media.printables.com/media/badges/12/levels/33/star_of_design_02.svg"},
-    { title: "Star of Design 3: Red Dwarf", img: "https://media.printables.com/media/badges/12/levels/f9/star_of_design_03.svg"},
-    { title: "Download Maniac 1: Iron", img: "https://media.printables.com/media/badges/13/levels/f3/download_maniac_01.svg"},
-    { title: "Download Maniac 2: Tin", img: "https://media.printables.com/media/badges/13/levels/11/download_maniac_02.svg"},
-    { title: "Download Maniac 3: Brass", img: "https://media.printables.com/media/badges/13/levels/56/download_maniac_03.svg"},
-    { title: "Supporter 1: Thumbs Up", img: "https://media.printables.com/media/badges/24/levels/b3/printables-badges-supporter-01.svg"},
-    { title: "Printables Promoter", img: "https://media.printables.com/media/badges/20/levels/49/printables_promoter.svg"},
-    { title: "Printables Maniac", img: "https://media.printables.com/media/badges/22/levels/12/prusa_printers_maniac.svg"}
+    { title: "Designer 1: Newcomer", img: "Icons/Badges/Printables/designer_01.svg" },
+    { title: "Designer 2: Beginner", img: "Icons/Badges/Printables/designer_02.svg" },
+    { title: "Designer 3: Proficient", img: "Icons/Badges/Printables/designer_03.svg" },
+    { title: "Designer 4: Advanced", img: "Icons/Badges/Printables/designer_04.svg"},
+    { title: "Maker 1: Novice", img: "Icons/Badges/Printables/maker_01.svg"},
+    { title: "Maker 2: Beginner", img: "Icons/Badges/Printables/maker_02.svg"},
+    { title: "Maker 3: Explorer", img: "Icons/Badges/Printables/maker_03.svg"},
+    { title: "Maker 4: Skilled", img: "Icons/Badges/Printables/maker_04.svg"},
+    { title: "Maker 5: Expert", img: "Icons/Badges/Printables/maker_05.svg"},
+    { title: "Star of Design 1: Nebula", img: "Icons/Badges/Printables/star_of_design_01.svg"},
+    { title: "Star of Design 2: Star", img: "Icons/Badges/Printables/star_of_design_02.svg"},
+    { title: "Star of Design 3: Red Dwarf", img: "Icons/Badges/Printables/star_of_design_03.svg"},
+    { title: "Download Maniac 1: Iron", img: "Icons/Badges/Printables/download_maniac_01.svg"},
+    { title: "Download Maniac 2: Tin", img: "Icons/Badges/Printables/download_maniac_02.svg"},
+    { title: "Download Maniac 3: Brass", img: "Icons/Badges/Printables/download_maniac_03.svg"},
+    { title: "Supporter 1: Thumbs Up", img: "Icons/Badges/Printables/printables-badges-supporter-01.svg"},
+    { title: "Printables Promoter", img: "Icons/Badges/Printables/printables_promoter.svg"},
+    { title: "Printables Maniac", img: "Icons/Badges/Printables/prusa_printers_maniac.svg"}
 ];
 
 // ===== LOAD LOCAL MAIN README =====
