@@ -8,15 +8,6 @@ Thank you for visiting **Nova Foundry**. Explore my projects and see what I'm bu
   <a href="https://info.flagcounter.com/YCtD"><img src="https://s01.flagcounter.com/count2/YCtD/bg_0B0F1A/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_20/viewers_0/labels_0/pageviews_1/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
 </div>
 
-
-<a href="https://www.star-history.com/?repos=DirectedHunt42%2FWormhole%2CDirectedHunt42%2FBlackHole%2CDirectedHunt42%2FEchoEngine&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=DirectedHunt42/Wormhole,DirectedHunt42/BlackHole,DirectedHunt42/EchoEngine&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=DirectedHunt42/Wormhole,DirectedHunt42/BlackHole,DirectedHunt42/EchoEngine&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=DirectedHunt42/Wormhole,DirectedHunt42/BlackHole,DirectedHunt42/EchoEngine&type=date&legend=top-left" />
- </picture>
-</a>
-
 ---
 ## Links
 
