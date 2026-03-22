@@ -1,8 +1,8 @@
 [
   {
-    "title": "Echo Engine",
-    "image": "Images/Echo_engine_transparent.png",
-    "link": "Projects/echoengine"
+    "title": "Auto - Custom Quadcopter",
+    "image": "Images/Auto_Icon.png",
+    "link": "Projects/auto"
   },
   {
     "title": "Black Hole",
@@ -13,5 +13,10 @@
     "title": "Wormhole",
     "image": "Images/Wormhole_Square.png",
     "link": "Projects/wormhole"
+  },
+  {
+    "title": "Echo Engine",
+    "image": "Images/Echo_engine_transparent.png",
+    "link": "Projects/echoengine"
   }
 ]
