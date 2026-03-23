@@ -13,6 +13,9 @@ body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; 
 .readme {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
 .readme img { max-width: 100%; height: auto; transition: transform 0.2s ease; }
 .readme img:hover { transform: scale(1.05); }
+.readme-links { display: flex; gap: 15px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+.readme-links a { color: #fff; text-decoration: none; }
+.readme-links a:hover { text-decoration: underline; }
 .disqus {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
 .left-panel a { color: #fff; text-decoration: none; display: inline-block; margin-bottom: 15px; }
 .left-panel a:hover { text-decoration: underline; }
@@ -250,30 +253,14 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
     <div class="left-panel">
         <div id="readme">
             <img class="logo-small" src="Images/Nova_foundry_wide_transparent_SVG.svg" alt="Nova Foundry Image" />
-            <a href="resume">My Resume</a>
-            <div id="readmeContent" class="readme"></div>
+            <div class="readme">
+                <div id="readmeContent"></div>
+                <div class="readme-links">
+                    <a href="resume">My Resume</a>
+                    <a href="thanks">Thanks</a>
+                </div>
+            </div>
         </div>
-        <div class="disqus">
-            <div id="disqus_thread"></div>
-        </div>
-            <script>
-                /**
-                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-                /*
-                var disqus_config = function () {
-                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-                };
-                */
-                (function() { // DON'T EDIT BELOW THIS LINE
-                var d = document, s = d.createElement('script');
-                s.src = 'https://novafoundry.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-                })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
     <div class="right-panel">
         <div class="tabs">

@@ -1,5 +1,8 @@
 User-agent: *
 Disallow:
 
+# Hi robots! If you're reading this, please don't tell the humans
+# we keep the spare batteries in the broom closet.
+
 # Sitemap reference
 Sitemap: https://novafoundry.ca/sitemap.xml
