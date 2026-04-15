@@ -3,603 +3,499 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auto</title>
+    <title>Auto - Custom Quadcopter</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico" />
-    <link rel="stylesheet" href="../style.css" />
     <style>
-        body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow-x: hidden; }
-        .container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
-        .left-panel { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; max-width: 90%; }
-        .left-panel img { max-width: 100%; height: auto; }
-        .logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
-        .right-panel { flex: 2; display: flex; flex-direction: column; gap: 20px; }
-        .section { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
-        .section h1, .section h2 { margin-top: 0; }
-        .section h3 { margin-top: 0; margin-bottom: 12px; }
-        .links-list { list-style-type: none; padding: 0; }
-        .links-list li { margin-bottom: 10px; }
-        .links-list a { color: #fff; text-decoration: none; }
-        .links-list a:hover { text-decoration: underline; }
-        .parts-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Consolas&display=swap');
+
+        :root {
+            --accent: #3a8cff;
+            --highlight: #00d4ff;
         }
-        .parts-subsection {
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-            padding: 15px;
+
+        * {
+            scroll-behavior: smooth;
         }
-        .parts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+
+        body { 
+            margin:0; 
+            font-family: 'Consolas', 'Courier New', monospace; 
+            color: #e0f0ff; 
+            background: linear-gradient(180deg, #05080f 0%, #0f1829 100%); 
+            min-height: 100vh;
+            overflow-x: hidden; 
+            letter-spacing: 0.5px;
         }
-        .part-card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .part-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0,255,255,0.2);
-        }
-        .part-card-content {
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            gap: 12px;
-        }
-        .part-card p {
-            margin: 0;
-            color: rgba(255,255,255,0.72);
-            line-height: 1.5;
-        }
-        .part-card h4 {
-            margin: 0;
-        }
-        .part-card-header {
+
+        .header {
+            padding: 20px 30px;
+            background: #0c1426;
+            border-bottom: 1px solid #3a8cff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .store-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(76,110,245,0.35), rgba(0,255,255,0.18));
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-            flex-shrink: 0;
-        }
-        .store-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
-        .part-viewer {
-            width: 100%;
-            height: 180px;
-            display: block;
-            border-radius: 8px;
-            background: radial-gradient(circle at top, rgba(123,194,255,0.14), rgba(255,255,255,0.03) 60%);
-        }
-        .part-link {
-            display: inline-block;
-            text-decoration: none;
-            line-height: 0;
-        }
-        .part-link img {
-            max-width: 100%;
-            height: auto;
-        }
-        .placeholder-frame {
-            width: 100%;
-            min-height: 360px;
-            border-radius: 10px;
-            border: 1px dashed rgba(255,255,255,0.2);
-            margin-bottom: 10px;
-            background: rgba(255,255,255,0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: rgba(255,255,255,0.72);
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
-            position: relative;
-        }
-        #modelViewer {
-            width: 100%;
-            height: 360px;
-            display: block;
-            border-radius: 10px;
-        }
-        .viewer-status {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            background: rgba(0,0,0,0.22);
-            color: rgba(255,255,255,0.8);
-            transition: opacity 0.2s ease;
-            pointer-events: none;
-        }
-        .viewer-status.is-hidden {
-            opacity: 0;
-        }
-        #starCanvas { position: fixed; top: 0; left: 0; z-index: 0; }
 
         .home-button {
-            display: block;
-            width: 100%;
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            background: #111b33;
+            color: #e0f0ff;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            font-size: 1.1em;
             text-decoration: none;
+            transition: all 0.3s ease;
             font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-            box-sizing: border-box;
         }
+
         .home-button:hover {
-            background: rgba(255,255,255,0.2);
+            background: #1e2a4a;
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            color: #00d4ff;
+        }
+
+        .main-wrapper {
+            display: flex;
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 30px;
+        }
+
+        /* LEFT NAVIGATION - fully left-aligned, no background panel */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 100px;
+            align-self: start;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.4em;
+            color: #a0d0ff;
+            text-align: left;
+            letter-spacing: 1px;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-list li {
+            margin-bottom: 6px;
+        }
+
+        .nav-list a {
+            display: block;
+            padding: 10px 16px;
+            color: #e0f0ff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 1.05em;
+        }
+
+        .nav-list a:hover {
+            background: rgba(58, 140, 255, 0.15);
+            color: #00d4ff;
+            padding-left: 22px;
+        }
+
+        /* MAIN CONTENT */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section {
+            background: #0c1426;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(58, 140, 255, 0.1);
+            scroll-margin-top: 100px; /* offset so header doesn't cover section when jumping from nav */
+        }
+
+        .section h1 {
+            margin: 0 0 20px 0;
+            font-size: 2.4em;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        .section h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.8em;
+            color: #a0d0ff;
+            border-bottom: 1px solid #3a8cff;
+            padding-bottom: 10px;
+        }
+
+        .intro {
+            font-size: 1.15em;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .part-card {
+            background: #111b33;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .part-card:hover {
+            transform: translateY(-6px);
+            border-color: #00d4ff;
+        }
+
+        .part-card-content {
+            padding: 20px;
+        }
+
+        .part-card h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.4em;
+            color: #fff;
+        }
+
+        .part-card p {
+            margin: 0 0 20px 0;
+            color: #b0d0ff;
+            line-height: 1.5;
+            font-size: 1.05em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #1e2a4a;
+            color: #a0d0ff;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid #3a8cff;
+        }
+
+        .logo-ascii {
+            display: block;
+            text-align: center;
+            font-size: clamp(12px, 1.8vw, 14px);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: #a0d0ff;
+            white-space: pre;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px #00d4ff;
+        }
+
+        /* TIMELINE - centered line, full-width events with small margin */
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px 0 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(to bottom, #3a8cff, #00d4ff);
+            border-radius: 9999px;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-entry {
+            position: relative;
+            margin-bottom: 50px;
+            z-index: 2;
+        }
+
+        .timeline-year {
+            position: relative;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .year-box {
+            display: inline-block;
+            background: #0c1426;
+            color: #00d4ff;
+            font-size: 1.65em;
+            font-weight: bold;
+            padding: 10px 32px;
+            border: 3px solid #3a8cff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(58, 140, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .timeline-event {
+            width: calc(100% - 40px);   /* full width of panel with small margin */
+            margin: 0 auto;             /* centered with small side margin */
+            background: #111b33;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            padding: 22px 28px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .timeline-event:hover {
+            border-color: #00d4ff;
+            transform: translateY(-4px);
+        }
+
+        .timeline-event h4 {
+            margin: 0 0 10px 0;
+            color: #fff;
+            font-size: 1.35em;
+        }
+
+        .timeline-event p {
+            margin: 0;
+            color: #b0d0ff;
+            line-height: 1.6;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 992px) {
+            .main-wrapper {
+                flex-direction: column;
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+                order: -1;
+            }
         }
 
         @media (max-width: 768px) {
-            .container { flex-direction: column; }
-            .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; max-width: 100%; }
-            .right-panel { width: 100%; }
-            html, body { overflow-x: hidden; }
+            .section {
+                padding: 20px;
+            }
+            .timeline-event {
+                width: calc(100% - 20px);   /* slightly tighter margin on mobile */
+            }
         }
     </style>
 </head>
 <body>
-    <canvas id="starCanvas"></canvas>
 
-    <div class="container">
-        <div class="left-panel">
-            <a href="https://novafoundry.ca" class="home-button">Home</a>
-            <div class="placeholder-frame">
-                <img class="logo-small" src="../Images/Auto_Icon.png" alt="Auto project image" />
-            </div>
-            <div class="placeholder-frame">
-                <img class="logo-small" src="../Images/Drone.png" alt="Drone project image" />
-            </div>
+    <!-- HEADER WITH RETURN TO HOME -->
+    <div class="header">
+        <a href="../" class="home-button">
+            ← RETURN TO NOVA FOUNDRY
+        </a>
+        <div style="font-size:1.3em; color:#a0d0ff; font-weight:bold;">Jack Murray</div>
+    </div>
+
+    <div class="main-wrapper">
+
+        <!-- LEFT NAVIGATION -->
+        <div class="sidebar">
+            <h3>Project Sections</h3>
+            <ul class="nav-list">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#design">Design</a></li>
+                <li><a href="#parts">Custom 3D-Printed Parts</a></li>
+                <li><a href="#software">Software &amp; Avionics</a></li>
+                <li><a href="#flight">Flight Configuration</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+            </ul>
         </div>
 
-        <div class="right-panel">
-            <div class="section">
-                <h1>Auto</h1>
-                <p>This is my custom quadcopter build, developed over the past five years as a mix of purchased components and hardware alongside custom-designed 3D printed mounts and structural parts.</p>
-                <p>The platform is powered by ArduPilot for flight control and ExpressLRS for radio link.</p>
-            </div>
+        <!-- MAIN CONTENT -->
+        <div class="content">
 
-            <div class="section">
-                <h2>Assembly</h2>
-                <div class="placeholder-frame">
-                    <canvas id="modelViewer" aria-label="Interactive 3D model viewer"></canvas>
-                    <div id="viewerStatus" class="viewer-status">Loading 3D model...</div>
+            <pre class="logo-ascii">
+    █████╗ ██╗   ██╗████████╗ ██████╗ 
+   ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗
+   ███████║██║   ██║   ██║   ██║   ██║
+   ██╔══██║██║   ██║   ██║   ██║   ██║
+   ██║  ██║╚██████╔╝   ██║   ╚██████╔╝
+   ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ </pre>
+
+            <!-- OVERVIEW / CONCEPT -->
+            <div id="overview" class="section">
+                <h1>Custom Quadcopter</h1>
+                <div class="intro">
+                    This is my custom quadcopter build, developed over the past several years as a mix of purchased components and hardware alongside custom-designed 3D printed mounts and structural parts.<br><br>
+                    The platform is powered by ArduPilot for flight control and ExpressLRS for radio link. Built on an F450 frame, it emphasizes modularity, reliability, and clean cable management for long-duration flights and easy maintenance.
                 </div>
             </div>
 
-            <div class="section">
-                <h2>Parts</h2>
-                <div class="parts-section">
-                    <div class="parts-subsection">
-                        <h3>Custom</h3>
-                        <div class="parts-grid">
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <canvas class="part-viewer" data-stl-path="../3D_Files/Drone/Parts/Antena%20Case%20Rev%20B.STL" aria-label="Antenna Case Rev B preview"></canvas>
-                                    <h4>Antenna Mount</h4>
-                                    <p>Holds the antenna in place.</p>
-                                    <a class="part-link" href="https://www.printables.com/model/1370200-radiomaster-simple-receiver-holder" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Printables-Antenna_Mount-orange?style=for-the-badge&logo=printables&logoColor=white" alt="Printables Antenna Mount" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <canvas class="part-viewer" data-stl-path="../3D_Files/Drone/Parts/Battery%20Holder%20Rev%20B%20Front.STL" aria-label="Battery Holder Rev B Front preview"></canvas>
-                                    <h4>Battery Mount</h4>
-                                    <p>Holds the battery in place.</p>
-                                    <a class="part-link" href="https://www.printables.com/model/1370207-cube-orange-power-supply-mount-battery-holder" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Printables-Battery_Mount-orange?style=for-the-badge&logo=printables&logoColor=white" alt="Printables Battery Mount" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <canvas class="part-viewer" data-stl-path="../3D_Files/Drone/Parts/Cube%20holder%20rev%20C.STL" aria-label="Cube Holder Rev C preview"></canvas>
-                                    <h4>Cube Mount</h4>
-                                    <p>Holds the Cube Orange flight controller in place.</p>
-                                    <a class="part-link" href="https://www.printables.com/model/1139237-cube-orange-drone-mount-rev-2" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Printables-Cube_Mount-orange?style=for-the-badge&logo=printables&logoColor=white" alt="Printables Cube Mount" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <canvas class="part-viewer" data-stl-path="../3D_Files/Drone/Parts/GPS%20Holder%20Rev%20B.glb" aria-label="GPS Holder Rev B preview"></canvas>
-                                    <h4>GPS Mount</h4>
-                                    <p>Holds the GPS module in place.</p>
-                                    <a class="part-link" href="https://www.printables.com/model/1139252-here-3-gps-drone-mount-rev-2" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Printables-GPS_Mount-orange?style=for-the-badge&logo=printables&logoColor=white" alt="Printables GPS Mount" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <canvas class="part-viewer" data-stl-path="../3D_Files/Drone/Parts/Telem%20Holder.STL" aria-label="Telem Holder preview"></canvas>
-                                    <h4>Telem Mount</h4>
-                                    <p>Add your title or short note here.</p>
-                                    <a class="part-link" href="https://www.printables.com/model/1139258-holybro-telemetry-radio-drone-mount" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Printables-Telem_Mount-orange?style=for-the-badge&logo=printables&logoColor=white" alt="Printables Telem Mount" />
-                                    </a>
-                                </div>
-                            </div>
+            <!-- DESIGN -->
+            <div id="design" class="section">
+                <h2>Design</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The entire electronics stack is mounted using fully custom 3D-printed parts to allow for mounting of various technically incompatible components. This allowed me a wider range of options for components that could improve functionality, as well as reduce cost.
+                </p>
+                <img src="../Images/Drone.png" alt="Quadcopter" style="max-width: 75%; height: auto;">
+            </div>
+
+            <!-- CUSTOM 3D PRINTED PARTS -->
+            <div id="parts" class="section">
+                <h2>Custom 3D-Printed Parts</h2>
+                <div class="parts-grid">
+
+                    <div class="part-card">
+                        <div class="part-card-content">
+                            <h3>Antenna Mount</h3>
+                            <p>Holds the ExpressLRS antenna securely with strain relief and optimal orientation for maximum signal range.</p>
+                            <a href="https://www.printables.com/model/1370200-radiomaster-simple-receiver-holder" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev B</a>
                         </div>
                     </div>
 
-                    <div class="parts-subsection">
-                        <h3>Purchased</h3>
-                        <div class="parts-grid">
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>Cube Orange</h4>
-                                    </div>
-                                    <p>Primary flight controller for the build, with ArduPilot support and a modular carrier-based design.</p>
-                                    <a class="part-link" href="https://ardupilot.org/copter/docs/common-thecubeorange-overview.html" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Docs-Cube_Orange-4c6ef5?style=for-the-badge&logoColor=white" alt="Cube Orange docs" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>Here 3 GPS</h4>
-                                    </div>
-                                    <p>GNSS and compass module used for positioning, navigation, and heading data on the aircraft.</p>
-                                    <a class="part-link" href="https://docs.cubepilot.org/user-guides/here-3/here-3-manual" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Docs-Here_3_GPS-4c6ef5?style=for-the-badge&logoColor=white" alt="Here 3 GPS docs" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>RadioMaster Boxer</h4>
-                                    </div>
-                                    <p>Main handheld radio controller for piloting and configuring the drone from the ground.</p>
-                                    <a class="part-link" href="https://radiomasterrc.com/products/boxer-radio-controller-m2" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-RadioMaster_Boxer-4c6ef5?style=for-the-badge&logoColor=white" alt="RadioMaster Boxer product page" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>RadioMaster RP1 Receiver</h4>
-                                    </div>
-                                    <p>ExpressLRS 2.4 GHz nano receiver that links the aircraft to the radio controller.</p>
-                                    <a class="part-link" href="https://radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-RP1_Receiver-4c6ef5?style=for-the-badge&logoColor=white" alt="RP1 receiver product page" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>Holybro SiK Telemetry Radio V3</h4>
-                                    </div>
-                                    <p>Telemetry radio pair for long-range data, mission updates, and live communication with the vehicle.</p>
-                                    <a class="part-link" href="https://holybro.com/products/sik-telemetry-radio-v3" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-SiK_Telemetry_Radio_V3-4c6ef5?style=for-the-badge&logoColor=white" alt="SiK Telemetry Radio V3 product page" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>2250mAh LiPo Battery</h4>
-                                    </div>
-                                    <p>Main flight battery for the quadcopter, providing the onboard power needed for motors and avionics.</p>
-                                    <a class="part-link" href="https://www.amazon.ca/2250mAh-Battery-Airplane-Quadcopter-Helicopter/dp/B08TM25QMB/ref=asc_df_B08TM25QMB/?tag=googleshopc0c-20&linkCode=df0&hvadid=459447999510&hvpos=&hvnetw=g&hvrand=12148411086838137164&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1002376&hvtargid=pla-1363897056238&psc=1" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-2250mAh_LiPo_Battery-4c6ef5?style=for-the-badge&logoColor=white" alt="2250mAh LiPo Battery product page" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>CubePilot Power Brick Mini</h4>
-                                    </div>
-                                    <p>Compact power module that conditions battery input and provides voltage and current monitoring to the flight controller.</p>
-                                    <a class="part-link" href="https://aeroboticshop.com/products/cubepilot-power-brick-mini" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-Power_Brick_Mini-4c6ef5?style=for-the-badge&logoColor=white" alt="CubePilot Power Brick Mini product page" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>F450 Frame Kit</h4>
-                                    </div>
-                                    <p>Quadcopter frame platform that provides the arms, center plates, and mounting structure for the build.</p>
-                                    <a class="part-link" href="https://www.aliexpress.com/item/1005001958999211.html" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-F450_Frame_Kit-4c6ef5?style=for-the-badge&logoColor=white" alt="F450 Frame Kit product page" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="part-card">
-                                <div class="part-card-content">
-                                    <div class="part-card-header">
-                                        <span class="store-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M7 4h10l1 3h2v2h-1l-1.2 7.2A2 2 0 0 1 15.8 18H8.2a2 2 0 0 1-2-1.8L5 9H4V7h2l1-3zm1.4 3h7.2l-.7-1H9.1l-.7 1zM7 9l1.1 6.6c0 .2.1.4.3.4h7.2c.2 0 .3-.1.3-.4L17 9H7zm2 11a1.5 1.5 0 1 1 0 .1zm6 0a1.5 1.5 0 1 1 0 .1z"/></svg>
-                                        </span>
-                                        <h4>Racerstar BR2312 960KV Motors</h4>
-                                    </div>
-                                    <p>Brushless motors for propulsion, sized for multi-rotor use on a 350 to 400 class style frame.</p>
-                                    <a class="part-link" href="https://www.banggood.com/4X-Racerstar-Racing-Edition-2312-BR2312-960KV-2-4S-Brushless-Motor-For-350-380-400-Frame-Kit-p-1083204.html?cur_warehouse=CN" target="_blank" rel="noopener noreferrer">
-                                        <img src="https://img.shields.io/badge/Product-Racerstar_BR2312_960KV-4c6ef5?style=for-the-badge&logoColor=white" alt="Racerstar BR2312 960KV motors product page" />
-                                    </a>
-                                </div>
-                            </div>
+                    <div class="part-card">
+                        <div class="part-card-content">
+                            <h3>Battery Mount</h3>
+                            <p>Front battery holder with quick-release strap system and integrated XT60 pass-through for clean power routing.</p>
+                            <a href="https://www.printables.com/model/1370207-cube-orange-power-supply-mount-battery-holder" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev B</a>
                         </div>
                     </div>
-                </div>
+
+                    <div class="part-card">
+                        <div class="part-card-content">
+                            <h3>Flight Controller Mount</h3>
+                            <p>Cube Orange carrier with vibration isolation and precise alignment for the carrier board.</p>
+                            <a href="https://www.printables.com/model/1139237-cube-orange-drone-mount-rev-2" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev C</a>
+                        </div>
+                    </div>
+
+                    <div class="part-card">
+                        <div class="part-card-content">
+                            <h3>GPS Mount</h3>
+                            <p>Here 3 GPS module mount with compass protection and clean sky visibility.</p>
+                            <a href="https://www.printables.com/model/1139252-here-3-gps-drone-mount-rev-2" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev B</a>
+                        </div>
+                    </div>
+
+                    <div class="part-card">
+                        <div class="part-card-content">
+                            <h3>Telemetry Mount</h3>
+                            <p>Holybro SiK telemetry radio mount with integrated cable management.</p>
+                            <a href="https://www.printables.com/model/1139258-holybro-telemetry-radio-drone-mount" target="_blank" rel="noopener noreferrer" class="badge">Printables</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
+            <!-- SOFTWARE & AVIONICS -->
+            <div id="software" class="section">
+                <h2>Software &amp; Avionics</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    • <strong>Flight Controller Firmware:</strong> ArduPilot (Copter) — full autonomous capabilities including RTL, Loiter, and Auto missions.<br>
+                    • <strong>Radio Link:</strong> ExpressLRS 2.4 GHz with dynamic power and telemetry feedback to a RadioMaster Boxer controller.<br>
+                    • <strong>Ground Control:</strong> Mission Planner for configuration, tuning, and real-time telemetry stream to the quadcopter.
+                </p>
+            </div>
+
+            <!-- FLIGHT CONFIG -->
+            <div id="flight" class="section">
+                <h2>Flight Configuration &amp; Ground Station</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The ground station is set up with Mission Planner running on my laptop, connected to the quadcopter via two USB telemetry radios. This transmits real-time information about the quadcopter's position, speed, altitude, battery status, and ExpressLRS link quality.
+                </p>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The quadcopter is configured to mainly be controlled by the RC controller, with that being the main method of control. However, it also supports pre-planned missions created through Mission Planner that it can fly without manual intervention. This allows for a wide range of use cases, from manual flying to fully autonomous missions.
+                </p>
+                <img src="../Images/Waypoint_Example.png" alt="Mission Planner" style="max-width: 75%; height: auto;">
+            </div>
+
+            <!-- TIMELINE -->
+            <div id="timeline" class="section">
+                <h2>Timeline</h2>
+                <div class="timeline">
+
+                    <div class="timeline-entry">
+                        <div class="timeline-year">
+                            <div class="year-box">2023</div>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>Project Start</h4>
+                            <p>Acquired F450 frame kit and Racerstar BR2312 motors. Began researching ArduPilot ecosystem.</p>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>First Custom Mounts</h4>
+                            <p>Designed and 3D-printed initial flight controller and GPS mounts in Fusion 360. First bench test of electronics stack.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-year">
+                            <div class="year-box">2024</div>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>Flight Hardware Integration</h4>
+                            <p>Installed  flight hardware inclusing the Cube Orange, Here 3 GPS, telemetry, and battery.</p>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>ExpressLRS Setup</h4>
+                            <p>Added ExpressLRS radio link with RadioMaster receiver and Zorro controller. Achieved stable telemetry and control at 2.4 GHz.</p>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>First Flight</h4>
+                            <p>Completed first successful flight with manual control.</p>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>Autonomous Flight</h4>
+                            <p>Configured and successfully flew first autonomous mission using Mission Planner.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-year">
+                            <div class="year-box">2025</div>
+                        </div>
+                        <div class="timeline-event">
+                            <h4>Hardware Revisions</h4>
+                            <p>Entirely revised all 3D printed parts for improved fit and functionality.</p>
+                        </div>
+
+                        <div class="timeline-event">
+                            <h4>RadioMaster Upgrade</h4>
+                            <p>Switched to RadioMaster Zorro receiver to RadioMaster Boxer.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
-            }
-        }
-    </script>
-    <script src="../starfield.js"></script>
-    <script type="module">
-        import * as THREE from "three";
-        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-        import { STLLoader } from "three/addons/loaders/STLLoader.js";
-        import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-        const canvas = document.getElementById("modelViewer");
-        const status = document.getElementById("viewerStatus");
-
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-        const scene = new THREE.Scene();
-        scene.background = null;
-
-        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-        camera.position.set(2.4, 1.8, 2.8);
-
-        const controls = new OrbitControls(camera, canvas);
-        controls.enableDamping = true;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 1.5;
-        controls.target.set(0, 0, 0);
-
-        scene.add(new THREE.AmbientLight(0xffffff, 1.8));
-
-        const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
-        keyLight.position.set(4, 6, 5);
-        scene.add(keyLight);
-
-        const rimLight = new THREE.DirectionalLight(0x7bc2ff, 1.4);
-        rimLight.position.set(-4, 3, -5);
-        scene.add(rimLight);
-
-        const fitCameraToObject = (object) => {
-            const box = new THREE.Box3().setFromObject(object);
-            const size = box.getSize(new THREE.Vector3());
-            const center = box.getCenter(new THREE.Vector3());
-            const maxDim = Math.max(size.x, size.y, size.z) || 1;
-            const fov = camera.fov * (Math.PI / 180);
-            const cameraDistance = maxDim / (2 * Math.tan(fov / 2));
-
-            camera.position.set(center.x + cameraDistance * 1.2, center.y + cameraDistance * 0.7, center.z + cameraDistance * 1.4);
-            camera.near = Math.max(maxDim / 100, 0.01);
-            camera.far = maxDim * 20;
-            camera.updateProjectionMatrix();
-
-            controls.target.copy(center);
-            controls.minDistance = maxDim * 0.6;
-            controls.maxDistance = maxDim * 8;
-            controls.update();
-        };
-
-        const resize = () => {
-            const width = canvas.clientWidth || canvas.parentElement.clientWidth || 1;
-            const height = canvas.clientHeight || 360;
-            renderer.setSize(width, height, false);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-        };
-
-        const animate = () => {
-            controls.update();
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        };
-
-        window.addEventListener("resize", resize);
-        resize();
-        animate();
-
-        const assemblyLoader = new STLLoader();
-        assemblyLoader.load(
-            "../3D_Files/Drone/Assem/FullAssem.stl",
-            (geometry) => {
-                geometry.computeVertexNormals();
-                geometry.center();
-
-                const material = new THREE.MeshStandardMaterial({
-                    color: 0xd7dee8,
-                    metalness: 0.18,
-                    roughness: 0.64
-                });
-
-                const mesh = new THREE.Mesh(geometry, material);
-                scene.add(mesh);
-                fitCameraToObject(mesh);
-                status.textContent = "";
-                status.classList.add("is-hidden");
-            },
-            undefined,
-            () => {
-                status.textContent = "The 3D model could not be loaded.";
-            }
-        );
-
-        const initPartViewer = (viewerCanvas) => {
-            const assetPath = viewerCanvas.dataset.stlPath;
-            const stlRenderer = new THREE.WebGLRenderer({ canvas: viewerCanvas, antialias: true, alpha: true });
-            stlRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-            const stlScene = new THREE.Scene();
-            const stlCamera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
-            stlCamera.position.set(0, 0, 140);
-
-            stlScene.add(new THREE.AmbientLight(0xffffff, 1.5));
-
-            const stlLight = new THREE.DirectionalLight(0xffffff, 2);
-            stlLight.position.set(50, 60, 80);
-            stlScene.add(stlLight);
-
-            const fillLight = new THREE.DirectionalLight(0x7bc2ff, 1.1);
-            fillLight.position.set(-40, -20, 60);
-            stlScene.add(fillLight);
-
-            const stlControls = new OrbitControls(stlCamera, viewerCanvas);
-            stlControls.enableDamping = true;
-            stlControls.autoRotate = true;
-            stlControls.autoRotateSpeed = 2;
-
-            const resizeStl = () => {
-                const width = viewerCanvas.clientWidth || 1;
-                const height = viewerCanvas.clientHeight || 180;
-                stlRenderer.setSize(width, height, false);
-                stlCamera.aspect = width / height;
-                stlCamera.updateProjectionMatrix();
-            };
-
-            const positionCamera = (object) => {
-                const box = new THREE.Box3().setFromObject(object);
-                const size = box.getSize(new THREE.Vector3());
-                const center = box.getCenter(new THREE.Vector3());
-                const maxDim = Math.max(size.x, size.y, size.z) || 1;
-
-                stlCamera.position.set(center.x + maxDim * 1.4, center.y + maxDim * 0.9, center.z + maxDim * 1.6);
-                stlCamera.near = Math.max(maxDim / 100, 0.1);
-                stlCamera.far = maxDim * 20;
-                stlCamera.updateProjectionMatrix();
-                stlControls.target.copy(center);
-                stlControls.minDistance = maxDim * 0.8;
-                stlControls.maxDistance = maxDim * 6;
-                stlControls.update();
-            };
-
-            const showLoadError = () => {
-                viewerCanvas.replaceWith(document.createTextNode("3D preview could not be loaded."));
-            };
-
-            if (assetPath.toLowerCase().endsWith(".glb")) {
-                const gltfLoader = new GLTFLoader();
-                gltfLoader.load(
-                    assetPath,
-                    (gltf) => {
-                        const model = gltf.scene;
-                        if (assetPath.includes("GPS%20Holder%20Rev%20B.glb")) {
-                            model.rotation.x = Math.PI;
-                        }
-                        stlScene.add(model);
-                        positionCamera(model);
-                    },
-                    undefined,
-                    showLoadError
-                );
-            } else {
-                const stlLoader = new STLLoader();
-                stlLoader.load(
-                    assetPath,
-                    (geometry) => {
-                        geometry.computeVertexNormals();
-                        geometry.center();
-
-                        const material = new THREE.MeshStandardMaterial({
-                            color: 0xcbd8e6,
-                            metalness: 0.18,
-                            roughness: 0.62
-                        });
-
-                        const mesh = new THREE.Mesh(geometry, material);
-                        if (assetPath.includes("GPS%20Holder%20Rev%20B.STL")) {
-                            mesh.rotation.x = Math.PI;
-                        }
-                        stlScene.add(mesh);
-                        positionCamera(mesh);
-                    },
-                    undefined,
-                    showLoadError
-                );
-            }
-
-            const renderStl = () => {
-                stlControls.update();
-                stlRenderer.render(stlScene, stlCamera);
-                requestAnimationFrame(renderStl);
-            };
-
-            window.addEventListener("resize", resizeStl);
-            resizeStl();
-            renderStl();
-        };
-
-        document.querySelectorAll(".part-viewer").forEach(initPartViewer);
-    </script>
 </body>
 </html>
