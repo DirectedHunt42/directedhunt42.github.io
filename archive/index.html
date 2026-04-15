@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Foundry - Website Archive</title>
+
+<style>
+    body {
+        background-color: #000;
+        color: #fff;
+        font-family: "Courier New", monospace;
+        margin: 0;
+        padding: 40px;
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+    }
+
+    .line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+    .arrow {
+        color: #00aaff;
+        width: 10px;
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        background: white;
+        margin-left: 5px;
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        0%, 50%, 100% { opacity: 1; }
+        25%, 75% { opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<h1 id="title"></h1>
+
+<div id="menu"></div>
+
+<script>
+    const titleText = "Nova Foundry - Website Archive";
+    const options = [
+        { name: "Echo Engine", link: "Projects/echoengine" },
+        { name: "Black Hole", link: "Projects/blackhole" },
+        { name: "Wormhole", link: "Projects/wormhole" }
+    ];
+
+    const titleElement = document.getElementById("title");
+    const menu = document.getElementById("menu");
+
+    let titleIndex = 0;
+    let selectedIndex = 0;
+
+    function typeTitle() {
+        if (titleIndex < titleText.length) {
+            titleElement.innerHTML += titleText.charAt(titleIndex);
+            titleIndex++;
+            setTimeout(typeTitle, 40);
+        } else {
+            titleElement.innerHTML += '<span class="cursor"></span>';
+            setTimeout(typeMenu, 300);
+        }
+    }
+
+    function typeMenu() {
+        let i = 0;
+
+        function typeOption() {
+            if (i >= options.length) {
+                updateSelection();
+                enableControls();
+                return;
+            }
+
+            const line = document.createElement("div");
+            line.className = "line";
+
+            const arrow = document.createElement("span");
+            arrow.className = "arrow hidden";
+            arrow.textContent = ">";
+
+            const text = document.createElement("span");
+
+            line.appendChild(arrow);
+            line.appendChild(text);
+            menu.appendChild(line);
+
+            let charIndex = 0;
+
+            function typeChars() {
+                if (charIndex < options[i].name.length) {
+                    text.textContent += options[i].name.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeChars, 30);
+                } else {
+                    i++;
+                    setTimeout(typeOption, 150);
+                }
+            }
+
+            typeChars();
+        }
+
+        typeOption();
+    }
+
+    function updateSelection() {
+        const lines = document.querySelectorAll(".line");
+        lines.forEach((line, index) => {
+            const arrow = line.querySelector(".arrow");
+            arrow.classList.toggle("hidden", index !== selectedIndex);
+        });
+    }
+
+    function enableControls() {
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowDown") {
+                selectedIndex = (selectedIndex + 1) % options.length;
+                updateSelection();
+            }
+            if (e.key === "ArrowUp") {
+                selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+                updateSelection();
+            }
+            if (e.key === "Enter") {
+                window.location.href = options[selectedIndex].link;
+            }
+        });
+    }
+
+    typeTitle();
+</script>
+
+</body>
+</html>

@@ -4,873 +4,218 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nova Foundry</title>
-<link rel="icon" type="image/x-icon" href="Images/Nova_foundry_favicon.ico" />
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <link rel="stylesheet" href="style.css" />
+
 <style>
-body { margin:0; font-family: Arial, sans-serif; color: #fff; background: #000; overflow-x: hidden; }
-.container { display: flex; flex-direction: row; padding: 20px; z-index: 10; position: relative; }
-.left-panel { flex: 1; padding: 15px; border-radius: 10px; max-width: 90%; background: rgba(255,255,255,0); box-shadow: 0 0 0px rgba(255,255,255,0.1);}
-.readme {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+body { 
+    margin:0; 
+    font-family: 'Consolas', 'Courier New', monospace; 
+    color: #e0f0ff; 
+    background: linear-gradient(180deg, #05080f 0%, #0f1829 100%); 
+    min-height: 100vh;
+    height: 100%;
+    overflow-x: hidden; 
+    letter-spacing: 0.5px;
+}
+
+.container { 
+    display: flex; 
+    flex-direction: row; 
+    padding: 20px; 
+    z-index: 10; 
+    position: relative; 
+}
+
+.left-panel { 
+    flex: 1; 
+    padding: 15px; 
+    border-radius: 4px; 
+    max-width: 90%; 
+    background: #0c1426; 
+    border: 1px solid #3a8cff;
+}
+
+.readme { 
+    background: #111b33; 
+    border: 1px solid #3a8cff;
+    padding: 15px; 
+    border-radius: 4px; 
+    margin-bottom: 20px; 
+}
+
 .readme img { max-width: 100%; height: auto; transition: transform 0.2s ease; }
 .readme img:hover { transform: scale(1.05); }
-.readme-links { display: flex; gap: 15px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
-.readme-links a { color: #fff; text-decoration: none; }
-.readme-links a:hover { text-decoration: underline; }
-.disqus {background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
-.left-panel a { color: #fff; text-decoration: none; display: inline-block; margin-bottom: 15px; }
-.left-panel a:hover { text-decoration: underline; }
-.logo-small { max-width: 100%; height: auto; margin-bottom: 20px; }
-.readme { max-width: 100%; }
-.right-panel { flex: 2; display: flex; flex-direction: column; gap: 10px; max-width: 95%; }
-.project-card { margin-bottom: 20px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
-.project-card h3 { margin: 0 0 10px; }
-.repo-info { display: flex; gap: 10px; flex-wrap: wrap; line-height: 3px;}
-.toggle-readme { padding: 5px 10px; border-radius: 5px; background-color: #444; color: #fff ; border:none ; cursor:pointer ; }
-.toggle-readme:hover { background-color:#666 ; }
-.project-card a { color: #fff; text-decoration: none; margin-top: 10px; display: inline-block; }
-.project-card a:hover { text-decoration: underline; }
-canvas { position: fixed; top:0; left:0; z-index:0; }
-.tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-.tabs button { padding: 10px 20px; background: rgba(255,255,255,0.1); color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-.tabs button:hover { background: rgba(255,255,255,0.2); }
-.tabs button.active { background: rgba(255,255,255,0.3); }
-/* New Project Links Grid */
-.project-links-section { margin-bottom: 10px; }
-.project-links-section h2 { margin-bottom: 20px; font-size: 2em; text-align: center; }
-.project-links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.project-link-card { background: rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
-.project-link-card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,255,255,0.2); }
-.project-link-card a { display: flex; color: inherit; text-decoration: none; height: 100%; }
-.project-link-content { display: flex; flex-direction: row; padding: 15px; gap: 15px; align-items: center; }
-.project-link-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
 
-/* BADGES SECTION STYLES */
-.badges-section { padding: 0px; background: transparent; border-radius: 10px; margin-bottom: 25px; }
-.badges-section h2 { text-align: center; margin-bottom: 20px; font-size: 2em; }
-.badges-columns { display: flex; flex-direction: row; gap: 20px; }
-.badge-column { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
-.badge-column h3 { text-align: center; color: #aaa; margin-bottom: 15px; font-size: 1.1em; }
-.badge-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.logo-ascii {
+    display: block;
+    text-align: center;
+    font-size: clamp(11px, 1.5vw, 10px);
+    line-height: 1.05;
+    margin-bottom: 25px;
+    color: #a0d0ff;
+    white-space: pre;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #00d4ff;
+}
 
-/* CHANGED: Parent container now handles perspective and scale, but NOT rotation */
-.badge-item { 
-    width: 64px; 
+.right-panel { 
+    flex: 2; 
     display: flex; 
     flex-direction: column; 
-    align-items: center; 
-    background: rgba(255,255,255,0); 
-    position: relative; 
-    transition: transform 0.2s ease, z-index 0s; 
-    perspective: 1000px; /* Creates the 3D space for children */
-}
-
-/* CHANGED: Image container now handles the rotation */
-.badge-image { 
-    width: 64px; 
-    height: 64px; 
-    border-radius: 50%; 
-    overflow: hidden; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    transition: transform 0.1s ease-out; /* Smooth tilt */
-    pointer-events: none;
-    /* Optional: Add a slight shadow to the image itself for depth */
-    box-shadow: 0 5px 15px rgba(0,0,0,0);
-}
-
-.badge-image img { width: 100%; height: 100%; object-fit: contain; }
-
-.badge-banner {
-    display: none;
-    background: #333;
-    color: #fff;
-    padding: 4px 8px;
+    gap: 10px; 
+    max-width: 95%; 
+    background: #0c1426; 
+    border: 1px solid #3a8cff;
     border-radius: 4px;
-    font-size: 7px;
-    text-align: center;
-    white-space: nowrap;
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 50%;
-    transform: translateX(-50%); /* Removed translateZ, keeps it flat */
-    z-index: 3;
-    pointer-events: none;
+    padding: 20px;
 }
 
-/* CHANGED: CSS handles the Scaling, JS handles the Rotation */
-.badge-item:hover { 
-    z-index: 10; 
-    transform: scale(2); 
+.project-links-section h2 { 
+    margin-bottom: 20px; 
+    font-size: 2em; 
+    text-align: center; 
+    color: #a0d0ff;
+    letter-spacing: 1px;
 }
 
-.badge-item:hover .badge-banner { display: block; }
+.project-links-grid { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+}
+
+.project-link-card { 
+    background: #111b33; 
+    border: 1px solid #3a8cff;
+    border-radius: 4px; 
+    overflow: hidden; 
+    transition: transform 0.3s ease; 
+    cursor: pointer; 
+}
+
+.project-link-card:hover { 
+    transform: translateY(-6px); 
+    border-color: #00d4ff;
+}
+
+.project-link-card a { 
+    display: flex; 
+    color: inherit; 
+    text-decoration: none; 
+}
+
+.project-link-content { 
+    display: flex; 
+    flex-direction: row; 
+    padding: 20px; 
+    gap: 25px; 
+    align-items: center; 
+    width: 100%; 
+}
+
+.project-text { flex: 1; }
+
+.project-link-content h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.6em;
+    color: #fff;
+}
+
+.project-info {
+    margin: 0;
+    font-size: 1em;
+    color: #b0d0ff;
+}
+
+.project-link-content img { 
+    height: 120px; 
+    max-width: 220px; 
+    object-fit: contain; 
+    border-radius: 4px; 
+    border: 1px solid #3a8cff;
+}
 
 @media (max-width: 768px) {
     .container { flex-direction: column; }
-    .left-panel { margin-right: 0; margin-bottom: 20px; width: 100%; justify-content: center;}
-    .right-panel { width: 100%; flex: none; justify-content: center; }
-    .tabs { justify-content: center; width: 100%; }
-    .badges-columns { flex-direction: column; }
-    html, body { overflow-x: hidden; }
-}
-
-/* Galaxy-themed loading throbber */
-.loading-container {
-    text-align: center;
-    padding: 20px;
-    color: #aaa;
-}
-
-.loading-throbber {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 10px;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 0deg,
-        rgba(0, 0, 50, 0),
-        rgba(0, 0, 100, 0.5),
-        rgba(50, 0, 100, 0.7),
-        rgba(100, 0, 50, 0.5),
-        rgba(0, 0, 50, 0)
-    );
-    animation: spin 1.5s linear infinite;
-    position: relative;
-}
-
-.loading-throbber::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30px;
-    height: 30px;
-    background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.loading-throbber::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
-    transform: translate(-50%, -50%);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* Stats Grid Styles */
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* two equal columns */
-    gap: 20px;
-    background: rgba(255,255,255,0.05);
-    justify-items: center;
-    align-items: start;
-    padding: 20px;
-    border-radius: 10px;
-    position: relative;
-    min-height: 200px; /* Reserve space while loading */
-}
-
-.stats-grid .loading-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-}
-
-.stats-grid img {
-    width: 100%;
-    max-width: 450px;
-    height: auto;
-    transition: transform 0.2s ease;
-    display: none; /* Hide initially */
-}
-
-.stats-grid img:hover {
-    transform: scale(1.05);
-}
-
-/* Layout: first row two images, bottom two full width */
-.stats-grid img:nth-child(1) {
-    grid-column: 1 / 2;
-    grid-row: 1;
-}
-
-.stats-grid img:nth-child(2) {
-    grid-column: 2 / 3;
-    grid-row: 1;
-}
-
-.stats-grid img:nth-child(3) {
-    grid-column: 1 / 3; /* span both columns */
-    grid-row: 2;
-}
-
-.stats-grid img:nth-child(4) {
-    grid-column: 1 / 3; /* span both columns */
-    grid-row: 3;
-}
-
-/* Tab animation styles */
-.tab-contents {
-    position: relative;
-}
-
-.tab-content {
-    display: none;
-    opacity: 0;
-    transform: translateY(-100%);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-.tab-content.active-content {
-    opacity: 1;
-    transform: translateY(0);
+    .left-panel { margin-bottom: 20px; width: 100%; }
+    .right-panel { width: 100%; }
 }
 </style>
 </head>
+
 <body>
-<canvas id="starCanvas"></canvas>
+
 <div class="container">
+
+    <!-- LEFT PANEL -->
     <div class="left-panel">
-        <div id="readme">
-            <img class="logo-small" src="Images/Nova_foundry_wide_transparent_SVG.svg" alt="Nova Foundry Image" />
-            <div class="readme">
-                <div id="readmeContent"></div>
-                <em style="display:block; text-align:center; font-size:0.8em; color:#ffffff; margin-top:10px; margin-bottom:30px;">And thanks to my girlfriend Lucy for keeping me going, I couldn't do it without you. ❤️</em>
-                <div class="readme-links">
-                    <a href="resume">My Resume</a>
-                </div>
-            </div>
+        <pre class="logo-ascii">███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ 
+████╗  ██║██╔═══██╗██║   ██║██╔══██╗
+██╔██╗ ██║██║   ██║██║   ██║███████║
+██║╚██╗██║██║   ██║╚██╗ ██╔╝██╔══██║
+██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║
+╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝</pre>
+
+<pre class="logo-ascii" style="margin-top:-15px;">███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ ██████╗ ██╗   ██╗
+██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
+█████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║██████╔╝ ╚████╔╝ 
+██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║██╔══██╗  ╚██╔╝  
+██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝██║  ██║   ██║   
+╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝    </pre>
+
+        <div class="readme">
+            <p style="text-align:center;">
+                Welcome to Nova Foundry. I'm Jack Murray, and this site serves as a portfolio of my work in mechanical design, electronics, and software development.
+            </p>
+            <em style="display:block;text-align:center;margin-top:15px;color:#a0cfff;">Special thanks to my girlfriend Lucy, I couldn't do this without you ❤️</em>
         </div>
     </div>
+
+    <!-- RIGHT PANEL -->
     <div class="right-panel">
-        <div class="tabs">
-            <button class="tab active" data-tab="home">Home</button>
-            <button class="tab" data-tab="github">GitHub Repos</button>
-            <button class="tab" data-tab="itch">itch.io Projects</button>
-            <button class="tab" data-tab="appsscript">Apps Script</button>
-        </div>
-        <div class="tab-contents">
-            <div id="home" class="tab-content">
-                <div class="badges-section">
-                    <h2>Achievements & Badges</h2>
-                    <div class="badges-columns">
-                        <div class="badge-column">
-                            <h3>GitHub Achievements</h3>
-                            <div id="github-badges" class="badge-grid">
-                                <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
-                            </div>
-                        </div>
-                        <div class="badge-column">
-                            <h3>Printables Badges</h3>
-                            <div id="printables-badges" class="badge-grid">
-                                <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="badges-section">
-                    <h2>Statistics</h2>
-                    <div class="stats-grid">
-                        <div class="loading-container"><div class="loading-throbber"></div><p style="font-size: 0.8em;">Loading...</p></div>
-                        <div id="github-stats" class="stat-card">
-                            <div id="metrics-overview"></div>
-                            <div id="profile-stats"></div>
-                        </div>
-                    </div>
-
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-                    <style>
-                        .stat-card {
-                            color: #fff;
-                            padding: 20px;
-                            border-radius: 10px;
-                            width: 100%;
-                            max-width: 800px;
-                        }
-                        .stat-card h2, .stat-card h3 {
-                            color: #58a6ff;
-                            margin-bottom: 15px;
-                        }
-                        .stat-item {
-                            display: flex;
-                            align-items: center;
-                            margin-bottom: 10px;
-                        }
-                        .stat-item i {
-                            margin-right: 10px;
-                            color: #58a6ff;
-                            width: 20px;
-                            text-align: center;
-                        }
-                    </style>
-
-                    <script>
-                    async function loadGitHubStats() {
-                        const user = 'DirectedHunt42';
-                        const loadingContainer = document.querySelector('.stats-grid .loading-container');
-                        try {
-                            const userData = await fetch(`https://api.github.com/users/${user}`).then(res => res.json());
-                            const repos = await fetch(`https://api.github.com/users/${user}/repos?per_page=100`).then(res => res.json());
-                            
-                            // Calculate additional stats
-                            let totalStars = 0;
-                            let totalForks = 0;
-                            repos.forEach(repo => {
-                                totalStars += repo.stargazers_count;
-                                totalForks += repo.forks_count;
-                            });
-                            
-                            // Metrics Overview with icons
-                            document.getElementById('metrics-overview').innerHTML = `
-                                <h3>Metrics Overview</h3>
-                                <div class="stat-item"><i class="fas fa-calendar-alt"></i> Joined: ${new Date(userData.created_at).toLocaleDateString()}</div>
-                                <div class="stat-item"><i class="fas fa-users"></i> Followers: ${userData.followers}</div>
-                                <div class="stat-item"><i class="fas fa-user-friends"></i> Following: ${userData.following}</div>
-                                <div class="stat-item"><i class="fas fa-archive"></i> Public Repos: ${userData.public_repos}</div>
-                                <div class="stat-item"><i class="fas fa-star"></i> Total Stars: ${totalStars}</div>
-                                <div class="stat-item"><i class="fas fa-code-branch"></i> Total Forks: ${totalForks}</div>
-                            `;
-                            
-                            // Profile Stats with icons
-                            document.getElementById('profile-stats').innerHTML = `
-                                <h3>Profile Stats</h3>
-                                <div class="stat-item"><i class="fas fa-user"></i> Name: ${userData.name || 'N/A'}</div>
-                                <div class="stat-item"><i class="fas fa-info-circle"></i> Bio: ${userData.bio || 'N/A'}</div>
-                                <div class="stat-item"><i class="fas fa-map-marker-alt"></i> Location: ${userData.location || 'N/A'}</div>
-                            `;
-                        } catch (error) {
-                            console.error('Error loading GitHub stats:', error);
-                            document.getElementById('github-stats').innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load GitHub statistics.</p>';
-                        } finally {
-                            // Remove loading indicator
-                            if (loadingContainer) {
-                                loadingContainer.style.display = 'none';
-                            }
-                            // Show images after loading
-                            document.querySelectorAll('.stats-grid img').forEach(img => {
-                                img.style.display = 'block';
-                            });
-                        }
-                    }
-
-                    loadGitHubStats();
-                    </script>
-                </div>
-            </div>
-            <div id="github" class="tab-content"></div>
-            <div id="itch" class="tab-content"></div>
-            <div id="appsscript" class="tab-content"></div>
+        <div class="project-links-section">
+            <h2>Projects</h2>
+            <div id="projects-grid" class="project-links-grid"></div>
         </div>
     </div>
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="starfield.js"></script>
+
 <script>
-const githubUsername = "directedhunt42";
-const itchCollectionUrl = "https://itch.io/c/6591033/nova-foundrys-collection";
-const proxyUrl = "https://api.allorigins.win/raw?url=";
-
-// ===== CONFIG: MANUAL GITHUB ACHIEVEMENTS =====
-const githubBadgesList = [
-    { title: "Public Sponsor", img: "Icons/Badges/GitHub/Sponsor.png"},
-    { title: "Pull Shark", img: "Icons/Badges/GitHub/PullShark.png"},
-    { title: "Pull Shark Bronze", img: "Icons/Badges/GitHub/PullSharkBronze.png"},
-    { title: "Quickdraw", img: "Icons/Badges/GitHub/QuickDraw.png"}
-];
-
-// ===== CONFIG: MANUAL PRINTABLES BADGES =====
-const printablesBadgesList = [
-    { title: "Designer 1: Newcomer", img: "Icons/Badges/Printables/designer_01.svg" },
-    { title: "Designer 2: Beginner", img: "Icons/Badges/Printables/designer_02.svg" },
-    { title: "Designer 3: Proficient", img: "Icons/Badges/Printables/designer_03.svg" },
-    { title: "Designer 4: Advanced", img: "Icons/Badges/Printables/designer_04.svg"},
-    { title: "Maker 1: Novice", img: "Icons/Badges/Printables/maker_01.svg"},
-    { title: "Maker 2: Beginner", img: "Icons/Badges/Printables/maker_02.svg"},
-    { title: "Maker 3: Explorer", img: "Icons/Badges/Printables/maker_03.svg"},
-    { title: "Maker 4: Skilled", img: "Icons/Badges/Printables/maker_04.svg"},
-    { title: "Maker 5: Expert", img: "Icons/Badges/Printables/maker_05.svg"},
-    { title: "Star of Design 1: Nebula", img: "Icons/Badges/Printables/star_of_design_01.svg"},
-    { title: "Star of Design 2: Star", img: "Icons/Badges/Printables/star_of_design_02.svg"},
-    { title: "Star of Design 3: Red Dwarf", img: "Icons/Badges/Printables/star_of_design_03.svg"},
-    { title: "Download Maniac 1: Iron", img: "Icons/Badges/Printables/download_maniac_01.svg"},
-    { title: "Download Maniac 2: Tin", img: "Icons/Badges/Printables/download_maniac_02.svg"},
-    { title: "Download Maniac 3: Brass", img: "Icons/Badges/Printables/download_maniac_03.svg"},
-    { title: "Supporter 1: Thumbs Up", img: "Icons/Badges/Printables/printables-badges-supporter-01.svg"},
-    { title: "Printables Promoter", img: "Icons/Badges/Printables/printables_promoter.svg"},
-    { title: "Printables Maniac", img: "Icons/Badges/Printables/prusa_printers_maniac.svg"}
-];
-
-// ===== LOAD LOCAL MAIN README =====
-fetch('README.md')
-  .then(res => res.text())
-  .then(md => {
-    const readmeContent = document.getElementById('readmeContent');
-    readmeContent.innerHTML = marked.parse(md);
-    readmeContent.querySelectorAll('img').forEach(img => {
-      const src = img.getAttribute('src');
-      if (src && src.startsWith('http://') && src.includes('flagcounter.com')) {
-        img.setAttribute('src', src.replace('http://', '//'));
-      }
-    });
-  })
-  .catch(() => {
-    document.getElementById('readmeContent').innerHTML = '<p>Could not load README.md</p>';
-  });
-
-// ===== TABS FUNCTIONALITY =====
-const tabs = document.querySelectorAll('.tab');
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active-content');
-            content.style.display = 'none';
-        });
-        const selectedContent = document.getElementById(tab.dataset.tab);
-        selectedContent.style.display = 'block';
-        setTimeout(() => {
-            selectedContent.classList.add('active-content');
-        }, 10);
-    });
-});
-
-// Auto switch to home tab on reload
-window.addEventListener('load', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    const homeTab = document.querySelector('.tab[data-tab="home"]');
-    homeTab.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.style.display = 'none';
-    });
-    const homeContent = document.getElementById('home');
-    homeContent.style.display = 'block';
-    setTimeout(() => {
-        homeContent.classList.add('active-content');
-    }, 10);
-});
-
-// ===== HELPER FUNCTION FOR RENDERING STARS =====
-function renderStars(rating) {
-    let stars = '';
-    for (let i = 1; i <= 5; i++) {
-        if (i <= rating) { stars += '★'; } else if (i - 0.5 <= rating) { stars += '½'; } else { stars += '☆'; }
-    }
-    return stars;
-}
-
-// ===== 3D TILT EFFECT FUNCTION =====
-function enableBadgeTilt() {
-    const badges = document.querySelectorAll('.badge-item');
-
-    badges.forEach(card => {
-        // CHANGED: We now target the image container inside the badge
-        const imageContainer = card.querySelector('.badge-image');
-
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            // Calculate mouse position relative to center of the badge
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            // Calculate rotation amount (max 20 degrees)
-            const rotateX = ((y - centerY) / centerY) * -20; 
-            const rotateY = ((x - centerX) / centerX) * 20;
-
-            // CHANGED: Apply rotation only to the image. 
-            // Scaling is now handled by CSS on the parent (.badge-item:hover)
-            if (imageContainer) {
-                imageContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            }
-        });
-
-        card.addEventListener('mouseleave', () => {
-            // Reset image rotation
-            if (imageContainer) {
-                imageContainer.style.transform = ''; 
-            }
-        });
-    });
-}
-
-// ===== LOAD BADGES FUNCTIONS =====
-function loadBadges() {
-    // 1. Load Printables
-    const printablesContainer = document.getElementById('printables-badges');
-    printablesContainer.innerHTML = '';
-    if(printablesBadgesList.length > 0) {
-        printablesBadgesList.forEach(badge => {
-            const div = document.createElement('div');
-            div.className = 'badge-item';
-            div.innerHTML = `
-                <div class="badge-image">
-                    <img src="${badge.img}" alt="${badge.title}">
-                </div>
-                <div class="badge-banner">${badge.title.replace(/\n/g, ' ')}</div>
-            `;
-            printablesContainer.appendChild(div);
-        });
-    } else {
-        printablesContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No badges configured</p>';
-    }
-
-    // 2. Load GitHub Achievements
-    const ghContainer = document.getElementById('github-badges');
-    ghContainer.innerHTML = '';
-    if(githubBadgesList.length > 0) {
-        githubBadgesList.forEach(badge => {
-            const div = document.createElement('div');
-            div.className = 'badge-item';
-            div.innerHTML = `
-                <div class="badge-image">
-                    <img src="${badge.img}" alt="${badge.title}">
-                </div>
-                <div class="badge-banner">${badge.title.replace(/\n/g, ' ')}</div>
-            `;
-            ghContainer.appendChild(div);
-        });
-    } else {
-        ghContainer.innerHTML = '<p style="font-size:0.8em; color:#666;">No badges configured</p>';
-    }
-    
-    // 3. Enable the 3D Effect
-    enableBadgeTilt();
-}
-
-// Call badge loader immediately
-loadBadges();
-
-// ===== LOAD PROJECT LINKS FROM JSON =====
-const homeContainer = document.getElementById('home');
-const linksLoading = document.createElement('div');
-linksLoading.className = 'loading-container';
-linksLoading.innerHTML = `<h2>Projects</h2><div class="loading-throbber"></div><p>Loading project links...</p>`;
-homeContainer.insertBefore(linksLoading, homeContainer.firstChild);
-
-fetch('projectpagelinks.json')
-    .then(res => {
-        if (!res.ok) throw new Error('projectpagelinks.json not found');
-        return res.json();
-    })
-    .then(projects => {
-        homeContainer.removeChild(linksLoading);
-        const projectLinksSection = document.createElement('div');
-        projectLinksSection.className = 'project-links-section';
-        projectLinksSection.innerHTML = `<h2>Projects</h2>`;
-        const grid = document.createElement('div');
-        grid.className = 'project-links-grid';
-
-        projects.forEach(project => {
-            const card = document.createElement('div');
-            card.className = 'project-link-card';
-            card.innerHTML = `
-                <a href="${project.link}">
-                    <div class="project-link-content">
-                        <img src="${project.image}" alt="${project.title}" onerror="this.src='Images/placeholder.jpg'">
-                        <h3 class="project-link-title">${project.title}</h3>
-                    </div>
-                </a>
-            `;
-            grid.appendChild(card);
-        });
-
-        projectLinksSection.appendChild(grid);
-        homeContainer.insertBefore(projectLinksSection, homeContainer.firstChild);
-    })
-    .catch(err => {
-        console.error('Error loading projectpagelinks.json:', err);
-        homeContainer.removeChild(linksLoading);
-        const fallback = document.createElement('div');
-        fallback.innerHTML = `<p style="color: #aaa; font-style: italic;">Could not load project links (projectpagelinks.json missing or invalid)</p>`;
-        homeContainer.insertBefore(fallback, homeContainer.firstChild);
-    });
-
-// ===== LOAD GITHUB REPOS =====
-const githubContainer = document.getElementById('github');
-githubContainer.innerHTML = '<div class="loading-container"><div class="loading-throbber"></div><p>Loading GitHub Repos...</p></div>';
-
-const githubHomeLoading = document.createElement('div');
-githubHomeLoading.className = 'loading-container';
-githubHomeLoading.innerHTML = `<h2>Top GitHub Repos</h2><div class="loading-throbber"></div><p>Loading...</p>`;
-homeContainer.appendChild(githubHomeLoading);
-
-fetch(`https://api.github.com/users/${githubUsername}/repos`).then(res=>res.json()).then(async repos=>{
-    const fragment = document.createDocumentFragment();
-    const filteredRepos = repos.filter(r=>r.name!=='directedhunt42.github.io');
-    filteredRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
-
-    for(const r of filteredRepos){
-        const card = document.createElement('div');
-        card.className = 'project-card fade-in';
-        card.innerHTML = `
-            <h3>${r.name}</h3>
-            <div class='repo-info'>
-                <p>⭐ Stars: ${r.stargazers_count}</p>
-                <p>🪲 Issues: ${r.open_issues_count}</p>
-                <p>📦 Size: ${(r.size/1024).toFixed(2)} MB</p>
-                <p>🕒 Updated: ${new Date(r.updated_at).toLocaleDateString()}</p>
-                <p>🌱 Forks: ${r.forks_count}</p>
-            </div>
-            <button class='toggle-readme'>Show README</button>
-            <div class='repo-readme' style='display:none;'></div>
-            <a href='${r.html_url}' target='_blank'>View on GitHub</a>`;
-
-        const readmeDiv = card.querySelector('.repo-readme');
-        const toggleBtn = card.querySelector('.toggle-readme');
-
-        const tagsRes = await fetch(`https://api.github.com/repos/${githubUsername}/${r.name}/tags`);
-        const tags = await tagsRes.json();
-        if(tags.length){const tagEl=document.createElement('p');tagEl.textContent=`🏷️ Latest Tag: ${tags[0].name}`;card.querySelector('.repo-info').appendChild(tagEl);}
-
-        toggleBtn.addEventListener('click', async () => {
-            if(readmeDiv.style.display === 'none'){
-                if(!readmeDiv.innerHTML){
-                    try{
-                        const readmeRes = await fetch(`https://raw.githubusercontent.com/${githubUsername}/${r.name}/main/README.md`);
-                        const md = await readmeRes.text();
-                        readmeDiv.innerHTML = marked.parse(md);
-                    }catch(e){readmeDiv.innerHTML = '<p>No README found</p>';}
-                }
-                readmeDiv.style.display = 'block';
-                toggleBtn.textContent = 'Hide README';
-            } else {
-                readmeDiv.style.display = 'none';
-                toggleBtn.textContent = 'Show README';
-            }
-        });
-
-        fragment.appendChild(card);
-    }
-
-    githubContainer.innerHTML = '';
-    githubContainer.appendChild(fragment);
-
-    homeContainer.removeChild(githubHomeLoading);
-    const githubHomeHeader = document.createElement('h2');
-    githubHomeHeader.textContent = 'Top GitHub Repos';
-    homeContainer.appendChild(githubHomeHeader);
-
-    for (let i = 0; i < Math.min(2, filteredRepos.length); i++) {
-        const card = githubContainer.children[i].cloneNode(true);
-        if (card.querySelector('.toggle-readme')) {
-            card.querySelector('.toggle-readme').remove();
-        }
-        card.querySelector('.repo-readme').remove();
-        homeContainer.appendChild(card);
-    }
-    
-    homeContainer.offsetHeight;
-    const hr = document.createElement('hr');
-    homeContainer.appendChild(hr);
-    homeContainer.offsetHeight;
-
-    // ===== LOAD ITCH.IO PROJECTS =====
-    const itchContainer = document.getElementById('itch');
-    itchContainer.innerHTML = '<div class="loading-container"><div class="loading-throbber"></div><p>Loading itch.io Projects...</p></div>';
-
-    const itchHomeLoading = document.createElement('div');
-    itchHomeLoading.className = 'loading-container';
-    itchHomeLoading.innerHTML = `<h2>Top itch.io Projects</h2><div class="loading-throbber"></div><p>Loading...</p>`;
-    homeContainer.appendChild(itchHomeLoading);
-
-    fetch(proxyUrl + encodeURIComponent(itchCollectionUrl))
-        .then(res => res.text())
-        .then(async html => {
-            const itchFragment = document.createDocumentFragment();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const games = doc.querySelectorAll('.game_cell');
-
-            const gamePromises = Array.from(games).map(async (game) => {
-                const titleEl = game.querySelector('.game_title a');
-                const title = titleEl ? titleEl.textContent.trim() : 'Unknown Title';
-                const link = titleEl ? titleEl.href : '#';
-                const descEl = game.querySelector('.game_text');
-                const desc = descEl ? descEl.textContent.trim() : 'No description available';
-                const thumbEl = game.querySelector('.game_thumb img');
-                const thumb = thumbEl ? (thumbEl.src || thumbEl.dataset.lazySrc) : '';
-                
-                let ratingsCount = 0;
-                let averageRatingStars = 'No ratings yet';
-
-                try {
-                    const projectRes = await fetch(proxyUrl + encodeURIComponent(link));
-                    const projectHtml = await projectRes.text();
-                    const projectDoc = parser.parseFromString(projectHtml, 'text/html');
-                    
-                    const ratingCountEl = projectDoc.querySelector('.rating_count');
-                    const ratingsCountStr = ratingCountEl ? ratingCountEl.textContent.trim().replace(/[^\d]/g, '') : '0';
-                    ratingsCount = parseInt(ratingsCountStr, 10) || 0;
-
-                    const aggregateRatingEl = projectDoc.querySelector('.aggregate_rating');
-                    if (aggregateRatingEl) {
-                        const text = aggregateRatingEl.textContent.trim();
-                        const match = text.match(/([\d.]+)\s*out\s*of\s*5/);
-                        if (match) {
-                            const rating = parseFloat(match[1]);
-                            averageRatingStars = renderStars(rating);
-                        }
-                    }
-                } catch (e) { console.error('Error fetching rating:', e); }
-
-                return { title, link, desc, thumb, ratingsCount, averageRatingStars };
-            });
-
-            const itchProjects = await Promise.all(gamePromises);
-            itchProjects.sort((a, b) => b.ratingsCount - a.ratingsCount);
-
-            for (const project of itchProjects) {
-                const card = document.createElement('div');
-                card.className = 'project-card fade-in';
-                
-                let innerHTML = `
-                    <h3>${project.title}</h3>
-                    <div class='repo-info'>
-                        <p>⭐ Rating: ${project.averageRatingStars} (${project.ratingsCount} ratings)</p>
-                    </div>
-                    <p>${project.desc}</p>
-                    <a href='${project.link}' target='_blank'>View on itch.io</a>`;
-                
-                if (project.thumb) {
-                    innerHTML = `<img src="${project.thumb}" alt="${project.title} thumbnail" style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">` + innerHTML;
-                }
-                card.innerHTML = innerHTML;
-                itchFragment.appendChild(card);
-            }
-
-            itchContainer.innerHTML = '';
-            itchContainer.appendChild(itchFragment);
-
-            homeContainer.removeChild(itchHomeLoading);
-            const itchHomeHeader = document.createElement('h2');
-            itchHomeHeader.textContent = 'Top itch.io Projects';
-            homeContainer.appendChild(itchHomeHeader);
-
-            for (let i = 0; i < Math.min(2, itchProjects.length); i++) {
-                const card = itchContainer.children[i].cloneNode(true);
-                homeContainer.appendChild(card);
-            }
-
-            homeContainer.offsetHeight;
-            homeContainer.style.display = 'none';
-            homeContainer.offsetHeight;
-            homeContainer.style.display = 'block';
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('projects.json')
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to load');
+            return res.json();
         })
-        .catch(err => {
-            console.error('Error loading itch.io projects:', err);
-            itchContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load itch.io projects</p>';
-            homeContainer.removeChild(itchHomeLoading);
-            const fallback = document.createElement('div');
-            fallback.innerHTML = `<h2>Top itch.io Projects</h2><p style="color: #aaa; font-style: italic;">Could not load itch.io projects</p>`;
-            homeContainer.appendChild(fallback);
+        .then(projects => renderProjects(projects))
+        .catch(() => {
+            document.getElementById('projects-grid').innerHTML =
+                '<p style="text-align:center;color:#ff8888;">Failed to load projects.json</p>';
         });
-})
-.catch(err => {
-    console.error('Error loading GitHub repos:', err);
-    githubContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load GitHub repos</p>';
-    homeContainer.removeChild(githubHomeLoading);
-    const fallback = document.createElement('div');
-    fallback.innerHTML = `<h2>Top GitHub Repos</h2><p style="color: #aaa; font-style: italic;">Could not load GitHub repos</p>`;
-    homeContainer.appendChild(fallback);
 });
 
-// ===== LOAD APPS SCRIPT =====
-const appsContainer = document.getElementById('appsscript');
-appsContainer.innerHTML = '<div class="loading-container"><div class="loading-throbber"></div><p>Loading Apps Scripts...</p></div>';
+function renderProjects(projects) {
+    const grid = document.getElementById('projects-grid');
+    grid.innerHTML = '';
 
-fetch('appsscript.json')
-    .then(res => res.json())
-    .then(apps => {
-        appsContainer.innerHTML = '';
-        if (!Array.isArray(apps)) { apps = [apps]; }
-        
-        for (const app of apps) {
-            const card = document.createElement('div');
-            card.className = 'project-card fade-in';
-            card.innerHTML = `
-                <h3>${app.title}</h3>
-                <button class='toggle-readme'>Show README</button>
-                <div class='repo-readme' style='display:none;'></div>
-                <a href='${app.link}' target='_blank'>View Link</a>`;
-            
-            const readmeDiv = card.querySelector('.repo-readme');
-            const toggleBtn = card.querySelector('.toggle-readme');
-
-            toggleBtn.addEventListener('click', () => {
-                if (readmeDiv.style.display === 'none') {
-                    if (!readmeDiv.innerHTML) {
-                        readmeDiv.innerHTML = marked.parse(app.description || '<p>No description available</p>');
-                    }
-                    readmeDiv.style.display = 'block';
-                    toggleBtn.textContent = 'Hide README';
-                } else {
-                    readmeDiv.style.display = 'none';
-                    toggleBtn.textContent = 'Show README';
-                }
-            });
-
-            appsContainer.appendChild(card);
-        }
-    })
-    .catch(err => {
-        console.error('Error loading appsscript.json:', err);
-        appsContainer.innerHTML = '<p style="color: #aaa; font-style: italic;">Could not load Apps Script data</p>';
+    projects.forEach(project => {
+        grid.innerHTML += `
+        <div class="project-link-card">
+            <a href="${project.link}">
+                <div class="project-link-content">
+                    <img src="${project.image}" alt="${project.title}">
+                    <div class="project-text">
+                        <h3>${project.title}</h3>
+                        ${project.info ? `<p class="project-info">${project.info}</p>` : ''}
+                    </div>
+                </div>
+            </a>
+        </div>`;
     });
-
-// ===== STATS IMAGES SEQUENTIAL LOADING =====
-const statsGrid = document.querySelector('.stats-grid');
-if (statsGrid) {
-    const loadingContainer = statsGrid.querySelector('.loading-container');
-    const statsImages = Array.from(statsGrid.querySelectorAll('img[data-src]'));
-    let index = 0;
-
-    const loadNext = () => {
-        if (index >= statsImages.length) {
-            if (loadingContainer) {
-                loadingContainer.style.display = 'none';
-            }
-            return;
-        }
-
-        const img = statsImages[index];
-        img.src = img.dataset.src;
-        img.style.display = 'block'; // Show as it loads
-
-        const onLoadOrError = () => {
-            index++;
-            loadNext();
-        };
-
-        img.addEventListener('load', onLoadOrError, { once: true });
-        img.addEventListener('error', onLoadOrError, { once: true });
-    };
-
-    loadNext();
 }
 </script>
+
 </body>
 </html>
