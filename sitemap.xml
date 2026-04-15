@@ -1,106 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Sitemap generated: 2026-03-22 -->
+
+  <!-- Root -->
   <url>
     <loc>https://novafoundry.ca/</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.00</priority>
+    <priority>1.0</priority>
   </url>
-  <url>
-    <loc>https://novafoundry.ca/index.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://novafoundry.ca/thanks.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.40</priority>
-  </url>
-  <url>
-    <loc>https://novafoundry.ca/support.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.40</priority>
-  </url>
-  <url>
-    <loc>https://novafoundry.ca/resume.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.40</priority>
-  </url>
+
   <url>
     <loc>https://novafoundry.ca/404.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.10</priority>
+    <priority>0.2</priority>
   </url>
+
   <url>
-    <loc>https://novafoundry.ca/Projects/blackhole.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <loc>https://novafoundry.ca/support.html</loc>
+    <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://novafoundry.ca/Projects/echoengine.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://novafoundry.ca/Projects/wormhole.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
+
+  <!-- Main Projects -->
   <url>
     <loc>https://novafoundry.ca/Projects/auto.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.8</priority>
   </url>
+
+  <!-- Archive Root -->
   <url>
-    <loc>https://novafoundry.ca/Downloads/blackholereleases.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
+    <loc>https://novafoundry.ca/archive/</loc>
+    <priority>0.5</priority>
   </url>
+
+  <!-- Archive Downloads -->
   <url>
-    <loc>https://novafoundry.ca/Downloads/echoenginedownloads.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
+    <loc>https://novafoundry.ca/archive/Downloads/blackholereleases.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-    <loc>https://novafoundry.ca/Downloads/wormholedownloads.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
+    <loc>https://novafoundry.ca/archive/Downloads/echoenginedownloads.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-    <loc>https://novafoundry.ca/Downloads/wormholetools.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
+    <loc>https://novafoundry.ca/archive/Downloads/wormholedownloads.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-    <loc>https://novafoundry.ca/licenses/blackholelicense.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
+    <loc>https://novafoundry.ca/archive/Downloads/wormholetools.html</loc>
+    <priority>0.6</priority>
   </url>
+
+  <!-- Archive Licenses -->
   <url>
-    <loc>https://novafoundry.ca/licenses/echoenginelicense.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
+    <loc>https://novafoundry.ca/archive/licenses/blackholelicense.html</loc>
+    <priority>0.4</priority>
   </url>
+
   <url>
-    <loc>https://novafoundry.ca/licenses/wormholelicense.html</loc>
-    <lastmod>2026-03-22</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
+    <loc>https://novafoundry.ca/archive/licenses/echoenginelicense.html</loc>
+    <priority>0.4</priority>
   </url>
+
+  <url>
+    <loc>https://novafoundry.ca/archive/licenses/wormholelicense.html</loc>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Archive Projects -->
+  <url>
+    <loc>https://novafoundry.ca/archive/Projects/blackhole.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://novafoundry.ca/archive/Projects/echoengine.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://novafoundry.ca/archive/Projects/wormhole.html</loc>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
