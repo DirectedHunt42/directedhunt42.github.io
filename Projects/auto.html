@@ -350,8 +350,8 @@
             <div id="overview" class="section">
                 <h1>Custom Quadcopter</h1>
                 <div class="intro">
-                    This is my custom quadcopter build, developed over the past several years as a mix of purchased components and hardware alongside custom-designed 3D printed mounts and structural parts.<br><br>
-                    The platform is powered by ArduPilot for flight control and ExpressLRS for radio link. Built on an F450 frame, it emphasizes modularity, reliability, and clean cable management for long-duration flights and easy maintenance.
+                    This project presents a custom quadcopter platform developed over several years through the integration of commercial components with purpose-designed 3D-printed structures.<br><br>
+                    The system utilizes ArduPilot for flight control and ExpressLRS for communication. Built on an F450 airframe, the design emphasizes modular construction, operational reliability, and structured cable management to support extended flight duration and simplified maintenance.
                 </div>
             </div>
 
@@ -359,7 +359,7 @@
             <div id="design" class="section">
                 <h2>Design</h2>
                 <p style="line-height:1.7; font-size:1.1em;">
-                    The entire electronics stack is mounted using fully custom 3D-printed parts to allow for mounting of various technically incompatible components. This allowed me a wider range of options for components that could improve functionality, as well as reduce cost.
+                    The electronics stack is mounted using fully custom 3D-printed components designed to accommodate varying form factors and mounting requirements. This approach expands component selection flexibility while improving integration, cost efficiency, and overall system organization.
                 </p>
                 <img src="../Images/Drone.png" alt="Quadcopter" style="max-width: 75%; height: auto;">
             </div>
@@ -372,7 +372,7 @@
                     <div class="part-card">
                         <div class="part-card-content">
                             <h3>Antenna Mount</h3>
-                            <p>Holds the ExpressLRS antenna securely with strain relief and optimal orientation for maximum signal range.</p>
+                            <p>Secures the ExpressLRS antenna with integrated strain relief and optimized orientation to improve signal performance and link stability.</p>
                             <a href="https://www.printables.com/model/1370200-radiomaster-simple-receiver-holder" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev B</a>
                         </div>
                     </div>
@@ -380,7 +380,7 @@
                     <div class="part-card">
                         <div class="part-card-content">
                             <h3>Battery Mount</h3>
-                            <p>Front battery holder with quick-release strap system and integrated XT60 pass-through for clean power routing.</p>
+                            <p>Forward-mounted battery cradle with integrated XT60 pass-through, enabling efficient and organized high-current power routing.</p>
                             <a href="https://www.printables.com/model/1370207-cube-orange-power-supply-mount-battery-holder" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev B</a>
                         </div>
                     </div>
@@ -388,7 +388,7 @@
                     <div class="part-card">
                         <div class="part-card-content">
                             <h3>Flight Controller Mount</h3>
-                            <p>Cube Orange carrier with vibration isolation and precise alignment for the carrier board.</p>
+                            <p>Precision mount for the Cube Orange flight controller incorporating vibration isolation and accurate carrier alignment.</p>
                             <a href="https://www.printables.com/model/1139237-cube-orange-drone-mount-rev-2" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev C</a>
                         </div>
                     </div>
@@ -396,7 +396,7 @@
                     <div class="part-card">
                         <div class="part-card-content">
                             <h3>GPS Mount</h3>
-                            <p>Here 3 GPS module mount with compass protection and clean sky visibility.</p>
+                            <p>Mount for the Here 3 GNSS module designed to protect the onboard compass while maintaining unobstructed sky visibility for reliable positioning.</p>
                             <a href="https://www.printables.com/model/1139252-here-3-gps-drone-mount-rev-2" target="_blank" rel="noopener noreferrer" class="badge">Printables • Rev B</a>
                         </div>
                     </div>
@@ -404,7 +404,7 @@
                     <div class="part-card">
                         <div class="part-card-content">
                             <h3>Telemetry Mount</h3>
-                            <p>Holybro SiK telemetry radio mount with integrated cable management.</p>
+                            <p>Dedicated mount for the telemetry radio with integrated cable management to ensure secure and organized signal routing.</p>
                             <a href="https://www.printables.com/model/1139258-holybro-telemetry-radio-drone-mount" target="_blank" rel="noopener noreferrer" class="badge">Printables</a>
                         </div>
                     </div>
@@ -416,9 +416,9 @@
             <div id="software" class="section">
                 <h2>Software &amp; Avionics</h2>
                 <p style="line-height:1.7; font-size:1.1em;">
-                    • <strong>Flight Controller Firmware:</strong> ArduPilot (Copter) — full autonomous capabilities including RTL, Loiter, and Auto missions.<br>
-                    • <strong>Radio Link:</strong> ExpressLRS 2.4 GHz with dynamic power and telemetry feedback to a RadioMaster Boxer controller.<br>
-                    • <strong>Ground Control:</strong> Mission Planner for configuration, tuning, and real-time telemetry stream to the quadcopter.
+                    • <strong>Flight Controller Firmware:</strong> ArduPilot (Copter) — supports autonomous flight modes including Return-to-Launch, Loiter, and waypoint missions.<br>
+                    • <strong>Radio Link:</strong> ExpressLRS 2.4 GHz with telemetry feedback for real-time link monitoring.<br>
+                    • <strong>Ground Control:</strong> Mission Planner for configuration, tuning, and live telemetry visualization.
                 </p>
             </div>
 
@@ -426,10 +426,10 @@
             <div id="flight" class="section">
                 <h2>Flight Configuration &amp; Ground Station</h2>
                 <p style="line-height:1.7; font-size:1.1em;">
-                    The ground station is set up with Mission Planner running on my laptop, connected to the quadcopter via two USB telemetry radios. This transmits real-time information about the quadcopter's position, speed, altitude, battery status, and ExpressLRS link quality.
+                    The ground control system operates Mission Planner on a laptop connected to the vehicle via dual telemetry radios. This provides continuous real-time data including position, velocity, altitude, battery status, and radio link quality.
                 </p>
                 <p style="line-height:1.7; font-size:1.1em;">
-                    The quadcopter is configured to mainly be controlled by the RC controller, with that being the main method of control. However, it also supports pre-planned missions created through Mission Planner that it can fly without manual intervention. This allows for a wide range of use cases, from manual flying to fully autonomous missions.
+                    Primary control is performed through an RC transmitter. The system also supports fully autonomous waypoint missions, enabling operation without continuous manual input. This dual-mode capability allows for both manual piloting and automated mission execution depending on operational requirements.
                 </p>
                 <img src="../Images/Waypoint_Example.png" alt="Mission Planner" style="max-width: 75%; height: auto;">
             </div>
@@ -444,16 +444,15 @@
                             <div class="year-box">2023</div>
                         </div>
                         <div class="timeline-event">
-                            <h2>Project Start (Summer)</h2>
-                            <h3>Acquired F450 frame and other parts. Began researching ArduPilot ecosystem.</h3>
-                            <p>I started by searching the internet for a good frame to base my project on. I found the one I am currently using on Amazon for fairly inexpensive, as it is a clone of a very successful design. I also searched for the other basic parts, such as the motor, electronic speed controller, and battery.</p>
-                            <p>I took slightly more care in selecting a flight controller and GPS. I eventually settled on the Cube Orange and Here 3 combination, as they are industry standard hardware, and very well built, which I deemed valuable despite the extra cost.</p>
+                            <h2>Project Initiation (Summer)</h2>
+                            <h3>Acquired the F450 airframe and core components; initiated research into the ArduPilot ecosystem.</h3>
+                            <p>Initial efforts focused on selecting a suitable structural platform. The chosen F450 frame provided a cost-effective and proven design baseline. Supporting components—including motors, electronic speed controllers, and batteries—were selected concurrently.</p>
+                            <p>Additional emphasis was placed on the flight controller and GNSS system. The Cube Orange and Here 3 combination was selected for its reliability, build quality, and industry-standard performance.</p>
                         </div>
                         <div class="timeline-event">
-                            <h2>First Custom Mounts (Summer)</h2>
-                            <h3>Designed and 3D-printed initial flight controller and GPS mounts in Fusion 360. First bench test of electronics stack.</h3>
-                            <p>After acquiring the basic parts, I designed and printed my first custom mounts for the flight controller and GPS. This was a big step in the project, as it allowed me to move from a breadboard test setup to a more integrated and robust configuration.</p>
-                            <p>I followed this up by designing parts for the battery, and radios. I also mounted the other components using other methods, such as zip-ties and screws. I also soldered the wiring together at this stage, and configured the wires to power the components and transmit data.</p>
+                            <h2>Initial Custom Fabrication (Summer)</h2>
+                            <h3>Designed and 3D-printed first-generation mounts for the flight controller and GPS module; completed initial bench validation of the electronics stack.</h3>
+                            <p>This phase marked the transition from a temporary test setup to an integrated structural configuration. Additional mounts were developed for the battery and communication hardware. Components were secured using mechanical fasteners and cable management techniques, and wiring was finalized to ensure reliable power distribution and data communication.</p>
                         </div>
                     </div>
 
@@ -462,19 +461,19 @@
                             <div class="year-box">2024</div>
                         </div>
                         <div class="timeline-event">
-                            <h2>ExpressLRS Setup (Spring)</h2>
-                            <h3>Added ExpressLRS radio link with RadioMaster receiver and Zorro controller. Achieved stable telemetry and control at 2.4 GHz.</h3>
-                            <p>After the basic electronics were working, I added the ExpressLRS radio link to allow for remote control and telemetry. This involved configuring the RadioMaster receiver and Zorro controller, as well as setting up the telemetry stream to Mission Planner.</p>
+                            <h2>Radio Link Integration (Spring)</h2>
+                            <h3>Implemented the ExpressLRS 2.4 GHz radio system, establishing stable bidirectional control and telemetry.</h3>
+                            <p>The system was configured with a RadioMaster receiver and Zorro transmitter, with telemetry integrated into the Mission Planner ground station.</p>
                         </div>
                         <div class="timeline-event">
-                            <h2>First Flight (Summer)</h2>
-                            <h3>Completed first successful flight with manual control.</h3>
-                            <p>This is the first time the quadcopter has been flown successfully with manual control. At this point auto mode and loiter mode had not been calibrated, so I was restricted to manual mode.</p>
+                            <h2>Maiden Flight (Summer)</h2>
+                            <h3>Completed the first successful manually controlled flight.</h3>
+                            <p>At this stage, autonomous modes had not yet been fully calibrated, limiting operation to manual control.</p>
                         </div>
                         <div class="timeline-event">
-                            <h2>Autonomous Flight (Summer)</h2>
-                            <h3>Configured and successfully flew first autonomous mission using Mission Planner.</h3>
-                            <p>At this point I had finally finished calibrating the autonomous flight systems, so I was able to test them as well. The calibration entailed orienting the drone about its main axes, and recording accelerometer data for these orientations.</p>
+                            <h2>Autonomous Mission Validation (Summer)</h2>
+                            <h3>Successfully executed the first autonomous waypoint mission.</h3>
+                            <p>This followed full calibration of the inertial and navigation systems, including controlled multi-axis orientation procedures to establish accurate sensor baselines.</p>
                         </div>
 
                     </div>
@@ -484,15 +483,15 @@
                             <div class="year-box">2025</div>
                         </div>
                         <div class="timeline-event">
-                            <h2>Hardware Revisions (Spring)</h2>
-                            <h3>Entirely revised all 3D printed parts for improved fit and functionality.</h3>
-                            <p>By this point many of the original 3D printed parts had failed at some point, so I took the time to revise all of them. I took note of the weak points of the parts by recording where they failed, and then reinforced or removed those points. This mostly involved removing angled supports, and making the support struts more solid than before.</p>
+                            <h2>Hardware Optimization (Spring)</h2>
+                            <h3>Redesigned all 3D-printed components to improve durability, fit, and structural performance.</h3>
+                            <p>Failure points identified during operation were analyzed and reinforced. Design improvements focused on reducing stress concentrations and increasing structural rigidity.</p>
                         </div>
 
                         <div class="timeline-event">
-                            <h2>RadioMaster Upgrade (Fall)</h2>
-                            <h3>Switched from RadioMaster Zorro receiver to RadioMaster Boxer.</h3>
-                            <p>I upgraded the radio controller from a RadioMaster Zorro to a RadioMaster Boxer. I was mostly able to transfer the configuration over, but some recalibration and setup was required. I decided to do this because the Boxer has a much larger range of controls I could configure, as well as a much better battery life, which was a problem I was running into with the Zorro.</p>
+                            <h2>Controller Upgrade (Fall)</h2>
+                            <h3>Upgraded the radio transmitter from the RadioMaster Zorro to the RadioMaster Boxer.</h3>
+                            <p>Configuration settings were largely transferred, with minor recalibration required. The upgrade provided improved control ergonomics, expanded configuration options, and significantly increased battery endurance.</p>
                         </div>
                     </div>
 
