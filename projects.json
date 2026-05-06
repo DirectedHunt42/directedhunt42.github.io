@@ -3,5 +3,10 @@
     "title": "Auto - Custom Quadcopter",
     "image": "Images/Auto_Icon.png",
     "link": "Projects/auto"
+  },
+  {
+    "title": "SkyChopper - Wind Turbine",
+    "image": "Images/SkyChopper_Icon.png",
+    "link": "Projects/skychopper"
   }
 ]

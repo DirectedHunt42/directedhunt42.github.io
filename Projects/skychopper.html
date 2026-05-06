@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyChopper</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Consolas&display=swap');
+
+        :root {
+            --accent: #3a8cff;
+            --highlight: #00d4ff;
+        }
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            margin:0; 
+            font-family: 'Consolas', 'Courier New', monospace; 
+            color: #e0f0ff; 
+            background: linear-gradient(180deg, #05080f 0%, #0f1829 100%); 
+            min-height: 100vh;
+            overflow-x: hidden; 
+            letter-spacing: 0.5px;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #0c1426;
+            border-bottom: 1px solid #3a8cff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            background: #111b33;
+            color: #e0f0ff;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .home-button:hover {
+            background: #1e2a4a;
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            color: #00d4ff;
+        }
+
+        .main-wrapper {
+            display: flex;
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 30px;
+        }
+
+        /* LEFT NAVIGATION - fully left-aligned, no background panel */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 100px;
+            align-self: start;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.4em;
+            color: #a0d0ff;
+            text-align: left;
+            letter-spacing: 1px;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-list li {
+            margin-bottom: 6px;
+        }
+
+        .nav-list a {
+            display: block;
+            padding: 10px 16px;
+            color: #e0f0ff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 1.05em;
+        }
+
+        .nav-list a:hover {
+            background: rgba(58, 140, 255, 0.15);
+            color: #00d4ff;
+            padding-left: 22px;
+        }
+
+        /* MAIN CONTENT */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section {
+            background: #0c1426;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(58, 140, 255, 0.1);
+            scroll-margin-top: 100px; /* offset so header doesn't cover section when jumping from nav */
+        }
+
+        .section h1 {
+            margin: 0 0 20px 0;
+            font-size: 2.4em;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        .section h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.8em;
+            color: #a0d0ff;
+            border-bottom: 1px solid #3a8cff;
+            padding-bottom: 10px;
+        }
+
+        .intro {
+            font-size: 1.15em;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .part-card {
+            background: #111b33;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .part-card:hover {
+            transform: translateY(-6px);
+            border-color: #00d4ff;
+        }
+
+        .part-card-content {
+            padding: 20px;
+        }
+
+        .part-card h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.4em;
+            color: #fff;
+        }
+
+        .part-card p {
+            margin: 0 0 20px 0;
+            color: #b0d0ff;
+            line-height: 1.5;
+            font-size: 1.05em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #1e2a4a;
+            color: #a0d0ff;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid #3a8cff;
+        }
+
+        .logo-ascii {
+            display: block;
+            text-align: center;
+            font-size: clamp(12px, 1.8vw, 14px);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: #a0d0ff;
+            white-space: pre;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px #00d4ff;
+        }
+
+        /* TIMELINE - centered line, full-width events with small margin */
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px 0 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(to bottom, #3a8cff, #00d4ff);
+            border-radius: 9999px;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-entry {
+            position: relative;
+            margin-bottom: 50px;
+            z-index: 2;
+        }
+
+        .timeline-year {
+            position: relative;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .year-box {
+            display: inline-block;
+            background: #0c1426;
+            color: #00d4ff;
+            font-size: 1.65em;
+            font-weight: bold;
+            padding: 10px 32px;
+            border: 3px solid #3a8cff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(58, 140, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .timeline-event {
+            width: calc(100% - 40px);   /* full width of panel with small margin */
+            margin: 0 auto;             /* centered with small side margin */
+            background: #111b33;
+            border: 1px solid #3a8cff;
+            border-radius: 4px;
+            padding: 22px 28px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .timeline-event:hover {
+            border-color: #00d4ff;
+            transform: translateY(-4px);
+        }
+
+        .timeline-event h4 {
+            margin: 0 0 10px 0;
+            color: #fff;
+            font-size: 1.35em;
+        }
+
+        .timeline-event p {
+            margin: 0;
+            color: #b0d0ff;
+            line-height: 1.6;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 992px) {
+            .main-wrapper {
+                flex-direction: column;
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 20px;
+            }
+            .timeline-event {
+                width: calc(100% - 20px);   /* slightly tighter margin on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER WITH RETURN TO HOME -->
+    <div class="header">
+        <a href="../" class="home-button">
+            ← RETURN TO HOME
+        </a>
+        <div style="font-size:1.3em; color:#a0d0ff; font-weight:bold;">Jack Murray</div>
+    </div>
+
+    <div class="main-wrapper">
+
+        <!-- LEFT NAVIGATION -->
+        <div class="sidebar">
+            <h3>Project Sections</h3>
+            <ul class="nav-list">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#design">Design</a></li>
+                <li><a href="#mechanical">Mechanical Layout</a></li>
+                <li><a href="#electrical">Electrical Layout</a></li>
+                <li><a href="#webui">Web UI</a></li>
+                <li><a href="#results">Results</a></li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="content">
+
+            <pre class="logo-ascii">
+    ███████╗██╗  ██╗██╗   ██╗ ██████╗██╗  ██╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗ 
+    ██╔════╝██║ ██╔╝╚██╗ ██╔╝██╔════╝██║  ██║██╔═══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
+    ███████╗█████╔╝  ╚████╔╝ ██║     ███████║██║   ██║██████╔╝██████╔╝█████╗  ██████╔╝
+    ╚════██║██╔═██╗   ╚██╔╝  ██║     ██╔══██║██║   ██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗
+    ███████║██║  ██╗   ██║   ╚██████╗██║  ██║╚██████╔╝██║     ██║     ███████╗██║  ██║
+     ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝ </pre>
+
+            <!-- OVERVIEW / CONCEPT -->
+            <div id="overview" class="section">
+                <h1>Wind Turbine</h1>
+                <div class="intro">
+                    This project presents a wind energy harvesting system designed as a proof of concept to validate the feasibility of small-scale wind power generation. The system demonstrates the ability to reliably power a small device by integrating harvested wind energy with battery storage and power management.<br><br>
+                    The turbine was designed and built over March, April, and May of 2026, with each stage refined through hands-on assembly, testing, and iteration.
+                </div>
+            </div>
+
+            <!-- DESIGN -->
+            <div id="design" class="section">
+                <h2>Design</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The turbine utilizes a dual-power approach, seamlessly switching between the primary source power and a battery charged by the wind turbine to ensure consistent operation. The design combines custom 3D-printed mechanical structures with a custom PCB hosting an Arduino Nano and Raspberry Pi Zero 2W. The Arduino measures current and serves as a sacrificial protection layer, while the Raspberry Pi executes computational logic and hosts a web server for system monitoring and data visualization.
+                </p>
+                <!-- Uncomment and modify if you want to add an image:
+                <img src="../Images/your-image.png" alt="Project image" style="max-width: 75%; height: auto;">
+                -->
+            </div>
+
+            <!-- MECHANICAL LAYOUT -->
+            <div id="mechanical" class="section">
+                <h2>Mechanical Layout</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The mechanical layout uses custom 3D-printed parts to support the turbine blades, generator, and structural frame. The arrangement keeps cabling neat and maintains clear access to the control electronics while also providing stable airflow around the rotor.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 20px;">
+                    <figure style="margin: 0;">
+                        <img src="../Images/Skychopper_front.jpg" alt="SkyChopper front view" style="width: 100%; height: auto; border-radius: 4px; border: 1px solid #3a8cff;">
+                        <figcaption style="margin-top: 10px; color: #b0d0ff; font-size: 0.95em;">Front view showing the turbine blades</figcaption>
+                    </figure>
+                    <figure style="margin: 0;">
+                        <img src="../Images/Skychopper_back.jpg" alt="SkyChopper back view" style="width: 100%; height: auto; border-radius: 4px; border: 1px solid #3a8cff;">
+                        <figcaption style="margin-top: 10px; color: #b0d0ff; font-size: 0.95em;">Rear view showing the nacell and post adapter</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <!-- ELECTRICAL LAYOUT -->
+            <div id="electrical" class="section">
+                <h2>Electrical Layout</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The system architecture employs a custom PCB that integrates an Arduino Nano and Raspberry Pi Zero 2W. The Arduino serves dual roles: measuring current generation from the turbine and acting as a sacrificial protection layer to safeguard the more critical Raspberry Pi in the event of voltage spikes or fault conditions.
+                </p>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    Power flow begins with the turbine output passing through a DC-DC converter that boosts the voltage to a constant 12.6V for charging the battery connected to the output rails. This same rail is shared with a Buck converter that steps down the voltage to 9V for system operation. A normally-open/normally-closed (NO/NC) relay switches between source power and battery power, with the source configured as normally-open to ensure safe operation in case of relay failure.
+                </p>
+                <figure style="margin: 20px 0; display: inline-block;">
+                    <div style="padding: 16px; background: #0c1426; border: 1px solid #3a8cff; border-radius: 6px;">
+                        <img src="../Images/Skychopper_Electrical.png" alt="SkyChopper electrical layout" style="width: 100%; max-width: 720px; height: auto; border-radius: 4px;">
+                    </div>
+                </figure>
+                <div style="margin-top: -10px; color: #b0d0ff; font-size: 0.95em; max-width: 75%;">Electrical layout showing the DC-DC converter, Buck converter, relay switching, and measurement points.</div>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The Raspberry Pi continuously measures voltage across three critical points: the battery rails, the output of the Buck converter (9V rail), and the source input. Based on these measurements, the Pi dynamically switches between power sources to optimize system reliability and battery charging efficiency. Specific voltage thresholds and switching logic are defined in the SkyChopper repository.
+                </p>
+            </div>
+
+            <!-- WEB UI -->
+            <div id="webui" class="section">
+                <h2>Web UI</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The web interface provides real-time monitoring of the wind turbine system, displaying current generation metrics, battery status, and power consumption data through a responsive dashboard accessible from any connected device.
+                </p>
+                <a href="https://github.com/DirectedHunt42/SkyChopper" target="_blank" rel="noopener noreferrer" class="badge" style="margin-top: 15px;">GitHub Repository</a>
+            </div>
+
+            <!-- RESULTS -->
+            <div id="results" class="section">
+                <h2>Results</h2>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    Testing of the wind turbine system demonstrated variable power generation across different wind conditions. The turbine's output voltage scales with wind speed, providing a direct correlation between environmental conditions and harvested energy.
+                </p>
+                <div style="overflow-x: auto; margin: 25px 0;">
+                    <table style="width: 100%; border-collapse: collapse; background: #111b33; border: 1px solid #3a8cff;">
+                        <thead>
+                            <tr style="background: #1e2a4a; border-bottom: 2px solid #3a8cff;">
+                                <th style="padding: 15px; text-align: left; color: #a0d0ff; font-weight: bold; border-right: 1px solid #3a8cff;">Wind Condition</th>
+                                <th style="padding: 15px; text-align: left; color: #a0d0ff; font-weight: bold; border-right: 1px solid #3a8cff;">Wind Speed</th>
+                                <th style="padding: 15px; text-align: left; color: #a0d0ff; font-weight: bold;">Output Voltage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #3a8cff;">
+                                <td style="padding: 12px 15px; color: #e0f0ff; border-right: 1px solid #3a8cff;">Low Wind</td>
+                                <td style="padding: 12px 15px; color: #e0f0ff; border-right: 1px solid #3a8cff;">~15 km/h</td>
+                                <td style="padding: 12px 15px; color: #e0f0ff;">4–6 V</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #3a8cff;">
+                                <td style="padding: 12px 15px; color: #e0f0ff; border-right: 1px solid #3a8cff;">High Wind</td>
+                                <td style="padding: 12px 15px; color: #e0f0ff; border-right: 1px solid #3a8cff;">20–30 km/h</td>
+                                <td style="padding: 12px 15px; color: #e0f0ff;">12–13 V</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; color: #e0f0ff; border-right: 1px solid #3a8cff;">Gust Peaks</td>
+                                <td style="padding: 12px 15px; color: #e0f0ff; border-right: 1px solid #3a8cff;">Up to 40 km/h</td>
+                                <td style="padding: 12px 15px; color: #e0f0ff;">16.25 V (max)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="line-height:1.7; font-size:1.1em;">
+                    The DC-DC converter successfully regulated the turbine output to maintain a constant 12.6 V on the battery charging rails across the tested wind speed range. The system reliably managed transient voltage peaks during wind gusts, demonstrating robust protection and stable operation throughout field testing.
+                </p>
+            </div>
+
+
+        </div>
+    </div>
+
+</body>
+</html>
